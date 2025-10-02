@@ -1,0 +1,1604 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Catálogo Interativo - Serviços de Beleza</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        body {
+            box-sizing: border-box;
+        }
+        .gradient-bg {
+            background: linear-gradient(135deg, #ffecd2 0%, #fcb69f 100%);
+        }
+        .service-card {
+            transition: all 0.3s ease;
+        }
+        .service-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+        }
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0,0,0,0.5);
+        }
+        .modal.active {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .fade-in {
+            animation: fadeIn 0.3s ease-in;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: scale(0.9); }
+            to { opacity: 1; transform: scale(1); }
+        }
+    </style>
+</head>
+<body class="gradient-bg min-h-screen">
+    <!-- Header -->
+    <header class="bg-white shadow-lg">
+        <div class="container mx-auto px-6 py-4">
+            <div class="flex items-center justify-between">
+                <div class="flex items-center space-x-3">
+                    <div class="w-10 h-10 bg-gradient-to-r from-pink-500 to-rose-500 rounded-full flex items-center justify-center">
+                        <span class="text-white font-bold text-lg">✨</span>
+                    </div>
+                    <h1 class="text-2xl font-bold text-gray-800">Aline Menezes Beauty</h1>
+                </div>
+                <div class="text-right">
+                    <p class="text-sm text-gray-600" id="headerTitle">Catálogo de Serviços</p>
+                    <p class="text-xs text-gray-500" id="headerSubtitle">Selecione seu serviço ideal</p>
+                    <div class="flex gap-2 mt-2">
+                        <button onclick="showLocationModal()" class="bg-blue-500 text-white px-3 py-2 rounded-lg text-sm hover:bg-blue-600 transition-colors">
+                            📍 Como Chegar
+                        </button>
+                        <button onclick="showAccessPage()" id="accessBtn" class="bg-gray-600 text-white px-3 py-2 rounded-lg text-sm hover:bg-gray-700 transition-colors">
+                            🔐 Área do Cliente
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </header>
+
+
+
+    <!-- Public Catalog -->
+    <div id="publicCatalog" class="container mx-auto px-6 py-8">
+        <!-- Welcome Section -->
+        <div class="bg-white rounded-2xl shadow-lg p-8 mb-8 text-center">
+            <h2 class="text-3xl font-bold text-gray-800 mb-4">✨ Bem-vinda ao nosso Catálogo!</h2>
+            <p class="text-gray-600 mb-6">Descubra todos os nossos serviços de beleza e encontre o tratamento perfeito para você. Navegue pelos nossos procedimentos e agende seu horário!</p>
+            
+            <div class="bg-gradient-to-r from-pink-50 to-rose-50 rounded-lg p-6 mb-6">
+                <h3 class="text-xl font-semibold text-pink-800 mb-2">🎁 Oferta Especial para Novas Clientes!</h3>
+                <p class="text-pink-700">Ganhe <strong>10% de desconto</strong> no seu primeiro agendamento!</p>
+            </div>
+
+            <div class="flex flex-wrap justify-center gap-4">
+                <button onclick="showBookingModal()" class="bg-gradient-to-r from-pink-500 to-rose-500 text-white px-8 py-3 rounded-full font-semibold hover:from-pink-600 hover:to-rose-600 transition-colors">
+                    📅 Agendar Agora
+                </button>
+                <button onclick="shareWhatsApp()" class="bg-gradient-to-r from-green-600 to-green-700 text-white px-8 py-3 rounded-full font-semibold hover:from-green-700 hover:to-green-800 transition-colors">
+                    📱 Compartilhar
+                </button>
+                <button onclick="showAccessPage()" class="bg-gray-600 text-white px-8 py-3 rounded-full font-semibold hover:bg-gray-700 transition-colors">
+                    🔐 Já sou Cliente
+                </button>
+            </div>
+        </div>
+
+        <!-- Filter Buttons -->
+        <div class="flex flex-wrap justify-center gap-4 mb-8">
+            <button onclick="filterServices('todos')" class="filter-btn bg-pink-500 text-white px-6 py-2 rounded-full font-semibold hover:bg-pink-600 transition-colors">
+                Todos os Serviços
+            </button>
+            <button onclick="filterServices('cilios')" class="filter-btn bg-white text-pink-500 px-6 py-2 rounded-full font-semibold hover:bg-pink-50 transition-colors">
+                Cílios
+            </button>
+            <button onclick="filterServices('sobrancelha')" class="filter-btn bg-white text-pink-500 px-6 py-2 rounded-full font-semibold hover:bg-pink-50 transition-colors">
+                Sobrancelhas
+            </button>
+            <button onclick="filterServices('micropigmentacao')" class="filter-btn bg-white text-pink-500 px-6 py-2 rounded-full font-semibold hover:bg-pink-50 transition-colors">
+                Micropigmentação
+            </button>
+        </div>
+
+        <!-- Services Grid -->
+        <div id="servicesGrid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+            <!-- Service cards will be generated by JavaScript -->
+        </div>
+
+        <!-- Test Section -->
+        <div class="bg-gradient-to-r from-blue-50 to-indigo-50 rounded-2xl shadow-lg p-8 mt-8">
+            <h3 class="text-2xl font-bold text-gray-800 mb-4">🧪 Como Testar o Sistema</h3>
+            <div class="grid md:grid-cols-2 gap-6 mb-6">
+                <div class="bg-white rounded-lg p-6">
+                    <h4 class="font-bold text-blue-800 mb-3">👤 Teste como Cliente</h4>
+                    <div class="space-y-2 text-sm">
+                        <p><strong>CPF:</strong> 123.456.789-00</p>
+                        <p><strong>WhatsApp:</strong> (47) 99999-9999</p>
+                        <p class="text-gray-600">Use estes dados para fazer login na área do cliente e ver o histórico de atendimentos.</p>
+                    </div>
+                </div>
+                <div class="bg-white rounded-lg p-6">
+                    <h4 class="font-bold text-purple-800 mb-3">💼 Teste como Profissional</h4>
+                    <div class="space-y-2 text-sm">
+                        <p><strong>Email:</strong> admin@alinemenezes.com</p>
+                        <p><strong>Senha:</strong> admin123</p>
+                        <p class="text-gray-600">Acesse o painel administrativo completo com todas as funcionalidades.</p>
+                    </div>
+                </div>
+            </div>
+            <div class="bg-white rounded-lg p-6">
+                <h4 class="font-bold text-green-800 mb-3">📸 Como Adicionar Suas Fotos</h4>
+                <div class="text-sm text-gray-700 space-y-2">
+                    <p><strong>1. Hospede suas fotos:</strong> Use serviços como Imgur, Google Drive (público), ou Dropbox</p>
+                    <p><strong>2. Copie o link direto:</strong> Certifique-se que o link termina com .jpg, .png ou .webp</p>
+                    <p><strong>3. Substitua no código:</strong> Troque as URLs do Unsplash pelas suas fotos</p>
+                    <p><strong>Exemplo:</strong> <code class="bg-gray-100 px-2 py-1 rounded">image: "https://i.imgur.com/suafoto.jpg"</code></p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Contact Section -->
+        <div class="bg-white rounded-2xl shadow-lg p-8 mt-8 text-center">
+            <h3 class="text-2xl font-bold text-gray-800 mb-4">💬 Entre em Contato</h3>
+            <p class="text-gray-600 mb-6">Tem dúvidas? Quer mais informações sobre nossos serviços? Fale conosco!</p>
+            
+            <div class="flex flex-wrap justify-center gap-4">
+                <button onclick="contactWhatsApp()" class="bg-green-600 text-white px-6 py-3 rounded-lg font-semibold hover:bg-green-700 transition-colors flex items-center gap-2">
+                    📱 WhatsApp: (47) 99999-9999
+                </button>
+                <button onclick="contactInstagram()" class="bg-gradient-to-r from-purple-500 to-pink-500 text-white px-6 py-3 rounded-lg font-semibant hover:from-purple-600 hover:to-pink-600 transition-colors flex items-center gap-2">
+                    📸 @alinemenezes.beauty
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Access Page (Login) -->
+    <div id="accessPage" class="container mx-auto px-6 py-8 hidden">
+        <div class="max-w-md mx-auto bg-white rounded-2xl shadow-lg p-8">
+            <div class="text-center mb-6">
+                <button onclick="showPublicCatalog()" class="text-pink-500 hover:text-pink-600 text-sm mb-4">← Voltar ao Catálogo</button>
+                <h2 class="text-2xl font-bold text-gray-800">Acesso ao Sistema</h2>
+            </div>
+            
+            <div class="flex gap-4 mb-6">
+                <button onclick="showClientLogin()" id="clientLoginBtn" class="flex-1 bg-pink-500 text-white py-2 rounded-lg font-semibold hover:bg-pink-600 transition-colors">
+                    👤 Cliente
+                </button>
+                <button onclick="showProfessionalLogin()" id="professionalLoginBtn" class="flex-1 bg-gray-500 text-white py-2 rounded-lg font-semibold hover:bg-gray-600 transition-colors">
+                    💼 Profissional
+                </button>
+            </div>
+
+            <div id="clientLoginForm">
+                <form onsubmit="loginClient(event)" class="space-y-4">
+                    <div>
+                        <label class="block text-gray-700 font-semibold mb-2">CPF</label>
+                        <input type="text" id="clientLoginCPF" required placeholder="000.000.000-00" class="w-full border border-gray-300 rounded-lg px-4 py-2 focus:border-pink-500 focus:outline-none">
+                    </div>
+                    <div>
+                        <label class="block text-gray-700 font-semibold mb-2">WhatsApp</label>
+                        <input type="tel" id="clientLoginPhone" required placeholder="(00) 00000-0000" class="w-full border border-gray-300 rounded-lg px-4 py-2 focus:border-pink-500 focus:outline-none">
+                    </div>
+                    <button type="submit" class="w-full bg-pink-500 text-white py-3 rounded-lg font-semibold hover:bg-pink-600 transition-colors">
+                        Entrar
+                    </button>
+                </form>
+                <p class="text-center text-sm text-gray-600 mt-4">
+                    Não tem cadastro? <button onclick="showBookingModal()" class="text-pink-500 hover:underline">Cadastre-se aqui</button>
+                </p>
+            </div>
+
+            <div id="professionalLoginForm" class="hidden">
+                <form onsubmit="loginProfessional(event)" class="space-y-4">
+                    <div>
+                        <label class="block text-gray-700 font-semibold mb-2">Email</label>
+                        <input type="email" id="professionalEmail" required placeholder="seu@email.com" class="w-full border border-gray-300 rounded-lg px-4 py-2 focus:border-gray-500 focus:outline-none">
+                    </div>
+                    <div>
+                        <label class="block text-gray-700 font-semibold mb-2">Senha</label>
+                        <input type="password" id="professionalPassword" required class="w-full border border-gray-300 rounded-lg px-4 py-2 focus:border-gray-500 focus:outline-none">
+                    </div>
+                    <button type="submit" class="w-full bg-gray-600 text-white py-3 rounded-lg font-semibold hover:bg-gray-700 transition-colors">
+                        Entrar
+                    </button>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Client Dashboard -->
+    <div id="clientDashboard" class="container mx-auto px-6 py-8 hidden">
+        <div class="bg-white rounded-2xl shadow-lg p-8">
+            <div class="flex justify-between items-center mb-6">
+                <h2 class="text-2xl font-bold text-gray-800">Minha Área - Cliente</h2>
+                <button onclick="logout()" class="bg-red-500 text-white px-4 py-2 rounded-lg hover:bg-red-600 transition-colors">
+                    Sair
+                </button>
+            </div>
+
+            <div class="grid md:grid-cols-3 gap-6 mb-8">
+                <button onclick="showClientAppointments()" class="bg-blue-500 text-white p-6 rounded-lg hover:bg-blue-600 transition-colors">
+                    <div class="text-3xl mb-2">📅</div>
+                    <div class="font-semibold">Meus Agendamentos</div>
+                </button>
+                <button onclick="showClientHistory()" class="bg-green-500 text-white p-6 rounded-lg hover:bg-green-600 transition-colors">
+                    <div class="text-3xl mb-2">📋</div>
+                    <div class="font-semibold">Histórico</div>
+                </button>
+                <button onclick="showMainContent()" class="bg-pink-500 text-white p-6 rounded-lg hover:bg-pink-600 transition-colors">
+                    <div class="text-3xl mb-2">💅</div>
+                    <div class="font-semibold">Novo Agendamento</div>
+                </button>
+            </div>
+
+            <div id="clientContent">
+                <div class="text-center text-gray-600">
+                    <p>Bem-vinda! Selecione uma opção acima para começar.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Professional Dashboard -->
+    <div id="professionalDashboard" class="container mx-auto px-6 py-8 hidden">
+        <div class="bg-white rounded-2xl shadow-lg p-8">
+            <div class="flex justify-between items-center mb-6">
+                <h2 class="text-2xl font-bold text-gray-800">Painel Profissional</h2>
+                <div class="flex gap-2">
+                    <span id="professionalName" class="text-gray-600"></span>
+                    <button onclick="logout()" class="bg-red-500 text-white px-4 py-2 rounded-lg hover:bg-red-600 transition-colors">
+                        Sair
+                    </button>
+                </div>
+            </div>
+
+            <div id="adminMenu" class="grid md:grid-cols-4 gap-4 mb-8">
+                <button onclick="showAgenda()" class="bg-blue-500 text-white p-4 rounded-lg hover:bg-blue-600 transition-colors">
+                    <div class="text-2xl mb-2">📅</div>
+                    <div class="font-semibold text-sm">Agenda</div>
+                </button>
+                <button onclick="showClients()" class="bg-green-500 text-white p-4 rounded-lg hover:bg-green-600 transition-colors">
+                    <div class="text-2xl mb-2">👥</div>
+                    <div class="font-semibold text-sm">Clientes</div>
+                </button>
+                <button onclick="showServices()" class="bg-purple-500 text-white p-4 rounded-lg hover:bg-purple-600 transition-colors">
+                    <div class="text-2xl mb-2">💅</div>
+                    <div class="font-semibold text-sm">Serviços</div>
+                </button>
+                <button onclick="showReports()" class="bg-orange-500 text-white p-4 rounded-lg hover:bg-orange-600 transition-colors">
+                    <div class="text-2xl mb-2">📊</div>
+                    <div class="font-semibold text-sm">Relatórios</div>
+                </button>
+                <button onclick="showAnamnesis()" class="bg-teal-500 text-white p-4 rounded-lg hover:bg-teal-600 transition-colors">
+                    <div class="text-2xl mb-2">📋</div>
+                    <div class="font-semibold text-sm">Anamnese</div>
+                </button>
+                <button onclick="showGallery()" class="bg-pink-500 text-white p-4 rounded-lg hover:bg-pink-600 transition-colors">
+                    <div class="text-2xl mb-2">📸</div>
+                    <div class="font-semibold text-sm">Galeria</div>
+                </button>
+                <button onclick="showPromotions()" class="bg-yellow-500 text-white p-4 rounded-lg hover:bg-yellow-600 transition-colors">
+                    <div class="text-2xl mb-2">🎉</div>
+                    <div class="font-semibold text-sm">Promoções</div>
+                </button>
+                <button onclick="showTeam()" id="teamBtn" class="bg-indigo-500 text-white p-4 rounded-lg hover:bg-indigo-600 transition-colors">
+                    <div class="text-2xl mb-2">👨‍💼</div>
+                    <div class="font-semibold text-sm">Equipe</div>
+                </button>
+            </div>
+
+            <div id="professionalContent">
+                <div class="text-center text-gray-600">
+                    <p>Bem-vindo ao painel profissional! Selecione uma opção acima.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Service Modal -->
+    <div id="serviceModal" class="modal">
+        <div class="bg-white rounded-2xl shadow-2xl max-w-2xl w-full mx-4 max-h-[90vh] overflow-y-auto fade-in">
+            <div id="modalContent">
+                <!-- Modal content will be generated by JavaScript -->
+            </div>
+        </div>
+    </div>
+
+    <!-- Location Modal -->
+    <div id="locationModal" class="modal">
+        <div class="bg-white rounded-2xl shadow-2xl max-w-lg w-full mx-4 fade-in">
+            <div class="p-8">
+                <div class="flex justify-between items-center mb-6">
+                    <h2 class="text-2xl font-bold text-gray-800">📍 Como Chegar</h2>
+                    <button onclick="closeLocationModal()" class="text-gray-500 hover:text-gray-700 text-2xl">×</button>
+                </div>
+                
+                <div class="mb-6">
+                    <h3 class="font-semibold text-gray-800 mb-2">Endereço do Estúdio:</h3>
+                    <p class="text-gray-600 mb-4">
+                        Rua Manoel de Campos Sales, 461<br>
+                        Bairro: São Cristovão<br>
+                        Chapecó - SC
+                    </p>
+                </div>
+
+                <div class="space-y-4">
+                    <button onclick="openGoogleMaps()" class="w-full bg-blue-600 text-white py-3 rounded-lg font-semibold hover:bg-blue-700 transition-colors flex items-center justify-center gap-2">
+                        🗺️ Abrir no Google Maps
+                    </button>
+                    
+                    <div class="grid grid-cols-2 gap-4">
+                        <button onclick="openUber()" class="bg-black text-white py-3 rounded-lg font-semibold hover:bg-gray-800 transition-colors flex items-center justify-center gap-2">
+                            🚗 Uber
+                        </button>
+                        <button onclick="open99()" class="bg-yellow-500 text-white py-3 rounded-lg font-semibold hover:bg-yellow-600 transition-colors flex items-center justify-center gap-2">
+                            🚕 99
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Booking Modal -->
+    <div id="bookingModal" class="modal">
+        <div class="bg-white rounded-2xl shadow-2xl max-w-2xl w-full mx-4 max-h-[90vh] overflow-y-auto fade-in">
+            <div class="p-8">
+                <div class="flex justify-between items-center mb-6">
+                    <h2 class="text-2xl font-bold text-gray-800">📅 Agendamento Online</h2>
+                    <button onclick="closeBookingModal()" class="text-gray-500 hover:text-gray-700 text-2xl">×</button>
+                </div>
+
+                <div id="bookingStep1" class="booking-step">
+                    <div class="bg-green-50 border border-green-200 rounded-lg p-4 mb-6">
+                        <p class="text-green-800 font-semibold">🎉 Oferta Especial!</p>
+                        <p class="text-green-700 text-sm">Cadastre-se e ganhe 10% de desconto no seu primeiro agendamento!</p>
+                    </div>
+
+                    <form id="clientForm" class="space-y-4">
+                        <div>
+                            <label class="block text-gray-700 font-semibold mb-2">Nome Completo *</label>
+                            <input type="text" id="clientName" required class="w-full border border-gray-300 rounded-lg px-4 py-2 focus:border-pink-500 focus:outline-none">
+                        </div>
+                        
+                        <div>
+                            <label class="block text-gray-700 font-semibold mb-2">Data de Nascimento *</label>
+                            <input type="date" id="clientBirthdate" required class="w-full border border-gray-300 rounded-lg px-4 py-2 focus:border-pink-500 focus:outline-none">
+                        </div>
+                        
+                        <div>
+                            <label class="block text-gray-700 font-semibold mb-2">CPF *</label>
+                            <input type="text" id="clientCPF" required placeholder="000.000.000-00" class="w-full border border-gray-300 rounded-lg px-4 py-2 focus:border-pink-500 focus:outline-none">
+                        </div>
+                        
+                        <div>
+                            <label class="block text-gray-700 font-semibold mb-2">WhatsApp *</label>
+                            <input type="tel" id="clientPhone" required placeholder="(00) 00000-0000" class="w-full border border-gray-300 rounded-lg px-4 py-2 focus:border-pink-500 focus:outline-none">
+                        </div>
+
+                        <button type="submit" class="w-full bg-gradient-to-r from-pink-500 to-rose-500 text-white py-3 rounded-lg font-semibold hover:from-pink-600 hover:to-rose-600 transition-colors">
+                            Continuar para Agendamento
+                        </button>
+                    </form>
+                </div>
+
+                <div id="bookingStep2" class="booking-step hidden">
+                    <div class="mb-6">
+                        <h3 class="text-lg font-semibold text-gray-800 mb-4">Selecione o Serviço:</h3>
+                        <select id="serviceSelect" class="w-full border border-gray-300 rounded-lg px-4 py-2 focus:border-pink-500 focus:outline-none">
+                            <option value="">Escolha um serviço...</option>
+                        </select>
+                    </div>
+
+                    <div class="mb-6">
+                        <h3 class="text-lg font-semibold text-gray-800 mb-4">Escolha Data e Horário:</h3>
+                        <div class="bg-gray-50 rounded-lg p-4 text-center">
+                            <p class="text-gray-600 mb-4">📅 Agenda Integrada com Google Calendar</p>
+                            <div class="grid grid-cols-3 gap-2 mb-4">
+                                <button onclick="selectTimeSlot('09:00')" class="time-slot bg-white border border-gray-300 rounded-lg py-2 hover:border-pink-500 hover:bg-pink-50 transition-colors">09:00</button>
+                                <button onclick="selectTimeSlot('10:30')" class="time-slot bg-white border border-gray-300 rounded-lg py-2 hover:border-pink-500 hover:bg-pink-50 transition-colors">10:30</button>
+                                <button onclick="selectTimeSlot('14:00')" class="time-slot bg-white border border-gray-300 rounded-lg py-2 hover:border-pink-500 hover:bg-pink-50 transition-colors">14:00</button>
+                                <button onclick="selectTimeSlot('15:30')" class="time-slot bg-white border border-gray-300 rounded-lg py-2 hover:border-pink-500 hover:bg-pink-50 transition-colors">15:30</button>
+                                <button onclick="selectTimeSlot('17:00')" class="time-slot bg-white border border-gray-300 rounded-lg py-2 hover:border-pink-500 hover:bg-pink-50 transition-colors">17:00</button>
+                                <button onclick="selectTimeSlot('18:30')" class="time-slot bg-white border border-gray-300 rounded-lg py-2 hover:border-pink-500 hover:bg-pink-50 transition-colors">18:30</button>
+                            </div>
+                            <input type="date" id="appointmentDate" class="w-full border border-gray-300 rounded-lg px-4 py-2 focus:border-pink-500 focus:outline-none">
+                        </div>
+                    </div>
+
+                    <div class="flex gap-4">
+                        <button onclick="backToStep1()" class="flex-1 bg-gray-500 text-white py-3 rounded-lg font-semibold hover:bg-gray-600 transition-colors">
+                            Voltar
+                        </button>
+                        <button onclick="confirmBooking()" class="flex-1 bg-gradient-to-r from-green-500 to-emerald-500 text-white py-3 rounded-lg font-semibold hover:from-green-600 hover:to-emerald-600 transition-colors">
+                            Confirmar Agendamento
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Cart Summary -->
+    <div id="cartSummary" class="fixed bottom-6 right-6 bg-white rounded-2xl shadow-2xl p-4 max-w-sm hidden">
+        <h3 class="font-bold text-gray-800 mb-2">Serviços Selecionados</h3>
+        <div id="cartItems" class="space-y-2 mb-4">
+            <!-- Cart items will be added here -->
+        </div>
+        <div class="border-t pt-2">
+            <div class="flex justify-between font-bold text-lg">
+                <span>Total:</span>
+                <span id="cartTotal">R$ 0,00</span>
+            </div>
+            <button onclick="finalizeBooking()" class="w-full bg-gradient-to-r from-pink-500 to-rose-500 text-white py-2 rounded-lg mt-2 hover:from-pink-600 hover:to-rose-600 transition-colors">
+                Finalizar Agendamento
+            </button>
+        </div>
+    </div>
+
+    <script>
+        // Service data
+        const services = [
+            {
+                id: 1,
+                name: "Lash Lifting",
+                category: "cilios",
+                image: "https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?w=400&h=300&fit=crop&crop=face",
+                description: "Descrição detalhada do Lash Lifting - edite aqui",
+                price: 80,
+                hasOnlyApplication: true,
+                packages: [
+                    { name: "Lifting + Tintura", price: 110, description: "Curvatura + coloração dos cílios" },
+                    { name: "Lifting + Hidratação", price: 120, description: "Lifting + tratamento nutritivo" }
+                ]
+            },
+            {
+                id: 2,
+                name: "Volume Brasileiro",
+                category: "cilios",
+                image: "https://images.unsplash.com/photo-1616394584738-fc6e612e71b9?w=400&h=300&fit=crop&crop=face",
+                description: "Descrição detalhada do Volume Brasileiro - edite aqui",
+                price: 120,
+                maintenance15: 80,
+                maintenance20: 100,
+                packages: [
+                    { name: "Volume Brasileiro + Manutenção", price: 180, description: "Aplicação + primeira manutenção" },
+                    { name: "Volume Brasileiro Premium", price: 200, description: "Técnica premium com fios especiais" }
+                ]
+            },
+            {
+                id: 3,
+                name: "Volume Castanho",
+                category: "cilios",
+                image: "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 200 200'%3E%3Crect fill='%23d63031' width='200' height='200'/%3E%3Cpath fill='%23a29bfe' d='M100 75c-30 0-50 20-50 40v25c0 20 25 30 50 30s50-10 50-30v-25c0-20-20-40-50-40z'/%3E%3Cpath fill='%236c5ce7' d='M70 90c8-5 15-5 23 0s15 5 23 0s15-5 23 0v8c-8 5-15 5-23 0s-15-5-23 0s-15 5-23 0v-8z'/%3E%3C/svg%3E",
+                description: "Descrição detalhada do Volume Castanho - edite aqui",
+                price: 140,
+                maintenance15: 90,
+                maintenance20: 110,
+                packages: [
+                    { name: "Volume Castanho + Manutenção", price: 200, description: "Volume castanho + primeira manutenção" },
+                    { name: "Volume Castanho + Coloração", price: 180, description: "Volume + coloração personalizada" }
+                ]
+            },
+            {
+                id: 4,
+                name: "Volume Glamour",
+                category: "cilios",
+                image: "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 200 200'%3E%3Crect fill='%23fd79a8' width='200' height='200'/%3E%3Cpath fill='%23e84393' d='M100 70c-35 0-55 25-55 45v30c0 25 30 35 55 35s55-10 55-35v-30c0-20-20-45-55-45z'/%3E%3Cpath fill='%23fdcb6e' d='M65 85c10-6 18-6 28 0s18 6 28 0s18-6 28 0v10c-10 6-18 6-28 0s-18-6-28 0s-18 6-28 0v-10z'/%3E%3C/svg%3E",
+                description: "Descrição detalhada do Volume Glamour - edite aqui",
+                price: 160,
+                maintenance15: 100,
+                maintenance20: 120,
+                packages: [
+                    { name: "Volume Glamour + Manutenção", price: 230, description: "Volume glamouroso + primeira manutenção" },
+                    { name: "Volume Glamour + Remoção", price: 200, description: "Volume + remoção segura quando necessário" }
+                ]
+            },
+            {
+                id: 5,
+                name: "Volume Fox",
+                category: "cilios",
+                image: "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 200 200'%3E%3Crect fill='%23ff7675' width='200' height='200'/%3E%3Cpath fill='%23d63031' d='M100 65c-40 0-60 30-60 50v35c0 30 35 40 60 40s60-10 60-40v-35c0-20-20-50-60-50z'/%3E%3Cpath fill='%23fdcb6e' d='M60 80c12-8 20-8 32 0s20 8 32 0s20-8 32 0v12c-12 8-20 8-32 0s-20-8-32 0s-20 8-32 0v-12z'/%3E%3C/svg%3E",
+                description: "Descrição detalhada do Volume Fox - edite aqui",
+                price: 180,
+                maintenance15: 110,
+                maintenance20: 130,
+                packages: [
+                    { name: "Volume Fox + Manutenção", price: 260, description: "Efeito fox eye + primeira manutenção" },
+                    { name: "Volume Fox + Design", price: 250, description: "Volume fox + design personalizado" }
+                ]
+            },
+            {
+                id: 6,
+                name: "Volume Power",
+                category: "cilios",
+                image: "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 200 200'%3E%3Crect fill='%236c5ce7' width='200' height='200'/%3E%3Cpath fill='%23a29bfe' d='M100 60c-45 0-65 35-65 55v40c0 35 40 45 65 45s65-10 65-45v-40c0-20-20-55-65-55z'/%3E%3Cpath fill='%23fd79a8' d='M55 75c15-10 25-10 40 0s25 10 40 0s25-10 40 0v15c-15 10-25 10-40 0s-25-10-40 0s-25 10-40 0v-15z'/%3E%3C/svg%3E",
+                description: "Descrição detalhada do Volume Power - edite aqui",
+                price: 200,
+                maintenance15: 120,
+                maintenance20: 140,
+                packages: [
+                    { name: "Volume Power + Manutenção", price: 290, description: "Volume máximo + primeira manutenção" },
+                    { name: "Volume Power Premium", price: 320, description: "Volume power com fios premium" }
+                ]
+            },
+            {
+                id: 7,
+                name: "Design de Sobrancelhas",
+                category: "sobrancelha",
+                image: "https://images.unsplash.com/photo-1522337360788-8b13dee7a37e?w=400&h=300&fit=crop&crop=face",
+                description: "Descrição detalhada do Design de Sobrancelhas - edite aqui",
+                price: 45,
+                hasOnlyApplication: true,
+                packages: [
+                    { name: "Design + Henna", price: 65, description: "Modelagem + coloração com henna" },
+                    { name: "Design + Micropigmentação", price: 280, description: "Design + pigmentação semipermanente" }
+                ]
+            },
+            {
+                id: 8,
+                name: "Design de Sobrancelhas com Henna/Tintura",
+                category: "sobrancelha",
+                image: "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 200 200'%3E%3Crect fill='%23e17055' width='200' height='200'/%3E%3Cpath fill='%23d63031' d='M45 85c25-12 45-12 70 0s45 12 70 0v25c-25 12-45 12-70 0s-45-12-70 0V85z'/%3E%3Cpath fill='%23fd79a8' d='M65 95h70v12H65z'/%3E%3C/svg%3E",
+                description: "Descrição detalhada do Design com Henna/Tintura - edite aqui",
+                price: 65,
+                hasOnlyApplication: true,
+                packages: [
+                    { name: "Design + Henna Premium", price: 85, description: "Design + henna de longa duração" },
+                    { name: "Design + Tintura + Hidratação", price: 95, description: "Design completo + tratamento" }
+                ]
+            },
+            {
+                id: 9,
+                name: "Brown Lamination",
+                category: "sobrancelha",
+                image: "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 200 200'%3E%3Crect fill='%23fdcb6e' width='200' height='200'/%3E%3Cpath fill='%23e17055' d='M40 80c30-15 55-15 85 0s55 15 85 0v35c-30 15-55 15-85 0s-55-15-85 0V80z'/%3E%3Cpath fill='%23d63031' d='M60 90h80v18H60z'/%3E%3C/svg%3E",
+                description: "Descrição detalhada do Brown Lamination - edite aqui",
+                price: 120,
+                hasOnlyApplication: true,
+                packages: [
+                    { name: "Lamination + Design", price: 150, description: "Laminação + design personalizado" },
+                    { name: "Lamination + Tintura", price: 160, description: "Laminação + coloração" }
+                ]
+            },
+            {
+                id: 10,
+                name: "Microblading Fio a Fio",
+                category: "micropigmentacao",
+                image: "https://images.unsplash.com/photo-1560472354-b33ff0c44a43?w=400&h=300&fit=crop&crop=face",
+                description: "Descrição detalhada do Microblading Fio a Fio - edite aqui",
+                price: 350,
+                hasOnlyApplication: true,
+                packages: [
+                    { name: "Microblading + Retoque", price: 450, description: "Aplicação + retoque após 30 dias" },
+                    { name: "Microblading Premium", price: 500, description: "Técnica premium + acompanhamento" }
+                ]
+            },
+            {
+                id: 11,
+                name: "Microblading Shadowline",
+                category: "micropigmentacao",
+                image: "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 200 200'%3E%3Crect fill='%23a29bfe' width='200' height='200'/%3E%3Cpath fill='%236c5ce7' d='M35 80c30-18 55-18 85 0s55 18 85 0v35c-30 18-55 18-85 0s-55-18-85 0V80z'/%3E%3Cpath fill='%23fd79a8' d='M55 90h90v20H55z'/%3E%3C/svg%3E",
+                description: "Descrição detalhada do Microblading Shadowline - edite aqui",
+                price: 380,
+                hasOnlyApplication: true,
+                packages: [
+                    { name: "Shadowline + Retoque", price: 480, description: "Aplicação + retoque após 30 dias" },
+                    { name: "Shadowline + Esfumado", price: 520, description: "Shadowline + efeito esfumado" }
+                ]
+            },
+            {
+                id: 12,
+                name: "Microblading Shadow",
+                category: "micropigmentacao",
+                image: "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 200 200'%3E%3Crect fill='%23fab1a0' width='200' height='200'/%3E%3Cpath fill='%23e17055' d='M30 75c35-20 60-20 95 0s60 20 95 0v40c-35 20-60 20-95 0s-60-20-95 0V75z'/%3E%3Cpath fill='%23d63031' d='M50 85h100v25H50z'/%3E%3C/svg%3E",
+                description: "Descrição detalhada do Microblading Shadow - edite aqui",
+                price: 400,
+                hasOnlyApplication: true,
+                packages: [
+                    { name: "Shadow + Retoque", price: 500, description: "Aplicação + retoque após 30 dias" },
+                    { name: "Shadow + Degradê", price: 550, description: "Shadow + efeito degradê" }
+                ]
+            },
+            {
+                id: 13,
+                name: "Nanoblading",
+                category: "micropigmentacao",
+                image: "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 200 200'%3E%3Crect fill='%2300b894' width='200' height='200'/%3E%3Cpath fill='%23008080' d='M45 88c20-12 40-12 60 0s40 12 60 0v24c-20 12-40 12-60 0s-40-12-60 0V88z'/%3E%3Cpath fill='%23fd79a8' d='M65 95h70v12H65z'/%3E%3C/svg%3E",
+                description: "Descrição detalhada do Nanoblading - edite aqui",
+                price: 450,
+                hasOnlyApplication: true,
+                packages: [
+                    { name: "Nanoblading + Retoque", price: 550, description: "Aplicação + retoque após 30 dias" },
+                    { name: "Nanoblading Premium", price: 600, description: "Técnica premium ultra-realista" }
+                ]
+            },
+            {
+                id: 14,
+                name: "Micropigmentação de Pálpebras Eyeliner Delineado",
+                category: "micropigmentacao",
+                image: "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 200 200'%3E%3Crect fill='%23ff7675' width='200' height='200'/%3E%3Cpath fill='%23d63031' d='M100 90c-30 0-50 15-50 35s20 35 50 35s50-15 50-35s-20-35-50-35z'/%3E%3Cpath fill='%23fd79a8' d='M75 110c12-8 25-8 37 0s25 8 37 0v3c-12 8-25 8-37 0s-25-8-37 0v-3z'/%3E%3C/svg%3E",
+                description: "Descrição detalhada da Micropigmentação de Pálpebras - edite aqui",
+                price: 300,
+                hasOnlyApplication: true,
+                packages: [
+                    { name: "Delineado + Retoque", price: 400, description: "Delineado + retoque após 30 dias" },
+                    { name: "Delineado + Esfumado", price: 450, description: "Delineado + efeito esfumado" }
+                ]
+            },
+            {
+                id: 15,
+                name: "Micropigmentação de Lábios - Efeito Batom",
+                category: "micropigmentacao",
+                image: "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 200 200'%3E%3Crect fill='%23e84393' width='200' height='200'/%3E%3Cpath fill='%23d63031' d='M100 110c-25 0-45 10-45 25s20 25 45 25s45-10 45-25s-20-25-45-25z'/%3E%3Cpath fill='%23fd79a8' d='M80 125c10-5 20-5 30 0s20 5 30 0v5c-10 5-20 5-30 0s-20-5-30 0v-5z'/%3E%3C/svg%3E",
+                description: "Descrição detalhada da Micropigmentação Lábios Efeito Batom - edite aqui",
+                price: 400,
+                hasOnlyApplication: true,
+                packages: [
+                    { name: "Efeito Batom + Retoque", price: 520, description: "Aplicação + retoque após 30 dias" },
+                    { name: "Efeito Batom + Hidratação", price: 480, description: "Aplicação + tratamento hidratante" }
+                ]
+            },
+            {
+                id: 16,
+                name: "Micropigmentação de Lábios - Revitalização Cor de Boca",
+                category: "micropigmentacao",
+                image: "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 200 200'%3E%3Crect fill='%23fd79a8' width='200' height='200'/%3E%3Cpath fill='%23e84393' d='M100 115c-20 0-40 8-40 20s18 20 40 20s40-8 40-20s-20-20-40-20z'/%3E%3Cpath fill='%23fdcb6e' d='M85 130c8-3 15-3 23 0s15 3 23 0v3c-8 3-15 3-23 0s-15-3-23 0v-3z'/%3E%3C/svg%3E",
+                description: "Descrição detalhada da Revitalização Cor de Boca - edite aqui",
+                price: 350,
+                hasOnlyApplication: true,
+                packages: [
+                    { name: "Revitalização + Retoque", price: 450, description: "Aplicação + retoque após 30 dias" },
+                    { name: "Revitalização + Nutrição", price: 420, description: "Revitalização + tratamento nutritivo" }
+                ]
+            },
+            {
+                id: 17,
+                name: "Micropigmentação de Lábios - Neutralização Bocas Escuras",
+                category: "micropigmentacao",
+                image: "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 200 200'%3E%3Crect fill='%236c5ce7' width='200' height='200'/%3E%3Cpath fill='%23a29bfe' d='M100 112c-22 0-42 9-42 22s19 22 42 22s42-9 42-22s-20-22-42-22z'/%3E%3Cpath fill='%23fd79a8' d='M82 127c9-4 17-4 26 0s17 4 26 0v4c-9 4-17 4-26 0s-17-4-26 0v-4z'/%3E%3C/svg%3E",
+                description: "Descrição detalhada da Neutralização Bocas Escuras - edite aqui",
+                price: 450,
+                hasOnlyApplication: true,
+                packages: [
+                    { name: "Neutralização + Retoque", price: 580, description: "Aplicação + retoque após 30 dias" },
+                    { name: "Neutralização + Clareamento", price: 620, description: "Neutralização + tratamento clareador" }
+                ]
+            }
+        ];
+
+        let cart = [];
+        let currentFilter = 'todos';
+        let selectedTimeSlot = '';
+        let clientData = {};
+        let currentUser = null;
+        let userType = null;
+
+        // Sample data for demonstration
+        const clientsDatabase = [
+            {
+                cpf: '123.456.789-00',
+                phone: '(47) 99999-9999',
+                name: 'Maria Silva',
+                appointments: [
+                    {
+                        id: 1,
+                        date: '2024-01-15',
+                        time: '14:00',
+                        service: 'Volume Brasileiro',
+                        professional: 'Aline Menezes',
+                        price: 120,
+                        payment: 'Cartão',
+                        status: 'Concluído'
+                    },
+                    {
+                        id: 2,
+                        date: '2024-02-20',
+                        time: '15:30',
+                        service: 'Microblading Fio a Fio',
+                        professional: 'Aline Menezes',
+                        price: 350,
+                        payment: 'PIX',
+                        status: 'Concluído'
+                    }
+                ]
+            }
+        ];
+
+        const professionalsDatabase = [
+            {
+                email: 'admin@alinemenezes.com',
+                password: 'admin123',
+                name: 'Aline Menezes',
+                role: 'admin'
+            },
+            {
+                email: 'profissional@alinemenezes.com',
+                password: 'prof123',
+                name: 'Profissional Teste',
+                role: 'professional'
+            }
+        ];
+
+        // Initialize the page
+        document.addEventListener('DOMContentLoaded', function() {
+            renderServices();
+            showPublicCatalog(); // Start with public catalog
+        });
+
+        // Navigation Functions
+        function showPublicCatalog() {
+            // Hide all sections
+            document.getElementById('publicCatalog').classList.remove('hidden');
+            document.getElementById('accessPage').classList.add('hidden');
+            document.getElementById('mainContent').classList.add('hidden');
+            document.getElementById('clientDashboard').classList.add('hidden');
+            document.getElementById('professionalDashboard').classList.add('hidden');
+            
+            // Update header
+            document.getElementById('headerTitle').textContent = 'Catálogo de Serviços';
+            document.getElementById('headerSubtitle').textContent = 'Selecione seu serviço ideal';
+            document.getElementById('accessBtn').textContent = '🔐 Área do Cliente';
+        }
+
+        function showAccessPage() {
+            // Hide all sections
+            document.getElementById('publicCatalog').classList.add('hidden');
+            document.getElementById('accessPage').classList.remove('hidden');
+            document.getElementById('mainContent').classList.add('hidden');
+            document.getElementById('clientDashboard').classList.add('hidden');
+            document.getElementById('professionalDashboard').classList.add('hidden');
+            
+            // Update header
+            document.getElementById('headerTitle').textContent = 'Área de Acesso';
+            document.getElementById('headerSubtitle').textContent = 'Faça login para continuar';
+            document.getElementById('accessBtn').textContent = '🏠 Voltar ao Catálogo';
+            document.getElementById('accessBtn').setAttribute('onclick', 'showPublicCatalog()');
+        }
+
+        // Share Functions
+        function shareWhatsApp() {
+            const currentUrl = window.location.href;
+            const message = `✨ Olha que incrível! Encontrei o catálogo da Aline Menezes Beauty com todos os serviços de beleza! 💅\n\n🎁 Tem até desconto para novas clientes!\n\nVem ver: ${currentUrl}`;
+            const whatsappUrl = `https://wa.me/?text=${encodeURIComponent(message)}`;
+            window.open(whatsappUrl, '_blank', 'noopener,noreferrer');
+        }
+
+        function contactWhatsApp() {
+            const message = "Olá! Vi o catálogo de serviços e gostaria de mais informações! 😊";
+            const whatsappUrl = `https://wa.me/5547999999999?text=${encodeURIComponent(message)}`;
+            window.open(whatsappUrl, '_blank', 'noopener,noreferrer');
+        }
+
+        function contactInstagram() {
+            window.open('https://instagram.com/alinemenezes.beauty', '_blank', 'noopener,noreferrer');
+        }
+
+        // Filter services
+        function filterServices(category) {
+            currentFilter = category;
+            
+            // Update filter buttons
+            document.querySelectorAll('.filter-btn').forEach(btn => {
+                btn.classList.remove('bg-pink-500', 'text-white');
+                btn.classList.add('bg-white', 'text-pink-500');
+            });
+            event.target.classList.remove('bg-white', 'text-pink-500');
+            event.target.classList.add('bg-pink-500', 'text-white');
+            
+            renderServices();
+        }
+
+        // Render services
+        function renderServices() {
+            const grid = document.getElementById('servicesGrid');
+            const filteredServices = currentFilter === 'todos' 
+                ? services 
+                : services.filter(service => service.category === currentFilter);
+
+            grid.innerHTML = filteredServices.map(service => `
+                <div class="service-card bg-white rounded-2xl shadow-lg overflow-hidden cursor-pointer" onclick="openServiceModal(${service.id})">
+                    <img src="${service.image}" alt="${service.name}" class="w-full h-48 object-cover">
+                    <div class="p-6">
+                        <h3 class="text-xl font-bold text-gray-800 mb-2">${service.name}</h3>
+                        <p class="text-gray-600 text-sm mb-4">${service.description}</p>
+                        <div class="flex justify-between items-center">
+                            <span class="text-2xl font-bold text-pink-500">R$ ${service.price.toFixed(2).replace('.', ',')}</span>
+                            <button class="bg-gradient-to-r from-pink-500 to-rose-500 text-white px-4 py-2 rounded-lg hover:from-pink-600 hover:to-rose-600 transition-colors">
+                                Ver Detalhes
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        // Open service modal
+        function openServiceModal(serviceId) {
+            const service = services.find(s => s.id === serviceId);
+            const modal = document.getElementById('serviceModal');
+            const modalContent = document.getElementById('modalContent');
+
+            modalContent.innerHTML = `
+                <div class="relative">
+                    <button onclick="closeModal()" class="absolute top-4 right-4 text-gray-500 hover:text-gray-700 text-2xl z-10">×</button>
+                    <img src="${service.image}" alt="${service.name}" class="w-full h-64 object-cover">
+                    <div class="p-8">
+                        <h2 class="text-3xl font-bold text-gray-800 mb-4">${service.name}</h2>
+                        <p class="text-gray-600 mb-6">${service.description}</p>
+                        
+                        <div class="grid md:grid-cols-${service.hasOnlyApplication ? '1' : '3'} gap-6 mb-8">
+                            <div class="bg-gray-50 rounded-lg p-4">
+                                <h3 class="font-bold text-gray-800 mb-2">💰 Aplicação</h3>
+                                <p class="text-2xl font-bold text-pink-500">R$ ${service.price.toFixed(2).replace('.', ',')}</p>
+                            </div>
+                            ${!service.hasOnlyApplication ? `
+                            <div class="bg-gray-50 rounded-lg p-4">
+                                <h3 class="font-bold text-gray-800 mb-2">🔄 Manutenção até 15 Dias</h3>
+                                <p class="text-lg font-semibold text-gray-800">R$ ${service.maintenance15.toFixed(2).replace('.', ',')}</p>
+                            </div>
+                            <div class="bg-gray-50 rounded-lg p-4">
+                                <h3 class="font-bold text-gray-800 mb-2">🔄 Manutenção até 20 Dias</h3>
+                                <p class="text-lg font-semibold text-gray-800">R$ ${service.maintenance20.toFixed(2).replace('.', ',')}</p>
+                            </div>
+                            ` : ''}
+                        </div>
+
+                        <div class="mb-8">
+                            <h3 class="text-xl font-bold text-gray-800 mb-4">📦 Pacotes Disponíveis</h3>
+                            <div class="space-y-4">
+                                ${service.packages.map(pkg => `
+                                    <div class="border border-gray-200 rounded-lg p-4 hover:border-pink-300 transition-colors">
+                                        <div class="flex justify-between items-start mb-2">
+                                            <h4 class="font-semibold text-gray-800">${pkg.name}</h4>
+                                            <span class="text-lg font-bold text-pink-500">R$ ${pkg.price.toFixed(2).replace('.', ',')}</span>
+                                        </div>
+                                        <p class="text-sm text-gray-600 mb-3">${pkg.description}</p>
+                                        <button onclick="addToCart(${service.id}, 'package', '${pkg.name}', ${pkg.price})" class="bg-pink-500 text-white px-4 py-2 rounded-lg hover:bg-pink-600 transition-colors">
+                                            Adicionar ao Carrinho
+                                        </button>
+                                    </div>
+                                `).join('')}
+                            </div>
+                        </div>
+
+                        <div class="flex gap-4 flex-wrap">
+                            <button onclick="addToCart(${service.id}, 'service', '${service.name} - Aplicação', ${service.price})" class="flex-1 min-w-[200px] bg-gradient-to-r from-pink-500 to-rose-500 text-white py-3 rounded-lg font-semibold hover:from-pink-600 hover:to-rose-600 transition-colors">
+                                Aplicação - R$ ${service.price.toFixed(2).replace('.', ',')}
+                            </button>
+                            ${!service.hasOnlyApplication ? `
+                            <button onclick="addToCart(${service.id}, 'maintenance15', '${service.name} - Manutenção 15 dias', ${service.maintenance15})" class="flex-1 min-w-[200px] bg-blue-600 text-white py-3 rounded-lg font-semibold hover:bg-blue-700 transition-colors">
+                                Manutenção 15 dias - R$ ${service.maintenance15.toFixed(2).replace('.', ',')}
+                            </button>
+                            <button onclick="addToCart(${service.id}, 'maintenance20', '${service.name} - Manutenção 20 dias', ${service.maintenance20})" class="flex-1 min-w-[200px] bg-gray-600 text-white py-3 rounded-lg font-semibold hover:bg-gray-700 transition-colors">
+                                Manutenção 20 dias - R$ ${service.maintenance20.toFixed(2).replace('.', ',')}
+                            </button>
+                            ` : ''}
+                        </div>
+                    </div>
+                </div>
+            `;
+
+            modal.classList.add('active');
+        }
+
+        // Close modal
+        function closeModal() {
+            document.getElementById('serviceModal').classList.remove('active');
+        }
+
+        // Add to cart
+        function addToCart(serviceId, type, name, price) {
+            const item = {
+                id: Date.now(),
+                serviceId,
+                type,
+                name,
+                price
+            };
+            
+            cart.push(item);
+            updateCartDisplay();
+            closeModal();
+        }
+
+        // Update cart display
+        function updateCartDisplay() {
+            const cartSummary = document.getElementById('cartSummary');
+            const cartItems = document.getElementById('cartItems');
+            const cartTotal = document.getElementById('cartTotal');
+
+            if (cart.length === 0) {
+                cartSummary.classList.add('hidden');
+                return;
+            }
+
+            cartSummary.classList.remove('hidden');
+
+            cartItems.innerHTML = cart.map(item => `
+                <div class="flex justify-between items-center text-sm">
+                    <span class="flex-1">${item.name}</span>
+                    <span class="font-semibold">R$ ${item.price.toFixed(2).replace('.', ',')}</span>
+                    <button onclick="removeFromCart(${item.id})" class="ml-2 text-red-500 hover:text-red-700">×</button>
+                </div>
+            `).join('');
+
+            const total = cart.reduce((sum, item) => sum + item.price, 0);
+            cartTotal.textContent = `R$ ${total.toFixed(2).replace('.', ',')}`;
+        }
+
+        // Remove from cart
+        function removeFromCart(itemId) {
+            cart = cart.filter(item => item.id !== itemId);
+            updateCartDisplay();
+        }
+
+        // Finalize booking
+        function finalizeBooking() {
+            if (cart.length === 0) return;
+
+            const total = cart.reduce((sum, item) => sum + item.price, 0);
+            const itemsList = cart.map(item => `• ${item.name} - R$ ${item.price.toFixed(2).replace('.', ',')}`).join('\n');
+            
+            alert(`🎉 Agendamento Finalizado!\n\nServiços selecionados:\n${itemsList}\n\nTotal: R$ ${total.toFixed(2).replace('.', ',')}\n\nEntraremos em contato para confirmar data e horário!`);
+            
+            cart = [];
+            updateCartDisplay();
+        }
+
+        // Location Modal Functions
+        function showLocationModal() {
+            document.getElementById('locationModal').classList.add('active');
+        }
+
+        function closeLocationModal() {
+            document.getElementById('locationModal').classList.remove('active');
+        }
+
+        function openGoogleMaps() {
+            const address = "Rua Manoel de Campos Sales, 461, São Cristovão, Chapecó - SC";
+            const url = `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(address)}`;
+            window.open(url, '_blank', 'noopener,noreferrer');
+        }
+
+        function openUber() {
+            const address = "Rua Manoel de Campos Sales, 461, São Cristovão, Chapecó - SC";
+            const url = `https://m.uber.com/ul/?action=setPickup&pickup=my_location&dropoff[formatted_address]=${encodeURIComponent(address)}`;
+            window.open(url, '_blank', 'noopener,noreferrer');
+        }
+
+        function open99() {
+            const address = "Rua Manoel de Campos Sales, 461, São Cristovão, Chapecó - SC";
+            const url = `https://99app.com/ride?destination=${encodeURIComponent(address)}`;
+            window.open(url, '_blank', 'noopener,noreferrer');
+        }
+
+        // Booking Modal Functions
+        function showBookingModal() {
+            document.getElementById('bookingModal').classList.add('active');
+            populateServiceSelect();
+        }
+
+        function closeBookingModal() {
+            document.getElementById('bookingModal').classList.remove('active');
+            resetBookingForm();
+        }
+
+        function populateServiceSelect() {
+            const select = document.getElementById('serviceSelect');
+            select.innerHTML = '<option value="">Escolha um serviço...</option>';
+            
+            services.forEach(service => {
+                const option = document.createElement('option');
+                option.value = service.id;
+                option.textContent = `${service.name} - R$ ${service.price.toFixed(2).replace('.', ',')}`;
+                select.appendChild(option);
+            });
+        }
+
+        function resetBookingForm() {
+            document.getElementById('bookingStep1').classList.remove('hidden');
+            document.getElementById('bookingStep2').classList.add('hidden');
+            document.getElementById('clientForm').reset();
+            selectedTimeSlot = '';
+            clientData = {};
+        }
+
+        // Form handling
+        document.getElementById('clientForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            // Collect client data
+            clientData = {
+                name: document.getElementById('clientName').value,
+                birthdate: document.getElementById('clientBirthdate').value,
+                cpf: document.getElementById('clientCPF').value,
+                phone: document.getElementById('clientPhone').value
+            };
+
+            // Move to step 2
+            document.getElementById('bookingStep1').classList.add('hidden');
+            document.getElementById('bookingStep2').classList.remove('hidden');
+        });
+
+        function selectTimeSlot(time) {
+            // Remove previous selection
+            document.querySelectorAll('.time-slot').forEach(btn => {
+                btn.classList.remove('bg-pink-500', 'text-white');
+                btn.classList.add('bg-white', 'border-gray-300');
+            });
+
+            // Add selection to clicked button
+            event.target.classList.remove('bg-white', 'border-gray-300');
+            event.target.classList.add('bg-pink-500', 'text-white');
+            
+            selectedTimeSlot = time;
+        }
+
+        function backToStep1() {
+            document.getElementById('bookingStep2').classList.add('hidden');
+            document.getElementById('bookingStep1').classList.remove('hidden');
+        }
+
+        function confirmBooking() {
+            const serviceId = document.getElementById('serviceSelect').value;
+            const appointmentDate = document.getElementById('appointmentDate').value;
+
+            if (!serviceId || !appointmentDate || !selectedTimeSlot) {
+                alert('Por favor, preencha todos os campos obrigatórios.');
+                return;
+            }
+
+            const service = services.find(s => s.id == serviceId);
+            const discountedPrice = service.price * 0.9; // 10% discount
+
+            // Simulate booking confirmation
+            const bookingDetails = `
+🎉 AGENDAMENTO CONFIRMADO!
+
+👤 Cliente: ${clientData.name}
+📅 Data: ${new Date(appointmentDate).toLocaleDateString('pt-BR')}
+🕐 Horário: ${selectedTimeSlot}
+💅 Serviço: ${service.name}
+💰 Valor com desconto: R$ ${discountedPrice.toFixed(2).replace('.', ',')} (10% OFF!)
+
+📍 Local: Rua Manoel de Campos Sales, 461 - São Cristovão, Chapecó-SC
+
+📱 Lembretes automáticos:
+• Na noite anterior ao agendamento
+• 1 hora antes do horário marcado
+
+Obrigada pela preferência! 💖
+            `;
+
+            alert(bookingDetails);
+            
+            // Simulate WhatsApp reminder setup
+            setTimeout(() => {
+                alert('📱 Sistema de lembretes ativado!\n\nVocê receberá mensagens no WhatsApp:\n• Na noite anterior: confirmação do agendamento\n• 1 hora antes: lembrete do horário');
+            }, 1000);
+
+            closeBookingModal();
+        }
+
+        // CPF and Phone formatting
+        document.getElementById('clientCPF').addEventListener('input', function(e) {
+            let value = e.target.value.replace(/\D/g, '');
+            value = value.replace(/(\d{3})(\d)/, '$1.$2');
+            value = value.replace(/(\d{3})(\d)/, '$1.$2');
+            value = value.replace(/(\d{3})(\d{1,2})$/, '$1-$2');
+            e.target.value = value;
+        });
+
+        document.getElementById('clientPhone').addEventListener('input', function(e) {
+            let value = e.target.value.replace(/\D/g, '');
+            value = value.replace(/(\d{2})(\d)/, '($1) $2');
+            value = value.replace(/(\d{5})(\d)/, '$1-$2');
+            e.target.value = value;
+        });
+
+        // Login Functions
+        function showClientLogin() {
+            document.getElementById('clientLoginBtn').classList.remove('bg-gray-500');
+            document.getElementById('clientLoginBtn').classList.add('bg-pink-500');
+            document.getElementById('professionalLoginBtn').classList.remove('bg-gray-500');
+            document.getElementById('professionalLoginBtn').classList.add('bg-gray-500');
+            
+            document.getElementById('clientLoginForm').classList.remove('hidden');
+            document.getElementById('professionalLoginForm').classList.add('hidden');
+        }
+
+        function showProfessionalLogin() {
+            document.getElementById('professionalLoginBtn').classList.remove('bg-gray-500');
+            document.getElementById('professionalLoginBtn').classList.add('bg-gray-600');
+            document.getElementById('clientLoginBtn').classList.remove('bg-pink-500');
+            document.getElementById('clientLoginBtn').classList.add('bg-gray-500');
+            
+            document.getElementById('professionalLoginForm').classList.remove('hidden');
+            document.getElementById('clientLoginForm').classList.add('hidden');
+        }
+
+        function loginClient(event) {
+            event.preventDefault();
+            const cpf = document.getElementById('clientLoginCPF').value;
+            const phone = document.getElementById('clientLoginPhone').value;
+            
+            const client = clientsDatabase.find(c => c.cpf === cpf && c.phone === phone);
+            
+            if (client) {
+                currentUser = client;
+                userType = 'client';
+                showClientDashboard();
+            } else {
+                alert('CPF ou WhatsApp não encontrados. Verifique os dados ou cadastre-se.');
+            }
+        }
+
+        function loginProfessional(event) {
+            event.preventDefault();
+            const email = document.getElementById('professionalEmail').value;
+            const password = document.getElementById('professionalPassword').value;
+            
+            const professional = professionalsDatabase.find(p => p.email === email && p.password === password);
+            
+            if (professional) {
+                currentUser = professional;
+                userType = 'professional';
+                showProfessionalDashboard();
+            } else {
+                alert('Email ou senha incorretos.');
+            }
+        }
+
+        function logout() {
+            currentUser = null;
+            userType = null;
+            
+            // Reset forms
+            document.getElementById('clientLoginCPF').value = '';
+            document.getElementById('clientLoginPhone').value = '';
+            document.getElementById('professionalEmail').value = '';
+            document.getElementById('professionalPassword').value = '';
+            
+            // Return to public catalog
+            showPublicCatalog();
+        }
+
+        function showClientDashboard() {
+            document.getElementById('publicCatalog').classList.add('hidden');
+            document.getElementById('accessPage').classList.add('hidden');
+            document.getElementById('mainContent').classList.add('hidden');
+            document.getElementById('professionalDashboard').classList.add('hidden');
+            document.getElementById('clientDashboard').classList.remove('hidden');
+        }
+
+        function showProfessionalDashboard() {
+            document.getElementById('publicCatalog').classList.add('hidden');
+            document.getElementById('accessPage').classList.add('hidden');
+            document.getElementById('mainContent').classList.add('hidden');
+            document.getElementById('clientDashboard').classList.add('hidden');
+            document.getElementById('professionalDashboard').classList.remove('hidden');
+            
+            document.getElementById('professionalName').textContent = currentUser.name;
+            
+            // Hide team management for non-admin users
+            if (currentUser.role !== 'admin') {
+                document.getElementById('teamBtn').classList.add('hidden');
+            }
+        }
+
+        function showMainContent() {
+            document.getElementById('publicCatalog').classList.add('hidden');
+            document.getElementById('accessPage').classList.add('hidden');
+            document.getElementById('clientDashboard').classList.add('hidden');
+            document.getElementById('professionalDashboard').classList.add('hidden');
+            document.getElementById('mainContent').classList.remove('hidden');
+        }
+
+        // Client Dashboard Functions
+        function showClientAppointments() {
+            const content = document.getElementById('clientContent');
+            const appointments = currentUser.appointments.filter(apt => new Date(apt.date) >= new Date());
+            
+            content.innerHTML = `
+                <h3 class="text-xl font-bold text-gray-800 mb-4">Próximos Agendamentos</h3>
+                ${appointments.length === 0 ? 
+                    '<p class="text-gray-600">Você não tem agendamentos futuros.</p>' :
+                    appointments.map(apt => `
+                        <div class="bg-gray-50 rounded-lg p-4 mb-4">
+                            <div class="flex justify-between items-start">
+                                <div>
+                                    <h4 class="font-semibold text-gray-800">${apt.service}</h4>
+                                    <p class="text-gray-600">📅 ${new Date(apt.date).toLocaleDateString('pt-BR')} às ${apt.time}</p>
+                                    <p class="text-gray-600">👩‍💼 ${apt.professional}</p>
+                                </div>
+                                <div class="text-right">
+                                    <p class="font-bold text-green-600">R$ ${apt.price.toFixed(2).replace('.', ',')}</p>
+                                    <span class="text-xs bg-blue-100 text-blue-800 px-2 py-1 rounded">${apt.status}</span>
+                                </div>
+                            </div>
+                        </div>
+                    `).join('')
+                }
+            `;
+        }
+
+        function showClientHistory() {
+            const content = document.getElementById('clientContent');
+            const history = currentUser.appointments.filter(apt => new Date(apt.date) < new Date());
+            
+            content.innerHTML = `
+                <h3 class="text-xl font-bold text-gray-800 mb-4">Histórico de Atendimentos</h3>
+                ${history.length === 0 ? 
+                    '<p class="text-gray-600">Você ainda não tem histórico de atendimentos.</p>' :
+                    history.map(apt => `
+                        <div class="bg-gray-50 rounded-lg p-4 mb-4">
+                            <div class="flex justify-between items-start">
+                                <div>
+                                    <h4 class="font-semibold text-gray-800">${apt.service}</h4>
+                                    <p class="text-gray-600">📅 ${new Date(apt.date).toLocaleDateString('pt-BR')} às ${apt.time}</p>
+                                    <p class="text-gray-600">👩‍💼 ${apt.professional}</p>
+                                    <p class="text-gray-600">💳 ${apt.payment}</p>
+                                </div>
+                                <div class="text-right">
+                                    <p class="font-bold text-green-600">R$ ${apt.price.toFixed(2).replace('.', ',')}</p>
+                                    <span class="text-xs bg-green-100 text-green-800 px-2 py-1 rounded">${apt.status}</span>
+                                </div>
+                            </div>
+                        </div>
+                    `).join('')
+                }
+            `;
+        }
+
+        // Professional Dashboard Functions
+        function showAgenda() {
+            const content = document.getElementById('professionalContent');
+            content.innerHTML = `
+                <h3 class="text-xl font-bold text-gray-800 mb-4">📅 Agenda</h3>
+                <div class="bg-gray-50 rounded-lg p-6">
+                    <div class="grid md:grid-cols-2 gap-6">
+                        <div>
+                            <h4 class="font-semibold mb-4">Hoje - ${new Date().toLocaleDateString('pt-BR')}</h4>
+                            <div class="space-y-2">
+                                <div class="bg-white p-3 rounded border-l-4 border-blue-500">
+                                    <p class="font-semibold">09:00 - Maria Silva</p>
+                                    <p class="text-sm text-gray-600">Volume Brasileiro</p>
+                                </div>
+                                <div class="bg-white p-3 rounded border-l-4 border-green-500">
+                                    <p class="font-semibold">14:00 - Ana Costa</p>
+                                    <p class="text-sm text-gray-600">Microblading</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div>
+                            <h4 class="font-semibold mb-4">Amanhã</h4>
+                            <div class="space-y-2">
+                                <div class="bg-white p-3 rounded border-l-4 border-purple-500">
+                                    <p class="font-semibold">10:30 - Julia Santos</p>
+                                    <p class="text-sm text-gray-600">Design de Sobrancelhas</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <button class="mt-4 bg-blue-500 text-white px-4 py-2 rounded-lg hover:bg-blue-600 transition-colors">
+                        Gerenciar Agenda
+                    </button>
+                </div>
+            `;
+        }
+
+        function showClients() {
+            const content = document.getElementById('professionalContent');
+            content.innerHTML = `
+                <h3 class="text-xl font-bold text-gray-800 mb-4">👥 Gerenciar Clientes</h3>
+                <div class="mb-4">
+                    <button class="bg-green-500 text-white px-4 py-2 rounded-lg hover:bg-green-600 transition-colors">
+                        + Novo Cliente
+                    </button>
+                </div>
+                <div class="bg-gray-50 rounded-lg p-6">
+                    <div class="space-y-4">
+                        ${clientsDatabase.map(client => `
+                            <div class="bg-white p-4 rounded-lg flex justify-between items-center">
+                                <div>
+                                    <h4 class="font-semibold">${client.name}</h4>
+                                    <p class="text-sm text-gray-600">${client.phone}</p>
+                                    <p class="text-sm text-gray-600">${client.appointments.length} atendimentos</p>
+                                </div>
+                                <div class="flex gap-2">
+                                    <button class="bg-blue-500 text-white px-3 py-1 rounded text-sm hover:bg-blue-600 transition-colors">
+                                        Editar
+                                    </button>
+                                    <button class="bg-red-500 text-white px-3 py-1 rounded text-sm hover:bg-red-600 transition-colors">
+                                        Excluir
+                                    </button>
+                                </div>
+                            </div>
+                        `).join('')}
+                    </div>
+                </div>
+            `;
+        }
+
+        function showServices() {
+            const content = document.getElementById('professionalContent');
+            content.innerHTML = `
+                <h3 class="text-xl font-bold text-gray-800 mb-4">💅 Gerenciar Serviços</h3>
+                <div class="mb-4">
+                    <button class="bg-green-500 text-white px-4 py-2 rounded-lg hover:bg-green-600 transition-colors">
+                        + Novo Serviço
+                    </button>
+                </div>
+                <div class="bg-gray-50 rounded-lg p-6">
+                    <div class="grid gap-4">
+                        ${services.slice(0, 5).map(service => `
+                            <div class="bg-white p-4 rounded-lg flex justify-between items-center">
+                                <div>
+                                    <h4 class="font-semibold">${service.name}</h4>
+                                    <p class="text-sm text-gray-600">${service.category}</p>
+                                    <p class="text-lg font-bold text-green-600">R$ ${service.price.toFixed(2).replace('.', ',')}</p>
+                                </div>
+                                <div class="flex gap-2">
+                                    <button class="bg-blue-500 text-white px-3 py-1 rounded text-sm hover:bg-blue-600 transition-colors">
+                                        Editar
+                                    </button>
+                                    <button class="bg-yellow-500 text-white px-3 py-1 rounded text-sm hover:bg-yellow-600 transition-colors">
+                                        Fotos
+                                    </button>
+                                </div>
+                            </div>
+                        `).join('')}
+                    </div>
+                </div>
+            `;
+        }
+
+        function showReports() {
+            const content = document.getElementById('professionalContent');
+            content.innerHTML = `
+                <h3 class="text-xl font-bold text-gray-800 mb-4">📊 Relatórios</h3>
+                <div class="grid md:grid-cols-3 gap-6 mb-6">
+                    <div class="bg-blue-50 p-6 rounded-lg">
+                        <h4 class="font-semibold text-blue-800">Este Mês</h4>
+                        <p class="text-2xl font-bold text-blue-600">R$ 2.450,00</p>
+                        <p class="text-sm text-blue-600">15 atendimentos</p>
+                    </div>
+                    <div class="bg-green-50 p-6 rounded-lg">
+                        <h4 class="font-semibold text-green-800">Este Semestre</h4>
+                        <p class="text-2xl font-bold text-green-600">R$ 14.200,00</p>
+                        <p class="text-sm text-green-600">89 atendimentos</p>
+                    </div>
+                    <div class="bg-purple-50 p-6 rounded-lg">
+                        <h4 class="font-semibold text-purple-800">Este Ano</h4>
+                        <p class="text-2xl font-bold text-purple-600">R$ 28.900,00</p>
+                        <p class="text-sm text-purple-600">178 atendimentos</p>
+                    </div>
+                </div>
+                <div class="bg-gray-50 rounded-lg p-6">
+                    <h4 class="font-semibold mb-4">Serviços Mais Procurados</h4>
+                    <div class="space-y-2">
+                        <div class="flex justify-between items-center">
+                            <span>Volume Brasileiro</span>
+                            <span class="font-semibold">45 vezes</span>
+                        </div>
+                        <div class="flex justify-between items-center">
+                            <span>Microblading</span>
+                            <span class="font-semibold">32 vezes</span>
+                        </div>
+                        <div class="flex justify-between items-center">
+                            <span>Design de Sobrancelhas</span>
+                            <span class="font-semibold">28 vezes</span>
+                        </div>
+                    </div>
+                </div>
+            `;
+        }
+
+        function showAnamnesis() {
+            const content = document.getElementById('professionalContent');
+            content.innerHTML = `
+                <h3 class="text-xl font-bold text-gray-800 mb-4">📋 Fichas de Anamnese</h3>
+                <div class="bg-gray-50 rounded-lg p-6">
+                    <div class="space-y-4">
+                        <div class="bg-white p-4 rounded-lg">
+                            <div class="flex justify-between items-center">
+                                <div>
+                                    <h4 class="font-semibold">Maria Silva</h4>
+                                    <p class="text-sm text-gray-600">Última atualização: 15/01/2024</p>
+                                </div>
+                                <button class="bg-blue-500 text-white px-3 py-1 rounded text-sm hover:bg-blue-600 transition-colors">
+                                    Ver Ficha
+                                </button>
+                            </div>
+                        </div>
+                        <div class="bg-white p-4 rounded-lg">
+                            <div class="flex justify-between items-center">
+                                <div>
+                                    <h4 class="font-semibold">Ana Costa</h4>
+                                    <p class="text-sm text-gray-600">Última atualização: 10/01/2024</p>
+                                </div>
+                                <button class="bg-blue-500 text-white px-3 py-1 rounded text-sm hover:bg-blue-600 transition-colors">
+                                    Ver Ficha
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            `;
+        }
+
+        function showGallery() {
+            const content = document.getElementById('professionalContent');
+            content.innerHTML = `
+                <h3 class="text-xl font-bold text-gray-800 mb-4">📸 Galeria - Antes e Depois</h3>
+                <div class="mb-4">
+                    <button class="bg-green-500 text-white px-4 py-2 rounded-lg hover:bg-green-600 transition-colors">
+                        + Adicionar Fotos
+                    </button>
+                </div>
+                <div class="bg-gray-50 rounded-lg p-6">
+                    <div class="grid md:grid-cols-2 gap-6">
+                        <div class="bg-white p-4 rounded-lg">
+                            <h4 class="font-semibold mb-2">Volume Brasileiro - Maria Silva</h4>
+                            <div class="grid grid-cols-2 gap-2">
+                                <div class="bg-gray-200 h-32 rounded flex items-center justify-center">
+                                    <span class="text-gray-500">Antes</span>
+                                </div>
+                                <div class="bg-gray-200 h-32 rounded flex items-center justify-center">
+                                    <span class="text-gray-500">Depois</span>
+                                </div>
+                            </div>
+                            <p class="text-sm text-gray-600 mt-2">15/01/2024</p>
+                        </div>
+                        <div class="bg-white p-4 rounded-lg">
+                            <h4 class="font-semibold mb-2">Microblading - Ana Costa</h4>
+                            <div class="grid grid-cols-2 gap-2">
+                                <div class="bg-gray-200 h-32 rounded flex items-center justify-center">
+                                    <span class="text-gray-500">Antes</span>
+                                </div>
+                                <div class="bg-gray-200 h-32 rounded flex items-center justify-center">
+                                    <span class="text-gray-500">Depois</span>
+                                </div>
+                            </div>
+                            <p class="text-sm text-gray-600 mt-2">10/01/2024</p>
+                        </div>
+                    </div>
+                </div>
+            `;
+        }
+
+        function showPromotions() {
+            const content = document.getElementById('professionalContent');
+            content.innerHTML = `
+                <h3 class="text-xl font-bold text-gray-800 mb-4">🎉 Gerenciar Promoções</h3>
+                <div class="mb-4">
+                    <button class="bg-green-500 text-white px-4 py-2 rounded-lg hover:bg-green-600 transition-colors">
+                        + Nova Promoção
+                    </button>
+                </div>
+                <div class="bg-gray-50 rounded-lg p-6">
+                    <div class="space-y-4">
+                        <div class="bg-white p-4 rounded-lg border-l-4 border-green-500">
+                            <div class="flex justify-between items-start">
+                                <div>
+                                    <h4 class="font-semibold">Desconto Primeira Vez</h4>
+                                    <p class="text-sm text-gray-600">10% de desconto para novos clientes</p>
+                                    <p class="text-sm text-green-600">Ativa</p>
+                                </div>
+                                <div class="flex gap-2">
+                                    <button class="bg-blue-500 text-white px-3 py-1 rounded text-sm hover:bg-blue-600 transition-colors">
+                                        Editar
+                                    </button>
+                                    <button class="bg-red-500 text-white px-3 py-1 rounded text-sm hover:bg-red-600 transition-colors">
+                                        Desativar
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="bg-white p-4 rounded-lg border-l-4 border-yellow-500">
+                            <div class="flex justify-between items-start">
+                                <div>
+                                    <h4 class="font-semibold">Pacote Sobrancelhas</h4>
+                                    <p class="text-sm text-gray-600">Design + Henna por R$ 60,00</p>
+                                    <p class="text-sm text-yellow-600">Programada</p>
+                                </div>
+                                <div class="flex gap-2">
+                                    <button class="bg-blue-500 text-white px-3 py-1 rounded text-sm hover:bg-blue-600 transition-colors">
+                                        Editar
+                                    </button>
+                                    <button class="bg-green-500 text-white px-3 py-1 rounded text-sm hover:bg-green-600 transition-colors">
+                                        Ativar
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            `;
+        }
+
+        function showTeam() {
+            const content = document.getElementById('professionalContent');
+            content.innerHTML = `
+                <h3 class="text-xl font-bold text-gray-800 mb-4">👨‍💼 Gerenciar Equipe</h3>
+                <div class="mb-4">
+                    <button class="bg-green-500 text-white px-4 py-2 rounded-lg hover:bg-green-600 transition-colors">
+                        + Novo Profissional
+                    </button>
+                </div>
+                <div class="bg-gray-50 rounded-lg p-6">
+                    <div class="space-y-4">
+                        ${professionalsDatabase.map(prof => `
+                            <div class="bg-white p-4 rounded-lg">
+                                <div class="flex justify-between items-center">
+                                    <div>
+                                        <h4 class="font-semibold">${prof.name}</h4>
+                                        <p class="text-sm text-gray-600">${prof.email}</p>
+                                        <span class="text-xs px-2 py-1 rounded ${prof.role === 'admin' ? 'bg-red-100 text-red-800' : 'bg-blue-100 text-blue-800'}">${prof.role === 'admin' ? 'Administrador' : 'Profissional'}</span>
+                                    </div>
+                                    <div class="flex gap-2">
+                                        <button class="bg-blue-500 text-white px-3 py-1 rounded text-sm hover:bg-blue-600 transition-colors">
+                                            Editar
+                                        </button>
+                                        ${prof.role !== 'admin' ? '<button class="bg-red-500 text-white px-3 py-1 rounded text-sm hover:bg-red-600 transition-colors">Remover</button>' : ''}
+                                    </div>
+                                </div>
+                            </div>
+                        `).join('')}
+                    </div>
+                </div>
+            `;
+        }
+
+        // Format inputs
+        document.getElementById('clientLoginCPF').addEventListener('input', function(e) {
+            let value = e.target.value.replace(/\D/g, '');
+            value = value.replace(/(\d{3})(\d)/, '$1.$2');
+            value = value.replace(/(\d{3})(\d)/, '$1.$2');
+            value = value.replace(/(\d{3})(\d{1,2})$/, '$1-$2');
+            e.target.value = value;
+        });
+
+        document.getElementById('clientLoginPhone').addEventListener('input', function(e) {
+            let value = e.target.value.replace(/\D/g, '');
+            value = value.replace(/(\d{2})(\d)/, '($1) $2');
+            value = value.replace(/(\d{5})(\d)/, '$1-$2');
+            e.target.value = value;
+        });
+
+        // Close modals when clicking outside
+        document.getElementById('serviceModal').addEventListener('click', function(e) {
+            if (e.target === this) {
+                closeModal();
+            }
+        });
+
+        document.getElementById('locationModal').addEventListener('click', function(e) {
+            if (e.target === this) {
+                closeLocationModal();
+            }
+        });
+
+        document.getElementById('bookingModal').addEventListener('click', function(e) {
+            if (e.target === this) {
+                closeBookingModal();
+            }
+        });
+    </script>
+<script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'98861c17805ec20f',t:'MTc1OTQyODEzNS4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
+</html>
