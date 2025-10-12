@@ -1652,50 +1652,6 @@
         </div>
     </div>
 
-    <!-- Welcome Pop-up -->
-    <div id="welcomePopup" class="modal">
-        <div class="glass-container rounded-xl shadow-2xl max-w-md w-full mx-4 relative overflow-hidden" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 25%, #f093fb 50%, #f5576c 75%, #4facfe 100%); background-size: 300% 300%; animation: gradientFlow 12s ease infinite;">
-            <div class="absolute inset-0 pointer-events-none" style="background: radial-gradient(circle at 25% 75%, rgba(255, 255, 255, 0.1) 0%, transparent 40%), radial-gradient(circle at 75% 25%, rgba(255, 255, 255, 0.08) 0%, transparent 40%), radial-gradient(circle at 50% 50%, rgba(255, 255, 255, 0.05) 0%, transparent 50%); animation: floatingParticles 18s ease-in-out infinite;"></div>
-            <div class="p-8 text-center relative z-10">
-                <button onclick="closeWelcomePopup()" class="absolute top-3 right-3 text-white/80 hover:text-white text-lg font-light w-8 h-8 flex items-center justify-center rounded-full hover:bg-white/20 transition-all">×</button>
-                
-                <div class="mb-6">
-                    <h2 class="text-3xl font-light text-white mb-4 tracking-wide uppercase">BEM VINDA!!!</h2>
-                </div>
-                
-                <div class="bg-black/60 backdrop-blur-sm rounded-xl p-6 mb-6 border border-yellow-300/50 shadow-xl">
-                    <div class="text-center">
-                        <div class="text-center mb-3">
-                            <div class="bg-gradient-to-r from-yellow-300 to-orange-300 bg-clip-text text-transparent text-lg font-light tracking-widest mb-2">
-                                ✨ OFERTA ESPECIAL ✨
-                            </div>
-                            <div class="flex items-center justify-center gap-3 mb-2">
-                                <span class="text-3xl animate-pulse">🎁</span>
-                                <span class="text-yellow-200 text-2xl font-light tracking-wide">10% de desconto</span>
-                                <span class="text-3xl animate-pulse">🎁</span>
-                            </div>
-                            <div class="text-white text-base font-light tracking-wide">
-                                no seu primeiro agendamento
-                            </div>
-                        </div>
-                        <div class="mt-2 text-pink-200 text-sm font-light italic">
-                            Válido apenas para novos clientes que se cadastrarem!!!
-                        </div>
-                    </div>
-                </div>
-                
-                <div class="flex flex-col sm:flex-row gap-3 sm:gap-4">
-                    <button onclick="closeWelcomePopup(); showBookingModal();" class="flex-1 bg-gradient-to-r from-pink-500 to-purple-500 text-white px-4 sm:px-6 py-3 rounded-lg font-bold text-sm tracking-wide hover:scale-105 transition-all duration-300 shadow-lg uppercase animate-pulse">
-                        📅 AGENDAR
-                    </button>
-                    <button onclick="closeWelcomePopup()" class="flex-1 bg-gray-500 text-white px-4 sm:px-6 py-3 rounded-lg font-light text-sm tracking-wide hover:bg-gray-600 hover:scale-105 transition-all duration-300 uppercase">
-                        ← CATÁLOGO
-                    </button>
-                </div>
-            </div>
-        </div>
-    </div>
-
     <!-- Location Modal -->
     <div id="locationModal" class="modal">
         <div class="bg-white rounded-xl shadow-2xl max-w-md w-full mx-4 p-6">
