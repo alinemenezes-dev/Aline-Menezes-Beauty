@@ -3851,4 +3851,115 @@
 <script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'98a1983aa249a429',t:'MTc1OTcxNjMzNS4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
 </html>
 
-<a href="admin.html" target="_blank" class="admin-link">Acesso Admin</a>
+<!-- Botão de acesso admin -->
+<button id="adminBtn">Acesso Admin</button>
+
+<!-- Modal de login (mesma estrutura do cliente) -->
+<div id="adminModal" style="display:none;">
+  <div class="modal-content">
+    <span id="closeAdminModal">&times;</span>
+    <h2>Acesso Administrativo</h2>
+    
+    <form id="adminLoginForm">
+      <label for="adminUser">Usuário:</label>
+      <input type="text" id="adminUser" required placeholder="Digite seu usuário">
+      
+      <label for="adminPass">Senha:</label>
+      <input type="password" id="adminPass" required placeholder="Digite sua senha">
+      
+      <button type="submit">Entrar</button>
+      <p id="adminError" style="color:red; display:none;">Usuário ou senha incorretos!</p>
+    </form>
+  </div>
+</div>
+
+<!-- Painel administrativo -->
+<div id="adminPanel" style="display:none;">
+  <h1>Bem-vinda, Administradora!</h1>
+  <p>Aqui você tem acesso a todas as funções do painel administrativo.</p>
+  <!-- Inclua aqui todos os elementos já existentes do painel admin -->
+</div>
+
+<script>
+const adminBtn = document.getElementById('adminBtn');
+const adminModal = document.getElementById('adminModal');
+const closeAdminModal = document.getElementById('closeAdminModal');
+const adminLoginForm = document.getElementById('adminLoginForm');
+const adminError = document.getElementById('adminError');
+const adminPanel = document.getElementById('adminPanel');
+
+// Abrir modal admin
+adminBtn.addEventListener('click', () => {
+  adminModal.style.display = 'block';
+});
+
+// Fechar modal
+closeAdminModal.addEventListener('click', () => {
+  adminModal.style.display = 'none';
+});
+
+// Validar login
+adminLoginForm.addEventListener('submit', function(e){
+  e.preventDefault();
+  const user = document.getElementById('adminUser').value;
+  const pass = document.getElementById('adminPass').value;
+  
+  if(user === "Aline Menezes" && pass === "aline2024"){
+    adminModal.style.display = 'none';
+    adminPanel.style.display = 'block';
+  } else {
+    adminError.style.display = 'block';
+  }
+});
+
+// Fechar modal clicando fora
+window.addEventListener('click', function(e){
+  if(e.target == adminModal){
+    adminModal.style.display = 'none';
+  }
+});
+</script>
+
+<style>
+/* Estilize igual ao modal do cliente */
+#adminModal {
+  position: fixed;
+  top:0; left:0;
+  width:100%; height:100%;
+  background: rgba(0,0,0,0.5);
+  display: flex;
+  justify-content:center;
+  align-items:center;
+  z-index:1000;
+}
+.modal-content {
+  background:#fff;
+  padding: 20px;
+  border-radius: 10px;
+  width:300px;
+  text-align:center;
+  position: relative;
+}
+#closeAdminModal {
+  position:absolute;
+  top:10px;
+  right:10px;
+  cursor:pointer;
+}
+.modal-content input {
+  width: 100%;
+  padding: 8px;
+  margin:8px 0;
+  border-radius:5px;
+  border:1px solid #ccc;
+}
+.modal-content button {
+  padding:10px 20px;
+  border:none;
+  background:#000;
+  color:#fff;
+  cursor:pointer;
+  border-radius:5px;
+}
+</style>
+
