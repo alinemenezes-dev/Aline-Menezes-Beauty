@@ -2480,7 +2480,62 @@
                     showNotification('Voltando ao catálogo público', 'info');
                 };
             }
-            
+            <script>
+// -------------------- FUNÇÃO PARA ABRIR MODAL CLIENTE --------------------
+function openClientAccess() {
+  document.getElementById('accessModal').style.display = 'flex';
+  document.getElementById('modalTitle').innerText = 'Acesso do Cliente';
+  document.getElementById('loginForm').style.display = 'block';
+  document.getElementById('registerInfo').style.display = 'block';
+  document.getElementById('registerBtn').style.display = 'inline-block';
+  document.getElementById('adminLoginBtn').onclick = validateClientLogin;
+}
+
+// -------------------- FUNÇÃO PARA ABRIR MODAL ADMIN --------------------
+function openAdminAccess() {
+  document.getElementById('accessModal').style.display = 'flex';
+  document.getElementById('modalTitle').innerText = 'Acesso Administrativo';
+  
+  // esconde elementos do cadastro
+  document.getElementById('registerInfo').style.display = 'none';
+  document.getElementById('registerBtn').style.display = 'none';
+  
+  // limpa campos
+  document.getElementById('loginInput').value = '';
+  document.getElementById('passwordInput').value = '';
+  
+  // muda ação do botão "Entrar" para validar admin
+  document.getElementById('adminLoginBtn').onclick = validateAdminLogin;
+}
+
+// -------------------- FUNÇÃO PARA FECHAR MODAL --------------------
+function closeAccessModal() {
+  document.getElementById('accessModal').style.display = 'none';
+}
+
+// -------------------- LOGIN CLIENTE (caso exista) --------------------
+function validateClientLogin() {
+  alert('Login de cliente em desenvolvimento.');
+}
+
+// -------------------- LOGIN ADMIN --------------------
+function validateAdminLogin() {
+  const login = document.getElementById('loginInput').value.trim();
+  const password = document.getElementById('passwordInput').value.trim();
+
+  if (login === 'Aline Menezes' && password === 'aline2024') {
+    alert('✅ Acesso administrativo autorizado!');
+    closeAccessModal();
+
+    // mostra o painel admin
+    document.getElementById('adminPanel').style.display = 'block';
+    document.getElementById('publicCatalog').style.display = 'none';
+  } else {
+    alert('❌ Login ou senha incorretos!');
+  }
+}
+</script>
+
             showNotification('Modo administrativo ativado!', 'success');
         }
 /* MODAL DE ACESSO ADMIN */
