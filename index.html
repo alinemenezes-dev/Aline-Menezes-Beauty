@@ -561,6 +561,8 @@
                         <button onclick="showAccessModal()" id="accessBtnDesktop" class="bg-gradient-to-r from-yellow-500 to-yellow-600 text-white px-3 py-2 rounded-lg text-xs font-light tracking-wide hover:from-yellow-600 hover:to-yellow-700 hover:scale-105 transition-all duration-300 shadow-lg animate-pulse">
                             ENTRAR
                         </button>
+                        <button id="adminLoginBtn">Entrar</button>
+
                     </div>
                 </div>
             </div>
@@ -4004,6 +4006,7 @@ adminLoginForm.addEventListener('submit', (e) => {
 
 <!-- Botão de acesso admin -->
 <button id="adminBtn">Acesso Admin</button>
+<button id="adminLoginBtn">Entrar</button>
 
 <!-- Modal de login (mesma estrutura do cliente) -->
 <div id="adminModal" style="display:none;">
@@ -4113,4 +4116,5 @@ window.addEventListener('click', function(e){
   border-radius:5px;
 }
 </style>
-
+<button onclick="openClientAccess()">Acesso Cliente</button>
+<button onclick="openAdminAccess()">Acesso Admin</button>
