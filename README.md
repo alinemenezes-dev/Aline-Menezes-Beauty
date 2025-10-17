@@ -23,4 +23,4 @@ Catálogo interativo completo com agendamento online integrado ao Google Calenda
 
 ## 🚀 Acesso
 
-**Link do Catálogo:** https://alinemenezes-beauty.github.io/catalogo-online
+**Link do Catálogo:** https://alinemenezes-dev.github.io/menagerbeautyaline/
