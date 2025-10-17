@@ -5,6 +5,62 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Studio Aline Menezes</title>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script>
+  const SUPABASE_URL = 'https://hpenhkikpbykhfdwryob.supabase.co';
+  const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImhwZW5oa2lrcGJ5a2hmZHdyeW9iIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjA2NTQwOTIsImV4cCI6MjA3NjIzMDA5Mn0.xGWlQj38ixf7ScwGI-7LA4K7KuhKoYd3DcwrP8u18yE';
+  const supabase = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+
+  async function salvarConfiguracoesAdmin(config) {
+    try {
+      const { error } = await supabase
+        .from('admin_config')
+        .upsert({ id: 1, ...config, updated_at: new Date() }, { onConflict: 'id' });
+      if (error) throw error;
+      console.log('✅ Configurações do admin salvas no Supabase!');
+    } catch (err) {
+      console.error('❌ Erro ao salvar config do admin:', err.message);
+    }
+  }
+
+  async function salvarCliente(cliente) {
+    try {
+      const { error } = await supabase
+        .from('clientes')
+        .insert([{ ...cliente, created_at: new Date() }]);
+      if (error) throw error;
+      console.log('✅ Cliente salvo no Supabase!');
+    } catch (err) {
+      console.error('❌ Erro ao salvar cliente:', err.message);
+    }
+  }
+
+  async function carregarConfiguracoesAdmin() {
+    try {
+      const { data, error } = await supabase
+        .from('admin_config')
+        .select('*')
+        .eq('id', 1)
+        .single();
+      if (error) throw error;
+      if (data) aplicarConfiguracoesAdmin(data);
+    } catch (err) {
+      console.warn('⚠️ Nenhuma configuração do admin ainda.');
+    }
+  }
+
+  function aplicarConfiguracoesAdmin(data) {
+    if (data.studio_name && document.querySelector('#studioName'))
+      document.querySelector('#studioName').textContent = data.studio_name;
+    if (data.background_image)
+      document.body.style.backgroundImage = `url(${data.background_image})`;
+    if (data.studio_logo && document.querySelector('#studioLogo'))
+      document.querySelector('#studioLogo').src = data.studio_logo;
+    console.log('🎨 Configurações do admin aplicadas.');
+  }
+
+  document.addEventListener('DOMContentLoaded', carregarConfiguracoesAdmin);
+</script>
     <style>
         body {
             box-sizing: border-box;
