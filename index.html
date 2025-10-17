@@ -5,62 +5,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Studio Aline Menezes</title>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-<script>
-  const SUPABASE_URL = 'https://hpenhkikpbykhfdwryob.supabase.co';
-  const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImhwZW5oa2lrcGJ5a2hmZHdyeW9iIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjA2NTQwOTIsImV4cCI6MjA3NjIzMDA5Mn0.xGWlQj38ixf7ScwGI-7LA4K7KuhKoYd3DcwrP8u18yE';
-  const supabase = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
-
-  async function salvarConfiguracoesAdmin(config) {
-    try {
-      const { error } = await supabase
-        .from('admin_config')
-        .upsert({ id: 1, ...config, updated_at: new Date() }, { onConflict: 'id' });
-      if (error) throw error;
-      console.log('✅ Configurações do admin salvas no Supabase!');
-    } catch (err) {
-      console.error('❌ Erro ao salvar config do admin:', err.message);
-    }
-  }
-
-  async function salvarCliente(cliente) {
-    try {
-      const { error } = await supabase
-        .from('clientes')
-        .insert([{ ...cliente, created_at: new Date() }]);
-      if (error) throw error;
-      console.log('✅ Cliente salvo no Supabase!');
-    } catch (err) {
-      console.error('❌ Erro ao salvar cliente:', err.message);
-    }
-  }
-
-  async function carregarConfiguracoesAdmin() {
-    try {
-      const { data, error } = await supabase
-        .from('admin_config')
-        .select('*')
-        .eq('id', 1)
-        .single();
-      if (error) throw error;
-      if (data) aplicarConfiguracoesAdmin(data);
-    } catch (err) {
-      console.warn('⚠️ Nenhuma configuração do admin ainda.');
-    }
-  }
-
-  function aplicarConfiguracoesAdmin(data) {
-    if (data.studio_name && document.querySelector('#studioName'))
-      document.querySelector('#studioName').textContent = data.studio_name;
-    if (data.background_image)
-      document.body.style.backgroundImage = `url(${data.background_image})`;
-    if (data.studio_logo && document.querySelector('#studioLogo'))
-      document.querySelector('#studioLogo').src = data.studio_logo;
-    console.log('🎨 Configurações do admin aplicadas.');
-  }
-
-  document.addEventListener('DOMContentLoaded', carregarConfiguracoesAdmin);
-</script>
     <style>
         body {
             box-sizing: border-box;
@@ -1567,10 +1511,10 @@
                 <!-- Category Filter Buttons -->
                 <div style="display: flex; gap: 10px; justify-content: center; margin-top: 20px; flex-wrap: wrap; padding: 0 10px;">
                     <button class="category-btn active" onclick="filterByCategory('cilios')" data-category="cilios" style="flex: 1; min-width: 120px; max-width: 150px;">
-                        💅 Cílios
+                        Cílios
                     </button>
                     <button class="category-btn" onclick="filterByCategory('sobrancelhas')" data-category="sobrancelhas" style="flex: 1; min-width: 120px; max-width: 150px;">
-                        ✨ Sobrancelhas
+                        Sobrancelhas
                     </button>
                 </div>
             </div>
@@ -1788,6 +1732,14 @@
                 <svg class="icon" viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
                 Serviços
             </button>
+            <button class="tab-btn" onclick="showTab('config')">
+                <svg class="icon" viewBox="0 0 24 24"><path d="M19.14,12.94c0.04-0.3,0.06-0.61,0.06-0.94c0-0.32-0.02-0.64-0.07-0.94l2.03-1.58c0.18-0.14,0.23-0.41,0.12-0.61 l-1.92-3.32c-0.12-0.22-0.37-0.29-0.59-0.22l-2.39,0.96c-0.5-0.38-1.03-0.7-1.62-0.94L14.4,2.81c-0.04-0.24-0.24-0.41-0.48-0.41 h-3.84c-0.24,0-0.43,0.17-0.47,0.41L9.25,5.35C8.66,5.59,8.12,5.92,7.63,6.29L5.24,5.33c-0.22-0.08-0.47,0-0.59,0.22L2.74,8.87 C2.62,9.08,2.66,9.34,2.86,9.48l2.03,1.58C4.84,11.36,4.8,11.69,4.8,12s0.02,0.64,0.07,0.94l-2.03,1.58 c-0.18,0.14-0.23,0.41-0.12,0.61l1.92,3.32c0.12,0.22,0.37,0.29,0.59,0.22l2.39-0.96c0.5,0.38,1.03,0.7,1.62,0.94l0.36,2.54 c0.05,0.24,0.24,0.41,0.48,0.41h3.84c0.24,0,0.44-0.17,0.47-0.41l0.36-2.54c0.59-0.24,1.13-0.56,1.62-0.94l2.39,0.96 c0.22,0.08,0.47,0,0.59-0.22l1.92-3.32c0.12-0.22,0.07-0.47-0.12-0.61L19.14,12.94z M12,15.6c-1.98,0-3.6-1.62-3.6-3.6 s1.62-3.6,3.6-3.6s3.6,1.62,3.6,3.6S13.98,15.6,12,15.6z"/></svg>
+                Configurações
+            </button>
+            <button class="tab-btn" onclick="saveAllChanges()" style="background: #28a745; color: white; margin-left: auto;">
+                <svg class="icon" viewBox="0 0 24 24"><path d="M17 3H5c-1.11 0-2 .9-2 2v14c0 1.1.89 2 2 2h14c1.1 0 2-.9 2-2V7l-4-4zm-5 16c-1.66 0-3-1.34-3-3s1.34-3 3-3 3 1.34 3 3-1.34 3-3 3zm3-10H5V5h10v4z"/></svg>
+                Salvar Alterações
+            </button>
         </div>
 
         <!-- Dashboard Tab -->
@@ -1902,6 +1854,94 @@
             </div>
         </div>
 
+        <!-- Configuration Tab -->
+        <div id="configTab" class="tab-content">
+            <div class="section-header">
+                <h3>⚙️ Configurações do Studio</h3>
+            </div>
+
+            <div class="admin-section">
+                <h4>🎨 Personalização Visual</h4>
+                <form onsubmit="saveStudioConfig(event)" style="display: grid; gap: 20px;">
+                    <div class="form-group">
+                        <label for="studioNameInput" class="form-label">Nome do Studio</label>
+                        <input type="text" id="studioNameInput" class="form-input" placeholder="ALINE MENEZES BEAUTY" value="ALINE MENEZES BEAUTY">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="logoInput" class="form-label">URL do Logo (opcional)</label>
+                        <input type="url" id="logoInput" class="form-input" placeholder="https://exemplo.com/logo.png">
+                        <small style="color: #636e72; display: block; margin-top: 5px;">
+                            Cole aqui o link direto da imagem do seu logo
+                        </small>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="bgInput" class="form-label">URL da Imagem de Fundo (opcional)</label>
+                        <input type="url" id="bgInput" class="form-input" placeholder="https://exemplo.com/fundo.jpg">
+                        <small style="color: #636e72; display: block; margin-top: 5px;">
+                            Cole aqui o link direto da imagem de fundo personalizada
+                        </small>
+                    </div>
+                    
+                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px;">
+                        <button type="submit" class="form-btn">Salvar Configurações</button>
+                        <button type="button" class="btn" onclick="resetStudioConfig()" style="background: #6c757d; color: white;">Restaurar Padrão</button>
+                    </div>
+                </form>
+            </div>
+
+            <div class="admin-section">
+                <h4>📱 Informações de Contato</h4>
+                <form onsubmit="saveContactConfig(event)" style="display: grid; gap: 20px;">
+                    <div class="form-group">
+                        <label for="whatsappInput" class="form-label">WhatsApp Principal</label>
+                        <input type="tel" id="whatsappInput" class="form-input" placeholder="(49) 99999-9999" value="(49) 99820-0000">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="instagramInput" class="form-label">Instagram (@usuário)</label>
+                        <input type="text" id="instagramInput" class="form-input" placeholder="@alinemenezes.beauty" value="@alinemenezes.beauty">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="addressInput" class="form-label">Endereço Completo</label>
+                        <textarea id="addressInput" class="form-input" rows="3" placeholder="Rua, número, bairro, cidade">Rua Manoel de Campos Salles, 461 - Sala 01
+Bairro São Cristóvão
+Chapecó - SC, CEP 89804-092</textarea>
+                    </div>
+                    
+                    <button type="submit" class="form-btn">Salvar Contatos</button>
+                </form>
+            </div>
+
+            <div class="admin-section">
+                <h4>🔧 Configurações Avançadas</h4>
+                <div style="display: grid; gap: 15px;">
+                    <div style="background: white; padding: 15px; border-radius: 10px; border: 1px solid #e9ecef;">
+                        <h5 style="margin: 0 0 10px 0; color: #2d3436;">💾 Backup de Dados</h5>
+                        <p style="color: #636e72; font-size: 14px; margin: 0 0 15px 0;">
+                            Faça backup de todos os dados do sistema
+                        </p>
+                        <button class="btn btn-admin" onclick="exportBackup()" style="width: 100%;">
+                            📥 Baixar Backup Completo
+                        </button>
+                    </div>
+                    
+                    <div style="background: white; padding: 15px; border-radius: 10px; border: 1px solid #e9ecef;">
+                        <h5 style="margin: 0 0 10px 0; color: #2d3436;">📤 Restaurar Backup</h5>
+                        <p style="color: #636e72; font-size: 14px; margin: 0 0 15px 0;">
+                            Restaure dados de um arquivo de backup
+                        </p>
+                        <input type="file" id="backupFileInput" accept=".json" style="display: none;" onchange="importBackup(event)">
+                        <button class="btn" onclick="document.getElementById('backupFileInput').click()" style="background: #17a2b8; color: white; width: 100%;">
+                            📤 Selecionar Arquivo de Backup
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
         <!-- Services Tab -->
         <div id="servicesTab" class="tab-content">
             <div class="section-header">
@@ -1914,7 +1954,7 @@
                 <form onsubmit="addService(event)" style="display: grid; gap: 20px;">
                     <div class="form-group">
                         <label for="newServiceName" class="form-label">Nome do Serviço</label>
-                        <input type="text" id="newServiceName" class="form-input" placeholder="Nome do serviço" required>
+                        <input type="text" id="newServiceName" class="form-input" id="servicoInput" placeholder="Ex: Extensão de Cílios" required>
                     </div>
                     
                     <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px;">
@@ -1936,11 +1976,34 @@
                     
                     <div class="form-group">
                         <label for="newServiceCategory" class="form-label">Categoria</label>
-                        <select id="newServiceCategory" class="form-input" required>
+                        <select id="newServiceCategory" class="form-input" required onchange="toggleMaintenanceFields('new')">
                             <option value="">Selecione uma categoria</option>
                             <option value="cilios">Cílios</option>
                             <option value="sobrancelhas">Sobrancelhas</option>
                         </select>
+                    </div>
+                    
+                    <div id="newMaintenanceFields" style="display: none;">
+                        <div class="form-group">
+                            <label class="form-label">
+                                <input type="checkbox" id="newHasMaintenance" onchange="toggleMaintenancePrices('new')"> 
+                                Este serviço possui manutenção
+                            </label>
+                        </div>
+                        
+                        <div id="newMaintenancePrices" style="display: none;">
+                            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px;">
+                                <div class="form-group">
+                                    <label for="newMaintenance15Price" class="form-label">Manutenção 15 dias (R$)</label>
+                                    <input type="number" id="newMaintenance15Price" class="form-input" placeholder="60.00" step="0.01" min="0">
+                                </div>
+                                
+                                <div class="form-group">
+                                    <label for="newMaintenance20Price" class="form-label">Manutenção 20 dias (R$)</label>
+                                    <input type="number" id="newMaintenance20Price" class="form-input" placeholder="70.00" step="0.01" min="0">
+                                </div>
+                            </div>
+                        </div>
                     </div>
                     
                     <div class="form-group">
@@ -1961,7 +2024,7 @@
                                 </button>
                                 <small style="color: #636e72; display: block; margin-top: 8px;">
                                     Formatos aceitos: JPG, PNG, GIF<br>
-                                    Tamanho máximo: 5MB
+                                    Tamanho máximo: 10MB
                                 </small>
                             </div>
                         </div>
@@ -1983,7 +2046,14 @@
         </div>
     </div>
 
+    <!-- 🔥 SINCRONIZAÇÃO SUPABASE -->
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <script>
+        // ⚙️ CONFIGURAÇÃO DO SUPABASE
+        const SUPABASE_URL = 'https://hpenhkikpbykhfdwryob.supabase.co';
+        const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImhwZW5oa2lrcGJ5a2hmZHdyeW9iIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjA2NTQwOTIsImV4cCI6MjA3NjIzMDA5Mn0.xGWlQj38ixf7ScwGI-7LA4K7KuhKoYd3DcwrP8u18yE';
+        const supabaseClient = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+
         // Global variables
         let currentUser = null;
         let selectedDate = null;
@@ -1992,6 +2062,313 @@
         let clients = JSON.parse(localStorage.getItem('clients') || '[]');
         let appointments = JSON.parse(localStorage.getItem('appointments') || '[]');
         let services = JSON.parse(localStorage.getItem('services') || '[]');
+
+        // 🧩 FUNÇÕES SUPABASE PARA SINCRONIZAÇÃO
+
+        // Salvar cliente no Supabase
+        async function salvarClienteSupabase(cliente) {
+            try {
+                const { error } = await supabaseClient
+                    .from('clientes')
+                    .upsert([{ 
+                        id: cliente.id,
+                        name: cliente.name,
+                        birthdate: cliente.birthdate,
+                        whatsapp: cliente.whatsapp,
+                        email: cliente.email || null,
+                        created_at: cliente.created || new Date().toISOString(),
+                        updated_at: new Date().toISOString()
+                    }], { onConflict: 'id' });
+                
+                if (error) throw error;
+                console.log('✅ Cliente salvo no Supabase:', cliente.name);
+            } catch (err) {
+                console.error('❌ Erro ao salvar cliente no Supabase:', err.message);
+            }
+        }
+
+        // Função integrada para salvar cliente (compatível com a estrutura fornecida)
+        async function salvarCliente(dadosCliente) {
+            try {
+                // Criar objeto cliente no formato interno
+                const cliente = {
+                    id: Date.now(),
+                    name: dadosCliente.nome,
+                    whatsapp: dadosCliente.telefone,
+                    email: dadosCliente.email || null,
+                    birthdate: null, // Pode ser adicionado posteriormente
+                    created: dadosCliente.data || new Date().toISOString()
+                };
+
+                // Adicionar à lista local
+                clients.push(cliente);
+                localStorage.setItem('clients', JSON.stringify(clients));
+
+                // Salvar no Supabase
+                await salvarClienteSupabase(cliente);
+
+                // Se um serviço foi especificado, criar agendamento
+                if (dadosCliente.servico) {
+                    const servicoEncontrado = services.find(s => 
+                        s.name.toLowerCase().includes(dadosCliente.servico.toLowerCase())
+                    );
+
+                    if (servicoEncontrado) {
+                        const agendamento = {
+                            id: Date.now() + 1,
+                            clientId: cliente.id,
+                            clientName: cliente.name,
+                            clientWhatsapp: cliente.whatsapp,
+                            date: new Date().toISOString().split('T')[0], // Data atual
+                            time: '14:00', // Horário padrão
+                            service: {
+                                name: servicoEncontrado.name,
+                                price: `R$ ${servicoEncontrado.price.toFixed(2).replace('.', ',')}`
+                            },
+                            status: 'pending',
+                            created: new Date().toISOString()
+                        };
+
+                        appointments.push(agendamento);
+                        localStorage.setItem('appointments', JSON.stringify(appointments));
+                        await salvarAgendamentoSupabase(agendamento);
+                    }
+                }
+
+                console.log('✅ Cliente salvo com sucesso:', cliente.name);
+                return { success: true, cliente: cliente };
+
+            } catch (error) {
+                console.error('❌ Erro ao salvar cliente:', error);
+                return { success: false, error: error.message };
+            }
+        }
+
+        // Salvar agendamento no Supabase
+        async function salvarAgendamentoSupabase(agendamento) {
+            try {
+                const { error } = await supabaseClient
+                    .from('agendamentos')
+                    .upsert([{
+                        id: agendamento.id,
+                        client_id: agendamento.clientId,
+                        client_name: agendamento.clientName,
+                        client_whatsapp: agendamento.clientWhatsapp,
+                        date: agendamento.date,
+                        time: agendamento.time,
+                        service_name: agendamento.service.name,
+                        service_price: agendamento.service.price,
+                        status: agendamento.status || 'confirmed',
+                        created_at: agendamento.created || new Date().toISOString(),
+                        updated_at: new Date().toISOString()
+                    }], { onConflict: 'id' });
+                
+                if (error) throw error;
+                console.log('✅ Agendamento salvo no Supabase:', agendamento.clientName);
+            } catch (err) {
+                console.error('❌ Erro ao salvar agendamento no Supabase:', err.message);
+            }
+        }
+
+        // Salvar serviço no Supabase
+        async function salvarServicoSupabase(servico) {
+            try {
+                const { error } = await supabaseClient
+                    .from('servicos')
+                    .upsert([{
+                        id: servico.id,
+                        name: servico.name,
+                        price: servico.price,
+                        duration: servico.duration,
+                        description: servico.description || null,
+                        category: servico.category || null,
+                        has_maintenance: servico.hasMaintenance || false,
+                        maintenance_15_price: servico.maintenance15Price || null,
+                        maintenance_20_price: servico.maintenance20Price || null,
+                        imagem: servico.imagemUrl || null,
+                        created_at: servico.created || new Date().toISOString(),
+                        updated_at: new Date().toISOString()
+                    }], { onConflict: 'id' });
+                
+                if (error) throw error;
+                console.log('✅ Serviço salvo no Supabase:', servico.name);
+            } catch (err) {
+                console.error('❌ Erro ao salvar serviço no Supabase:', err.message);
+            }
+        }
+
+        // Função para fazer upload de imagem para o Supabase Storage
+        async function uploadImagemServico(arquivo, serviceId) {
+            try {
+                if (!arquivo) return null;
+
+                const nomeArquivo = `${serviceId}_${Date.now()}_${arquivo.name}`;
+                
+                // Upload da imagem no bucket "servicos"
+                const { data: uploadData, error: uploadError } = await supabaseClient
+                    .storage
+                    .from('servicos')
+                    .upload(nomeArquivo, arquivo, { 
+                        cacheControl: '3600', 
+                        upsert: true 
+                    });
+
+                if (uploadError) throw uploadError;
+
+                // Obter link público da imagem
+                const { data: publicUrlData } = supabaseClient
+                    .storage
+                    .from('servicos')
+                    .getPublicUrl(nomeArquivo);
+
+                console.log('✅ Imagem enviada para Supabase:', publicUrlData.publicUrl);
+                return publicUrlData.publicUrl;
+            } catch (err) {
+                console.error('❌ Erro ao fazer upload da imagem:', err.message);
+                return null;
+            }
+        }
+
+        // Carregar dados do Supabase
+        async function carregarDadosSupabase() {
+            try {
+                // Carregar clientes
+                const { data: clientesData, error: clientesError } = await supabaseClient
+                    .from('clientes')
+                    .select('*')
+                    .order('created_at', { ascending: false });
+
+                if (clientesError) throw clientesError;
+
+                if (clientesData && clientesData.length > 0) {
+                    const clientesSupabase = clientesData.map(c => ({
+                        id: c.id,
+                        name: c.name,
+                        birthdate: c.birthdate,
+                        whatsapp: c.whatsapp,
+                        email: c.email,
+                        created: c.created_at
+                    }));
+                    
+                    // Mesclar com dados locais
+                    const clientesLocais = JSON.parse(localStorage.getItem('clients') || '[]');
+                    const clientesMesclados = mesclarDados(clientesLocais, clientesSupabase, 'id');
+                    
+                    clients = clientesMesclados;
+                    localStorage.setItem('clients', JSON.stringify(clients));
+                    console.log('✅ Clientes carregados do Supabase:', clients.length);
+                }
+
+                // Carregar agendamentos
+                const { data: agendamentosData, error: agendamentosError } = await supabaseClient
+                    .from('agendamentos')
+                    .select('*')
+                    .order('created_at', { ascending: false });
+
+                if (agendamentosError) throw agendamentosError;
+
+                if (agendamentosData && agendamentosData.length > 0) {
+                    const agendamentosSupabase = agendamentosData.map(a => ({
+                        id: a.id,
+                        clientId: a.client_id,
+                        clientName: a.client_name,
+                        clientWhatsapp: a.client_whatsapp,
+                        date: a.date,
+                        time: a.time,
+                        service: {
+                            name: a.service_name,
+                            price: a.service_price
+                        },
+                        status: a.status,
+                        created: a.created_at
+                    }));
+                    
+                    const agendamentosLocais = JSON.parse(localStorage.getItem('appointments') || '[]');
+                    const agendamentosMesclados = mesclarDados(agendamentosLocais, agendamentosSupabase, 'id');
+                    
+                    appointments = agendamentosMesclados;
+                    localStorage.setItem('appointments', JSON.stringify(appointments));
+                    console.log('✅ Agendamentos carregados do Supabase:', appointments.length);
+                }
+
+                // Carregar serviços
+                const { data: servicosData, error: servicosError } = await supabaseClient
+                    .from('servicos')
+                    .select('*')
+                    .order('created_at', { ascending: false });
+
+                if (servicosError) throw servicosError;
+
+                if (servicosData && servicosData.length > 0) {
+                    const servicosSupabase = servicosData.map(s => ({
+                        id: s.id,
+                        name: s.name,
+                        price: s.price,
+                        duration: s.duration,
+                        description: s.description,
+                        category: s.category,
+                        hasMaintenance: s.has_maintenance,
+                        maintenance15Price: s.maintenance_15_price,
+                        maintenance20Price: s.maintenance_20_price,
+                        imagemUrl: s.imagem,
+                        created: s.created_at
+                    }));
+                    
+                    const servicosLocais = JSON.parse(localStorage.getItem('services') || '[]');
+                    const servicosMesclados = mesclarDados(servicosLocais, servicosSupabase, 'id');
+                    
+                    services = servicosMesclados;
+                    localStorage.setItem('services', JSON.stringify(services));
+                    console.log('✅ Serviços carregados do Supabase:', services.length);
+                }
+
+            } catch (err) {
+                console.warn('⚠️ Erro ao carregar dados do Supabase:', err.message);
+                console.log('📱 Usando dados locais como fallback');
+            }
+        }
+
+        // Função para mesclar dados locais com dados do Supabase
+        function mesclarDados(dadosLocais, dadosSupabase, chaveId) {
+            const dadosMesclados = [...dadosSupabase];
+            
+            dadosLocais.forEach(itemLocal => {
+                const existeNoSupabase = dadosSupabase.find(itemSupabase => itemSupabase[chaveId] === itemLocal[chaveId]);
+                if (!existeNoSupabase) {
+                    dadosMesclados.push(itemLocal);
+                }
+            });
+            
+            return dadosMesclados;
+        }
+
+        // Sincronizar todos os dados com Supabase
+        async function sincronizarTodosOsDados() {
+            try {
+                console.log('🔄 Iniciando sincronização completa com Supabase...');
+                
+                // Sincronizar clientes
+                for (const cliente of clients) {
+                    await salvarClienteSupabase(cliente);
+                }
+                
+                // Sincronizar agendamentos
+                for (const agendamento of appointments) {
+                    await salvarAgendamentoSupabase(agendamento);
+                }
+                
+                // Sincronizar serviços
+                for (const servico of services) {
+                    await salvarServicoSupabase(servico);
+                }
+                
+                console.log('✅ Sincronização completa finalizada!');
+                return true;
+            } catch (err) {
+                console.error('❌ Erro na sincronização:', err.message);
+                return false;
+            }
+        }
 
         // Initialize default services if none exist
         if (services.length === 0) {
@@ -2162,7 +2539,7 @@
         }
 
         // Client registration
-        function registerClient(event) {
+        async function registerClient(event) {
             event.preventDefault();
             const name = document.getElementById('registerName').value.trim();
             const birthdate = document.getElementById('registerBirthdate').value;
@@ -2189,6 +2566,9 @@
             
             clients.push(newClient);
             localStorage.setItem('clients', JSON.stringify(clients));
+            
+            // Salvar no Supabase
+            await salvarClienteSupabase(newClient);
             
             // Auto login after registration
             currentUser = newClient;
@@ -2382,7 +2762,7 @@
         }
 
         // Booking
-        function confirmBooking() {
+        async function confirmBooking() {
             if (!selectedDate || !selectedTime || !selectedService || !currentUser) return;
             
             const appointment = {
@@ -2399,6 +2779,9 @@
             
             appointments.push(appointment);
             localStorage.setItem('appointments', JSON.stringify(appointments));
+            
+            // Salvar no Supabase
+            await salvarAgendamentoSupabase(appointment);
             
             showMessage('bookingSuccess', 'Agendamento realizado com sucesso!', 'success');
             
@@ -2487,6 +2870,8 @@
                 loadAppointments();
             } else if (tabName === 'services') {
                 loadServices();
+            } else if (tabName === 'config') {
+                loadStudioConfig();
             } else if (tabName === 'dashboard') {
                 updateStats();
                 loadBirthdayClients();
@@ -2507,7 +2892,7 @@
             document.getElementById('newClientEmail').value = '';
         }
 
-        function addClient(event) {
+        async function addClient(event) {
             event.preventDefault();
             
             const name = document.getElementById('newClientName').value.trim();
@@ -2536,6 +2921,9 @@
             
             clients.push(newClient);
             localStorage.setItem('clients', JSON.stringify(clients));
+            
+            // Salvar no Supabase
+            await salvarClienteSupabase(newClient);
             
             hideAddClientForm();
             loadClients();
@@ -2784,6 +3172,13 @@ Qualquer dúvida, estou à disposição! 💕
             document.getElementById('newServiceDuration').value = '';
             document.getElementById('newServiceDescription').value = '';
             document.getElementById('newServiceCategory').value = '';
+            document.getElementById('newHasMaintenance').checked = false;
+            document.getElementById('newMaintenance15Price').value = '';
+            document.getElementById('newMaintenance20Price').value = '';
+            
+            // Hide maintenance fields
+            document.getElementById('newMaintenanceFields').style.display = 'none';
+            document.getElementById('newMaintenancePrices').style.display = 'none';
             
             // Clear image preview
             const preview = document.getElementById('newServiceImagePreview');
@@ -2795,7 +3190,32 @@ Qualquer dúvida, estou à disposição! 💕
             document.getElementById('newServiceImageInput').value = '';
         }
 
-        function addService(event) {
+        function toggleMaintenanceFields(type) {
+            const categorySelect = document.getElementById(type + 'ServiceCategory');
+            const maintenanceFields = document.getElementById(type + 'MaintenanceFields');
+            
+            if (categorySelect.value === 'cilios') {
+                maintenanceFields.style.display = 'block';
+            } else {
+                maintenanceFields.style.display = 'none';
+                // Reset maintenance checkbox and prices
+                document.getElementById(type + 'HasMaintenance').checked = false;
+                document.getElementById(type + 'MaintenancePrices').style.display = 'none';
+            }
+        }
+
+        function toggleMaintenancePrices(type) {
+            const checkbox = document.getElementById(type + 'HasMaintenance');
+            const pricesDiv = document.getElementById(type + 'MaintenancePrices');
+            
+            if (checkbox.checked) {
+                pricesDiv.style.display = 'block';
+            } else {
+                pricesDiv.style.display = 'none';
+            }
+        }
+
+        async function addService(event) {
             event.preventDefault();
             
             const name = document.getElementById('newServiceName').value.trim();
@@ -2836,6 +3256,20 @@ Qualquer dúvida, estou à disposição! 💕
             }
             
             const newServiceId = Date.now();
+            
+            // Get maintenance data
+            const hasMaintenance = document.getElementById('newHasMaintenance').checked;
+            const maintenance15Price = hasMaintenance ? parseFloat(document.getElementById('newMaintenance15Price').value) || null : null;
+            const maintenance20Price = hasMaintenance ? parseFloat(document.getElementById('newMaintenance20Price').value) || null : null;
+
+            // Handle image upload to Supabase
+            let imagemUrl = null;
+            const imageInput = document.getElementById('newServiceImageInput');
+            if (imageInput && imageInput.files[0]) {
+                showMessage('adminSuccess', '📤 Enviando imagem...', 'success');
+                imagemUrl = await uploadImagemServico(imageInput.files[0], newServiceId);
+            }
+
             const newService = {
                 id: newServiceId,
                 name: name,
@@ -2843,13 +3277,20 @@ Qualquer dúvida, estou à disposição! 💕
                 duration: duration,
                 description: description,
                 category: category,
+                hasMaintenance: hasMaintenance,
+                maintenance15Price: maintenance15Price,
+                maintenance20Price: maintenance20Price,
+                imagemUrl: imagemUrl,
                 created: new Date().toISOString()
             };
             
             services.push(newService);
             localStorage.setItem('services', JSON.stringify(services));
             
-            // Handle image if uploaded
+            // Salvar no Supabase
+            await salvarServicoSupabase(newService);
+            
+            // Handle local image storage as fallback
             const preview = document.getElementById('newServiceImagePreview');
             if (preview && preview.dataset.imageData) {
                 const serviceImages = JSON.parse(localStorage.getItem('serviceImages') || '{}');
@@ -2861,16 +3302,16 @@ Qualquer dúvida, estou à disposição! 💕
             hideAddServiceForm();
             loadServices();
             loadServicesDropdown(); // Update client dropdown
-            showMessage('adminSuccess', 'Serviço adicionado com sucesso!', 'success');
+            showMessage('adminSuccess', '✅ Serviço adicionado com sucesso!', 'success');
         }
 
         function handleNewServiceImageUpload(event) {
             const file = event.target.files[0];
             if (!file) return;
             
-            // Check file size (max 5MB)
-            if (file.size > 5 * 1024 * 1024) {
-                alert('Imagem muito grande! Máximo 5MB.');
+            // Check file size (max 10MB)
+            if (file.size > 10 * 1024 * 1024) {
+                alert('Imagem muito grande! Máximo 10MB.');
                 return;
             }
             
@@ -2943,6 +3384,31 @@ Qualquer dúvida, estou à disposição! 💕
         }
 
         function showEditServiceModal(service) {
+            // Auto-detect category if not set
+            let detectedCategory = service.category;
+            if (!detectedCategory) {
+                const serviceName = service.name.toLowerCase();
+                if (serviceName.includes('extensão') || serviceName.includes('cílios') || serviceName.includes('cilios') || 
+                    serviceName.includes('lash') || serviceName.includes('volume') || 
+                    (serviceName.includes('manutenção') && (serviceName.includes('volume') || serviceName.includes('brasileiro') || 
+                    serviceName.includes('glamour') || serviceName.includes('marrom') || serviceName.includes('fox')))) {
+                    detectedCategory = 'cilios';
+                } else if (serviceName.includes('sobrancelha') || serviceName.includes('design') || 
+                           serviceName.includes('brow') || serviceName.includes('henna') || 
+                           serviceName.includes('tintura') || serviceName.includes('lamination')) {
+                    detectedCategory = 'sobrancelhas';
+                }
+            }
+
+            // Auto-detect if service has maintenance based on name or existing data
+            let hasMaintenanceDetected = service.hasMaintenance;
+            if (!hasMaintenanceDetected && detectedCategory === 'cilios') {
+                const serviceName = service.name.toLowerCase();
+                if (serviceName.includes('extensão') || serviceName.includes('volume')) {
+                    hasMaintenanceDetected = true;
+                }
+            }
+
             // Create modal HTML
             const modalHTML = `
                 <div id="editServiceModal" class="modal" style="display: block;">
@@ -2950,13 +3416,13 @@ Qualquer dúvida, estou à disposição! 💕
                         <button class="close-btn" onclick="closeEditServiceModal()">&times;</button>
                         <div class="modal-header">
                             <h2 class="modal-title">Editar Serviço</h2>
-                            <p>Atualize as informações do serviço</p>
+                            <p>Atualize as informações do serviço e valores das manutenções</p>
                         </div>
                         
                         <form onsubmit="updateService(event, ${service.id})" style="display: grid; gap: 20px;">
                             <div class="form-group">
                                 <label for="editServiceName" class="form-label">Nome do Serviço</label>
-                                <input type="text" id="editServiceName" class="form-input" value="${service.name}" required>
+                                <input type="text" id="editServiceName" class="form-input" value="${service.name}" placeholder="Ex: Extensão de Cílios" required>
                             </div>
                             
                             <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px;">
@@ -2978,11 +3444,46 @@ Qualquer dúvida, estou à disposição! 💕
                             
                             <div class="form-group">
                                 <label for="editServiceCategory" class="form-label">Categoria</label>
-                                <select id="editServiceCategory" class="form-input" required>
+                                <select id="editServiceCategory" class="form-input" required onchange="toggleMaintenanceFields('edit')">
                                     <option value="">Selecione uma categoria</option>
-                                    <option value="cilios" ${(service.category === 'cilios') ? 'selected' : ''}>Cílios</option>
-                                    <option value="sobrancelhas" ${(service.category === 'sobrancelhas') ? 'selected' : ''}>Sobrancelhas</option>
+                                    <option value="cilios" ${(detectedCategory === 'cilios') ? 'selected' : ''}>Cílios</option>
+                                    <option value="sobrancelhas" ${(detectedCategory === 'sobrancelhas') ? 'selected' : ''}>Sobrancelhas</option>
                                 </select>
+                            </div>
+                            
+                            <div id="editMaintenanceFields" style="display: ${(detectedCategory === 'cilios') ? 'block' : 'none'};">
+                                <div class="form-group">
+                                    <label class="form-label">
+                                        <input type="checkbox" id="editHasMaintenance" onchange="toggleMaintenancePrices('edit')" ${(hasMaintenanceDetected) ? 'checked' : ''}> 
+                                        Este serviço possui manutenção
+                                    </label>
+                                </div>
+                                
+                                <div id="editMaintenancePrices" style="display: ${(hasMaintenanceDetected) ? 'block' : 'none'};">
+                                    <div style="background: #f8f9fa; padding: 20px; border-radius: 15px; border: 2px solid #667eea; margin-bottom: 15px;">
+                                        <h4 style="color: #2d3436; margin: 0 0 15px 0; font-size: 16px; text-align: center;">💰 Valores das Manutenções</h4>
+                                        
+                                        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px;">
+                                            <div class="form-group">
+                                                <label for="editMaintenance15Price" class="form-label" style="color: #00b894; font-weight: 600;">🔄 Manutenção até 15 dias (R$)</label>
+                                                <input type="number" id="editMaintenance15Price" class="form-input" value="${service.maintenance15Price || ''}" step="0.01" min="0" placeholder="60.00" style="border-color: #00b894;">
+                                                <small style="color: #636e72; font-size: 12px;">Valor recomendado para manutenção rápida</small>
+                                            </div>
+                                            
+                                            <div class="form-group">
+                                                <label for="editMaintenance20Price" class="form-label" style="color: #e17055; font-weight: 600;">🔄 Manutenção até 20 dias (R$)</label>
+                                                <input type="number" id="editMaintenance20Price" class="form-input" value="${service.maintenance20Price || ''}" step="0.01" min="0" placeholder="70.00" style="border-color: #e17055;">
+                                                <small style="color: #636e72; font-size: 12px;">Valor para manutenção com mais trabalho</small>
+                                            </div>
+                                        </div>
+                                        
+                                        <div style="background: rgba(102, 126, 234, 0.1); padding: 12px; border-radius: 10px; margin-top: 15px; text-align: center;">
+                                            <small style="color: #2d3436; font-weight: 500;">
+                                                ⚠️ <strong>Importante:</strong> Após 20 dias, cobrar valor da aplicação completa (R$ ${service.price.toFixed(2).replace('.', ',')})
+                                            </small>
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
                             
                             <div class="form-group">
@@ -2995,6 +3496,7 @@ Qualquer dúvida, estou à disposição! 💕
                                     </div>
                                     <div style="flex: 1;">
                                         <input type="file" id="editServiceImageInput" accept="image/*" style="display: none;" onchange="handleEditServiceImageUpload(event)">
+                                        <input type="file" id="imagemServicoInput" accept="image/*" style="display: none;" onchange="handleEditServiceImageUpload(event)">
                                         <button type="button" class="btn" onclick="document.getElementById('editServiceImageInput').click()" style="background: #667eea; color: white; margin-bottom: 10px; width: 100%;">
                                             Escolher Imagem
                                         </button>
@@ -3003,14 +3505,14 @@ Qualquer dúvida, estou à disposição! 💕
                                         </button>
                                         <small style="color: #636e72; display: block; margin-top: 8px;">
                                             Formatos aceitos: JPG, PNG, GIF<br>
-                                            Tamanho máximo: 5MB
+                                            Tamanho máximo: 10MB
                                         </small>
                                     </div>
                                 </div>
                             </div>
                             
                             <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-top: 20px;">
-                                <button type="submit" class="form-btn">Salvar Alterações</button>
+                                <button type="submit" class="form-btn" id="salvarServicoBtn">Salvar Serviço</button>
                                 <button type="button" class="btn" onclick="closeEditServiceModal()" style="background: #6c757d; color: white;">Cancelar</button>
                             </div>
                         </form>
@@ -3063,9 +3565,9 @@ Qualquer dúvida, estou à disposição! 💕
             const file = event.target.files[0];
             if (!file) return;
             
-            // Check file size (max 5MB)
-            if (file.size > 5 * 1024 * 1024) {
-                alert('Imagem muito grande! Máximo 5MB.');
+            // Check file size (max 10MB)
+            if (file.size > 10 * 1024 * 1024) {
+                alert('Imagem muito grande! Máximo 10MB.');
                 return;
             }
             
@@ -3097,7 +3599,7 @@ Qualquer dúvida, estou à disposição! 💕
             document.getElementById('editServiceImageInput').value = '';
         }
 
-        function updateService(event, serviceId) {
+        async function updateService(event, serviceId) {
             event.preventDefault();
             
             const service = services.find(s => s.id === serviceId);
@@ -3140,35 +3642,70 @@ Qualquer dúvida, estou à disposição! 💕
                 return;
             }
             
+            // Get maintenance data
+            const hasMaintenance = document.getElementById('editHasMaintenance').checked;
+            const maintenance15Price = hasMaintenance ? parseFloat(document.getElementById('editMaintenance15Price').value) || null : null;
+            const maintenance20Price = hasMaintenance ? parseFloat(document.getElementById('editMaintenance20Price').value) || null : null;
+
+            // Handle image upload to Supabase if new image was selected
+            let novaImagemUrl = service.imagemUrl; // Keep existing URL by default
+            const imageInput = document.getElementById('editServiceImageInput');
+            if (imageInput && imageInput.files[0]) {
+                showMessage('adminSuccess', '📤 Enviando nova imagem...', 'success');
+                novaImagemUrl = await uploadImagemServico(imageInput.files[0], serviceId);
+            }
+
             // Update service
             service.name = name;
             service.price = price;
             service.duration = duration;
             service.description = description;
             service.category = category;
+            service.hasMaintenance = hasMaintenance;
+            service.maintenance15Price = maintenance15Price;
+            service.maintenance20Price = maintenance20Price;
+            service.imagemUrl = novaImagemUrl;
             service.updated = new Date().toISOString();
             
-            // Handle image
+            // Handle local image storage as fallback
             const preview = document.getElementById('editServiceImagePreview');
             const serviceImages = JSON.parse(localStorage.getItem('serviceImages') || '{}');
             const imageKey = `service-${serviceId}`;
             
             if (preview && preview.dataset.imageData) {
-                // New image uploaded
+                // New image uploaded locally
                 serviceImages[imageKey] = preview.dataset.imageData;
+                console.log('✅ Nova imagem salva localmente para o serviço:', service.name);
             } else if (preview && preview.innerHTML.includes('📸')) {
                 // Image was removed
                 delete serviceImages[imageKey];
+                service.imagemUrl = null;
+                console.log('🗑️ Imagem removida do serviço:', service.name);
             }
             
-            // Save everything
+            // Save everything to localStorage
             localStorage.setItem('services', JSON.stringify(services));
             localStorage.setItem('serviceImages', JSON.stringify(serviceImages));
+            
+            // Save to Supabase
+            try {
+                await salvarServicoSupabase(service);
+                console.log('✅ Serviço atualizado no Supabase:', service.name);
+            } catch (error) {
+                console.warn('⚠️ Erro ao salvar no Supabase, dados salvos localmente:', error.message);
+            }
             
             closeEditServiceModal();
             loadServices();
             loadServicesDropdown(); // Update client dropdown
-            showMessage('adminSuccess', 'Serviço atualizado com sucesso!', 'success');
+            
+            // Reload catalog if it's open
+            const catalogModal = document.getElementById('catalogModal');
+            if (catalogModal && catalogModal.style.display === 'block') {
+                loadCatalogContent();
+            }
+            
+            showMessage('adminSuccess', '✅ Serviço atualizado com sucesso! Imagens e dados salvos.', 'success');
         }
 
         function closeEditServiceModal() {
@@ -3421,11 +3958,12 @@ Com carinho,
         function createServiceCard(service) {
             const serviceName = service.name.toLowerCase();
             
-            // Check if this service has maintenance options (only specific volume services)
-            const hasMaintenanceOptions = (serviceName.includes('volume brasileiro') || 
-                                         serviceName.includes('volume marrom') || 
-                                         serviceName.includes('volume glamour') || 
-                                         serviceName.includes('volume fox')) && 
+            // Check if this service has maintenance options
+            const hasMaintenanceOptions = (service.hasMaintenance || 
+                                         (serviceName.includes('volume brasileiro') || 
+                                          serviceName.includes('volume marrom') || 
+                                          serviceName.includes('volume glamour') || 
+                                          serviceName.includes('volume fox'))) && 
                                         !serviceName.includes('manutenção');
             
             const isMaintenanceService = serviceName.includes('manutenção');
@@ -3435,33 +3973,38 @@ Com carinho,
                 return '';
             }
             
-            // Get maintenance prices for application services (only for services that have maintenance)
+            // Get maintenance prices - use service's own maintenance prices if available
             let maintenancePrices = { price15: null, price20: null };
             if (hasMaintenanceOptions) {
-                // Find 15-day maintenance
-                const maintenance15 = services.find(s => {
-                    const maintenanceName = s.name.toLowerCase();
-                    return maintenanceName.includes('manutenção') && 
-                           maintenanceName.includes('15 dias') &&
-                           (serviceName.includes('brasileiro') && maintenanceName.includes('brasileiro') ||
-                            serviceName.includes('glamour') && maintenanceName.includes('glamour') ||
-                            serviceName.includes('marrom') && maintenanceName.includes('marrom') ||
-                            serviceName.includes('fox') && maintenanceName.includes('fox'));
-                });
-                
-                // Find 20-day maintenance
-                const maintenance20 = services.find(s => {
-                    const maintenanceName = s.name.toLowerCase();
-                    return maintenanceName.includes('manutenção') && 
-                           maintenanceName.includes('20 dias') &&
-                           (serviceName.includes('brasileiro') && maintenanceName.includes('brasileiro') ||
-                            serviceName.includes('glamour') && maintenanceName.includes('glamour') ||
-                            serviceName.includes('marrom') && maintenanceName.includes('marrom') ||
-                            serviceName.includes('fox') && maintenanceName.includes('fox'));
-                });
-                
-                if (maintenance15) maintenancePrices.price15 = maintenance15.price;
-                if (maintenance20) maintenancePrices.price20 = maintenance20.price;
+                // Use service's own maintenance prices if available
+                if (service.hasMaintenance) {
+                    maintenancePrices.price15 = service.maintenance15Price;
+                    maintenancePrices.price20 = service.maintenance20Price;
+                } else {
+                    // Fallback to finding separate maintenance services (legacy support)
+                    const maintenance15 = services.find(s => {
+                        const maintenanceName = s.name.toLowerCase();
+                        return maintenanceName.includes('manutenção') && 
+                               maintenanceName.includes('15 dias') &&
+                               (serviceName.includes('brasileiro') && maintenanceName.includes('brasileiro') ||
+                                serviceName.includes('glamour') && maintenanceName.includes('glamour') ||
+                                serviceName.includes('marrom') && maintenanceName.includes('marrom') ||
+                                serviceName.includes('fox') && maintenanceName.includes('fox'));
+                    });
+                    
+                    const maintenance20 = services.find(s => {
+                        const maintenanceName = s.name.toLowerCase();
+                        return maintenanceName.includes('manutenção') && 
+                               maintenanceName.includes('20 dias') &&
+                               (serviceName.includes('brasileiro') && maintenanceName.includes('brasileiro') ||
+                                serviceName.includes('glamour') && maintenanceName.includes('glamour') ||
+                                serviceName.includes('marrom') && maintenanceName.includes('marrom') ||
+                                serviceName.includes('fox') && maintenanceName.includes('fox'));
+                    });
+                    
+                    if (maintenance15) maintenancePrices.price15 = maintenance15.price;
+                    if (maintenance20) maintenancePrices.price20 = maintenance20.price;
+                }
             }
             
             return `
@@ -3569,9 +4112,9 @@ Com carinho,
             const file = event.target.files[0];
             if (!file) return;
             
-            // Check file size (max 5MB)
-            if (file.size > 5 * 1024 * 1024) {
-                alert('Imagem muito grande! Máximo 5MB.');
+            // Check file size (max 10MB)
+            if (file.size > 10 * 1024 * 1024) {
+                alert('Imagem muito grande! Máximo 10MB.');
                 return;
             }
             
@@ -3610,6 +4153,13 @@ Com carinho,
 
         // Function to get service image or placeholder
         function getServiceImageOrPlaceholder(serviceId) {
+            // First try to get from service data (Supabase URL)
+            const service = services.find(s => s.id === serviceId);
+            if (service && service.imagemUrl) {
+                return `<div style="width: 100%; height: 100%; background-image: url(${service.imagemUrl}); background-size: cover; background-position: center; border-radius: 15px;"></div>`;
+            }
+            
+            // Fallback to local storage
             const serviceImages = JSON.parse(localStorage.getItem('serviceImages') || '{}');
             const imageKey = `service-${serviceId}`;
             
@@ -3628,8 +4178,362 @@ Com carinho,
             window.open(whatsappUrl, '_blank', 'noopener,noreferrer');
         }
 
+        // Configuration Functions
+        async function saveStudioConfig(event) {
+            event.preventDefault();
+            
+            const config = {
+                studio_name: document.getElementById('studioNameInput').value.trim(),
+                studio_logo: document.getElementById('logoInput').value.trim(),
+                background_image: document.getElementById('bgInput').value.trim()
+            };
+            
+            // Save to localStorage
+            localStorage.setItem('studioConfig', JSON.stringify(config));
+            
+            // Save to Supabase using the provided function
+            await salvarConfiguracoesAdmin(config);
+            
+            // Apply changes immediately
+            aplicarConfiguracoesAdmin(config);
+            
+            showMessage('adminSuccess', '✅ Configurações do studio salvas com sucesso!', 'success');
+        }
+
+        async function saveContactConfig(event) {
+            event.preventDefault();
+            
+            const contactConfig = {
+                whatsapp: document.getElementById('whatsappInput').value.trim(),
+                instagram: document.getElementById('instagramInput').value.trim(),
+                address: document.getElementById('addressInput').value.trim()
+            };
+            
+            // Save to localStorage
+            localStorage.setItem('contactConfig', JSON.stringify(contactConfig));
+            
+            // Update links dynamically
+            updateContactLinks(contactConfig);
+            
+            showMessage('adminSuccess', '✅ Informações de contato salvas com sucesso!', 'success');
+        }
+
+        function resetStudioConfig() {
+            if (confirm('Restaurar configurações padrão? Isso irá remover personalizações visuais.')) {
+                // Clear localStorage
+                localStorage.removeItem('studioConfig');
+                
+                // Reset form
+                document.getElementById('studioNameInput').value = 'ALINE MENEZES BEAUTY';
+                document.getElementById('logoInput').value = '';
+                document.getElementById('bgInput').value = '';
+                
+                // Apply default config
+                const defaultConfig = {
+                    studio_name: 'ALINE MENEZES BEAUTY',
+                    studio_logo: '',
+                    background_image: ''
+                };
+                
+                aplicarConfiguracoesAdmin(defaultConfig);
+                showMessage('adminSuccess', '✅ Configurações restauradas para o padrão!', 'success');
+            }
+        }
+
+        function updateContactLinks(contactConfig) {
+            // Update WhatsApp links
+            const whatsappLinks = document.querySelectorAll('a[href*="wa.me"]');
+            if (contactConfig.whatsapp) {
+                const cleanPhone = contactConfig.whatsapp.replace(/\D/g, '');
+                whatsappLinks.forEach(link => {
+                    const currentHref = link.getAttribute('href');
+                    if (currentHref.includes('wa.me')) {
+                        const newHref = currentHref.replace(/wa\.me\/\d+/, `wa.me/55${cleanPhone}`);
+                        link.setAttribute('href', newHref);
+                    }
+                });
+            }
+            
+            // Update Instagram links
+            const instagramLinks = document.querySelectorAll('a[href*="instagram.com"]');
+            if (contactConfig.instagram) {
+                const username = contactConfig.instagram.replace('@', '');
+                instagramLinks.forEach(link => {
+                    link.setAttribute('href', `https://instagram.com/${username}`);
+                });
+            }
+        }
+
+        function loadStudioConfig() {
+            // Load from localStorage
+            const savedConfig = localStorage.getItem('studioConfig');
+            if (savedConfig) {
+                const config = JSON.parse(savedConfig);
+                
+                // Fill form fields
+                if (document.getElementById('studioNameInput')) {
+                    document.getElementById('studioNameInput').value = config.studio_name || 'ALINE MENEZES BEAUTY';
+                }
+                if (document.getElementById('logoInput')) {
+                    document.getElementById('logoInput').value = config.studio_logo || '';
+                }
+                if (document.getElementById('bgInput')) {
+                    document.getElementById('bgInput').value = config.background_image || '';
+                }
+                
+                // Apply config
+                aplicarConfiguracoesAdmin(config);
+            }
+            
+            // Load contact config
+            const savedContactConfig = localStorage.getItem('contactConfig');
+            if (savedContactConfig) {
+                const contactConfig = JSON.parse(savedContactConfig);
+                
+                if (document.getElementById('whatsappInput')) {
+                    document.getElementById('whatsappInput').value = contactConfig.whatsapp || '(49) 99820-0000';
+                }
+                if (document.getElementById('instagramInput')) {
+                    document.getElementById('instagramInput').value = contactConfig.instagram || '@alinemenezes.beauty';
+                }
+                if (document.getElementById('addressInput')) {
+                    document.getElementById('addressInput').value = contactConfig.address || 'Rua Manoel de Campos Salles, 461 - Sala 01\nBairro São Cristóvão\nChapecó - SC, CEP 89804-092';
+                }
+                
+                updateContactLinks(contactConfig);
+            }
+        }
+
+        // Enhanced aplicarConfiguracoesAdmin function
+        function aplicarConfiguracoesAdmin(data) {
+            // Update studio name
+            if (data.studio_name) {
+                const studioNameElements = document.querySelectorAll('.studio-name');
+                studioNameElements.forEach(element => {
+                    element.textContent = data.studio_name;
+                });
+            }
+
+            // Update background image
+            if (data.background_image) {
+                document.body.style.backgroundImage = `url(${data.background_image})`;
+                document.body.style.backgroundSize = 'cover';
+                document.body.style.backgroundPosition = 'center';
+                document.body.style.backgroundAttachment = 'fixed';
+            } else {
+                // Reset to default gradient
+                document.body.style.backgroundImage = '';
+                document.body.style.background = 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)';
+            }
+
+            // Update logo
+            if (data.studio_logo) {
+                const logoElements = document.querySelectorAll('.studio-logo');
+                logoElements.forEach(element => {
+                    element.src = data.studio_logo;
+                    element.style.display = 'block';
+                });
+                
+                // If no logo elements exist, create one
+                if (logoElements.length === 0) {
+                    const logoContainer = document.querySelector('.logo-container');
+                    if (logoContainer) {
+                        const logoImg = document.createElement('img');
+                        logoImg.src = data.studio_logo;
+                        logoImg.className = 'studio-logo';
+                        logoImg.style.cssText = 'max-width: 200px; max-height: 100px; margin-bottom: 20px; border-radius: 10px; box-shadow: 0 4px 15px rgba(0,0,0,0.2);';
+                        logoContainer.insertBefore(logoImg, logoContainer.firstChild);
+                    }
+                }
+            } else {
+                // Hide logo if no URL provided
+                const logoElements = document.querySelectorAll('.studio-logo');
+                logoElements.forEach(element => {
+                    element.style.display = 'none';
+                });
+            }
+
+            console.log('🎨 Configurações do admin aplicadas no site.');
+        }
+
+        // Backup Functions
+        function exportBackup() {
+            try {
+                const backupData = {
+                    clients: clients,
+                    appointments: appointments,
+                    services: services,
+                    serviceImages: JSON.parse(localStorage.getItem('serviceImages') || '{}'),
+                    studioConfig: JSON.parse(localStorage.getItem('studioConfig') || '{}'),
+                    contactConfig: JSON.parse(localStorage.getItem('contactConfig') || '{}'),
+                    timestamp: new Date().toISOString(),
+                    version: '2.0'
+                };
+                
+                const dataStr = JSON.stringify(backupData, null, 2);
+                const dataBlob = new Blob([dataStr], {type: 'application/json'});
+                
+                const link = document.createElement('a');
+                link.href = URL.createObjectURL(dataBlob);
+                link.download = `aline-beauty-backup-${new Date().toISOString().split('T')[0]}.json`;
+                link.click();
+                
+                showMessage('adminSuccess', '✅ Backup baixado com sucesso!', 'success');
+            } catch (error) {
+                console.error('Erro ao exportar backup:', error);
+                showMessage('adminSuccess', '❌ Erro ao criar backup!', 'error');
+            }
+        }
+
+        function importBackup(event) {
+            const file = event.target.files[0];
+            if (!file) return;
+            
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                try {
+                    const backupData = JSON.parse(e.target.result);
+                    
+                    // Validate backup structure
+                    if (!backupData.version || !backupData.timestamp) {
+                        throw new Error('Arquivo de backup inválido');
+                    }
+                    
+                    if (confirm(`Restaurar backup de ${new Date(backupData.timestamp).toLocaleDateString('pt-BR')}?\n\nISSO IRÁ SUBSTITUIR TODOS OS DADOS ATUAIS!`)) {
+                        // Restore data
+                        if (backupData.clients) {
+                            clients = backupData.clients;
+                            localStorage.setItem('clients', JSON.stringify(clients));
+                        }
+                        
+                        if (backupData.appointments) {
+                            appointments = backupData.appointments;
+                            localStorage.setItem('appointments', JSON.stringify(appointments));
+                        }
+                        
+                        if (backupData.services) {
+                            services = backupData.services;
+                            localStorage.setItem('services', JSON.stringify(services));
+                        }
+                        
+                        if (backupData.serviceImages) {
+                            localStorage.setItem('serviceImages', JSON.stringify(backupData.serviceImages));
+                        }
+                        
+                        if (backupData.studioConfig) {
+                            localStorage.setItem('studioConfig', JSON.stringify(backupData.studioConfig));
+                        }
+                        
+                        if (backupData.contactConfig) {
+                            localStorage.setItem('contactConfig', JSON.stringify(backupData.contactConfig));
+                        }
+                        
+                        // Reload page to apply all changes
+                        showMessage('adminSuccess', '✅ Backup restaurado! Recarregando página...', 'success');
+                        setTimeout(() => {
+                            window.location.reload();
+                        }, 2000);
+                    }
+                } catch (error) {
+                    console.error('Erro ao importar backup:', error);
+                    showMessage('adminSuccess', '❌ Erro ao restaurar backup! Verifique o arquivo.', 'error');
+                }
+            };
+            reader.readAsText(file);
+            
+            // Clear file input
+            event.target.value = '';
+        }
+
+        // Save all changes function
+        async function saveAllChanges() {
+            try {
+                // Show loading message
+                showMessage('adminSuccess', '🔄 Salvando alterações...', 'success');
+                
+                // Force save all data to localStorage
+                localStorage.setItem('clients', JSON.stringify(clients));
+                localStorage.setItem('appointments', JSON.stringify(appointments));
+                localStorage.setItem('services', JSON.stringify(services));
+                
+                // Also save service images if they exist
+                const serviceImages = JSON.parse(localStorage.getItem('serviceImages') || '{}');
+                localStorage.setItem('serviceImages', JSON.stringify(serviceImages));
+                
+                // Sincronizar com Supabase
+                const syncSuccess = await sincronizarTodosOsDados();
+                
+                // Create backup with timestamp
+                const backupData = {
+                    clients: clients,
+                    appointments: appointments,
+                    services: services,
+                    serviceImages: serviceImages,
+                    timestamp: new Date().toISOString(),
+                    version: '1.0'
+                };
+                
+                localStorage.setItem('backup_' + Date.now(), JSON.stringify(backupData));
+                
+                // Show success message
+                if (syncSuccess) {
+                    showMessage('adminSuccess', '✅ Todas as alterações foram salvas e sincronizadas com sucesso!', 'success');
+                } else {
+                    showMessage('adminSuccess', '✅ Alterações salvas localmente! Sincronização com nuvem será tentada novamente.', 'success');
+                }
+                
+                // Update stats to reflect any changes
+                updateStats();
+                
+                // Reload current tab data
+                const activeTab = document.querySelector('.tab-btn.active');
+                if (activeTab) {
+                    const tabText = activeTab.textContent.trim().toLowerCase();
+                    if (tabText.includes('clientes')) {
+                        loadClients();
+                    } else if (tabText.includes('agendamentos')) {
+                        loadAppointments();
+                    } else if (tabText.includes('serviços')) {
+                        loadServices();
+                        loadServicesDropdown(); // Update client dropdown too
+                    } else if (tabText.includes('dashboard')) {
+                        updateStats();
+                        loadBirthdayClients();
+                    }
+                }
+                
+            } catch (error) {
+                console.error('Erro ao salvar:', error);
+                showMessage('adminSuccess', '❌ Erro ao salvar alterações. Tente novamente.', 'error');
+            }
+        }
+
+        // Auto-save function (saves every 5 minutes)
+        function enableAutoSave() {
+            setInterval(() => {
+                if (currentUser && currentUser.role === 'admin') {
+                    try {
+                        localStorage.setItem('clients', JSON.stringify(clients));
+                        localStorage.setItem('appointments', JSON.stringify(appointments));
+                        localStorage.setItem('services', JSON.stringify(services));
+                        
+                        // Silent auto-save - no message shown
+                        console.log('Auto-save realizado:', new Date().toLocaleTimeString());
+                    } catch (error) {
+                        console.error('Erro no auto-save:', error);
+                    }
+                }
+            }, 5 * 60 * 1000); // 5 minutes
+        }
+
         // Initialize the application
-        document.addEventListener('DOMContentLoaded', function() {
+        document.addEventListener('DOMContentLoaded', async function() {
+            // Carregar dados do Supabase primeiro
+            await carregarDadosSupabase();
+            
+            // Load studio configurations
+            loadStudioConfig();
+            
             // Load initial data if admin panel is shown
             if (currentUser && currentUser.role === 'admin') {
                 updateStats();
@@ -3638,112 +4542,10 @@ Com carinho,
             
             // Load service images after a short delay to ensure DOM is ready
             setTimeout(loadServiceImages, 500);
+            
+            // Enable auto-save
+            enableAutoSave();
         });
     </script>
-<script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'98ffbde2207501ac',t:'MTc2MDcwMzUzOS4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
+<script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'9900865bd500f25e',t:'MTc2MDcxMTc1MS4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
 </html>
-<!-- 🔥 SINCRONIZAÇÃO SUPABASE -->
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-<script>
-  // ⚙️ CONFIGURAÇÃO DO SUPABASE
-  const SUPABASE_URL = 'https://hpenhkikpbykhfdwryob.supabase.co';
-  const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImhwZW5oa2lrcGJ5a2hmZHdyeW9iIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjA2NTQwOTIsImV4cCI6MjA3NjIzMDA5Mn0.xGWlQj38ixf7ScwGI-7LA4K7KuhKoYd3DcwrP8u18yE';
-  const supabase = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
-
-  // 🧩 FUNÇÃO UNIVERSAL PARA SALVAR CONFIGURAÇÕES DO ADMIN
-  async function salvarConfiguracoesAdmin(config) {
-    try {
-      const { error } = await supabase
-        .from('admin_config')
-        .upsert({ id: 1, ...config, updated_at: new Date() }, { onConflict: 'id' });
-      if (error) throw error;
-      console.log('✅ Configurações do admin salvas com sucesso no Supabase!');
-    } catch (err) {
-      console.error('❌ Erro ao salvar configurações do admin:', err.message);
-    }
-  
-  salvarConfiguracoesAdmin({
-  studio_name: document.querySelector('#studioNameInput').value,
-  studio_logo: document.querySelector('#logoInput').value,
-  background_image: document.querySelector('#bgInput').value
-});
-
-
-  // 📦 FUNÇÃO UNIVERSAL PARA SALVAR CLIENTES
-  async function salvarCliente(cliente) {
-    try {
-      const { error } = await supabase
-        .from('clientes')
-        .insert([{ ...cliente, created_at: new Date() }]);
-      if (error) throw error;
-      console.log('✅ Cliente salvo com sucesso no Supabase!');
-    } catch (err) {
-      console.error('❌ Erro ao salvar cliente:', err.message);
-    }
-  }
-      salvarCliente({
-  nome: document.querySelector('#nome').value,
-  telefone: document.querySelector('#telefone').value,
-  email: document.querySelector('#email').value,
-  servico: document.querySelector('#servico').value,
-  data: new Date().toISOString()
-});
-
-
-  // 📥 CARREGAR CONFIGURAÇÕES DO ADMIN AO ABRIR O SITE
-  async function carregarConfiguracoesAdmin() {
-    try {
-      const { data, error } = await supabase
-        .from('admin_config')
-        .select('*')
-        .eq('id', 1)
-        .single();
-
-      if (error) throw error;
-      if (data) aplicarConfiguracoesAdmin(data);
-    } catch (err) {
-      console.warn('⚠️ Nenhuma configuração de admin encontrada ainda.');
-    }
-  }
-
-  // 🎨 APLICAR CONFIGURAÇÕES NA INTERFACE
-  function aplicarConfiguracoesAdmin(data) {
-    // Ajuste os seletores abaixo conforme o seu HTML
-    if (data.studio_name && document.querySelector('#studioName'))
-      document.querySelector('#studioName').textContent = data.studio_name;
-
-    if (data.background_image)
-      document.body.style.backgroundImage = `url(${data.background_image})`;
-
-    if (data.studio_logo && document.querySelector('#studioLogo'))
-      document.querySelector('#studioLogo').src = data.studio_logo;
-
-    console.log('🎨 Configurações do admin aplicadas no site.');
-  }
-
-  // 🔁 Carregar automaticamente ao abrir
-  document.addEventListener('DOMContentLoaded', carregarConfiguracoesAdmin);
-
-  /* 
-  🪄 COMO USAR:
-  Quando o admin clicar em "Salvar", adicione esta linha no seu código JS existente:
-  
-  salvarConfiguracoesAdmin({
-    studio_name: document.querySelector('#studioNameInput').value,
-    studio_logo: document.querySelector('#logoInput').value,
-    background_image: document.querySelector('#bgInput').value
-  });
-
-  Quando uma cliente for cadastrada:
-  salvarCliente({
-    nome: nomeInput.value,
-    telefone: telefoneInput.value,
-    email: emailInput.value,
-    servico: servicoSelecionado.value,
-    data: new Date().toISOString()
-  });
-  */
-</script>
-<!-- 🔥 FIM DA SINCRONIZAÇÃO SUPABASE -->
-
-
