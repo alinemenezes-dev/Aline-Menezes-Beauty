@@ -3590,8 +3590,8 @@ Com carinho,
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script>
   // ⚙️ CONFIGURAÇÃO DO SUPABASE
-  const SUPABASE_URL = 'https://SEU_PROJETO.supabase.co';
-  const SUPABASE_KEY = 'SUA_CHAVE_ANON';
+  const SUPABASE_URL = 'https://hpenhkikpbykhfdwryob.supabase.co';
+  const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImhwZW5oa2lrcGJ5a2hmZHdyeW9iIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjA2NTQwOTIsImV4cCI6MjA3NjIzMDA5Mn0.xGWlQj38ixf7ScwGI-7LA4K7KuhKoYd3DcwrP8u18yE';
   const supabase = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
 
   // 🧩 FUNÇÃO UNIVERSAL PARA SALVAR CONFIGURAÇÕES DO ADMIN
@@ -3669,23 +3669,9 @@ Com carinho,
     nome: nomeInput.value,
     telefone: telefoneInput.value,
     email: emailInput.value,
-    servico: servicoSelecionado.value
+    servico: servicoSelecionado.value,
+    data: new Date().toISOString()
   });
   */
 </script>
 <!-- 🔥 FIM DA SINCRONIZAÇÃO SUPABASE -->
-// Exemplo: quando o admin clica em "Salvar Configurações"
-salvarConfiguracoesAdmin({
-  studio_name: document.querySelector('#studioNameInput').value,
-  background_image: document.querySelector('#bgInput').value,
-  studio_logo: document.querySelector('#logoInput').value
-});
-
-// Exemplo: quando uma cliente se cadastra
-salvarCliente({
-  nome: nomeInput.value,
-  email: emailInput.value,
-  telefone: telefoneInput.value,
-  servico: servicoSelecionado.value,
-  data: new Date().toISOString()
-});
