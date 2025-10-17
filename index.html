@@ -141,6 +141,18 @@
             background: #4285F4;
         }
 
+        .btn-catalog {
+            background: linear-gradient(45deg, #667eea, #764ba2);
+            color: white;
+            font-weight: 600;
+            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.4);
+        }
+
+        .btn-catalog:hover {
+            background: linear-gradient(45deg, #5a67d8, #6b46c1);
+            box-shadow: 0 8px 25px rgba(102, 126, 234, 0.6);
+        }
+
         .btn-client {
             background: linear-gradient(45deg, #FFD700, #FFA500);
             color: #000;
@@ -919,6 +931,85 @@
             color: white;
         }
 
+        /* Category Filter Buttons */
+        .category-btn {
+            padding: 12px 25px;
+            border: 2px solid #667eea;
+            background: white;
+            color: #667eea;
+            border-radius: 25px;
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 2px 10px rgba(102, 126, 234, 0.1);
+        }
+
+        .category-btn:hover {
+            background: #667eea;
+            color: white;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 15px rgba(102, 126, 234, 0.3);
+        }
+
+        .category-btn.active {
+            background: #667eea;
+            color: white;
+            box-shadow: 0 4px 15px rgba(102, 126, 234, 0.3);
+        }
+
+        /* Mobile responsive for category buttons */
+        @media (max-width: 768px) {
+            .category-btn {
+                padding: 12px 20px;
+                font-size: 14px;
+                min-width: 140px;
+            }
+            
+            .service-card-mobile {
+                margin-bottom: 15px;
+            }
+            
+            .service-header-mobile h4 {
+                font-size: 14px !important;
+            }
+            
+            .maintenance-grid-mobile {
+                grid-template-columns: 1fr !important;
+                gap: 10px !important;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .category-btn {
+                padding: 10px 16px;
+                font-size: 13px;
+                min-width: 110px;
+            }
+            
+            .service-card-mobile {
+                padding: 12px !important;
+                margin-bottom: 12px;
+            }
+            
+            .service-header-mobile h4 {
+                font-size: 13px !important;
+                line-height: 1.2 !important;
+            }
+            
+            .service-header-mobile p {
+                font-size: 12px !important;
+            }
+            
+            .service-header-mobile div[style*="font-size: 16px"] {
+                font-size: 15px !important;
+            }
+            
+            .service-header-mobile div[style*="font-size: 12px"] {
+                font-size: 11px !important;
+            }
+        }
+
         /* Birthday Section */
         .birthday-section {
             background: linear-gradient(135deg, #ff9a9e 0%, #fecfef 100%);
@@ -1298,6 +1389,13 @@
             </div>
             
             <div class="main-buttons">
+                <button class="btn btn-catalog" onclick="openModal('catalogModal')">
+                    <svg class="icon" viewBox="0 0 24 24">
+                        <path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zM9 17H7v-7h2v7zm4 0h-2V7h2v10zm4 0h-2v-4h2v4z"/>
+                    </svg>
+                    Catálogo de Serviços
+                </button>
+                
                 <button class="btn btn-client" onclick="openModal('clientModal')">
                     <svg class="icon" viewBox="0 0 24 24">
                         <path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/>
@@ -1363,9 +1461,11 @@
                 
                 <div style="text-align: center; margin-top: 20px;">
                     <p style="color: #636e72;">Primeira vez aqui?</p>
-                    <button type="button" class="btn" onclick="showRegisterForm()" style="background: #00b894; color: white; padding: 10px 20px; border: none; border-radius: 8px; cursor: pointer;">
-                        Fazer Cadastro
-                    </button>
+                    <div style="display: flex; justify-content: center;">
+                        <button type="button" class="btn" onclick="showRegisterForm()" style="background: #00b894; color: white; padding: 10px 20px; border: none; border-radius: 8px; cursor: pointer; max-width: 200px; width: 100%;">
+                            FAZER CADASTRO
+                        </button>
+                    </div>
                 </div>
             </div>
 
@@ -1389,8 +1489,51 @@
                 
                 <div style="text-align: center; margin-top: 20px;">
                     <p style="color: #636e72;">Já tem cadastro?</p>
-                    <button type="button" class="btn" onclick="showLoginForm()" style="background: #6c5ce7; color: white; padding: 10px 20px; border: none; border-radius: 8px; cursor: pointer;">
-                        Fazer Login
+                    <div style="display: flex; justify-content: center;">
+                        <button type="button" class="btn" onclick="showLoginForm()" style="background: #6c5ce7; color: white; padding: 10px 20px; border: none; border-radius: 8px; cursor: pointer; max-width: 200px; width: 100%;">
+                            FAZER LOGIN
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Catalog Modal -->
+    <div id="catalogModal" class="modal">
+        <div class="modal-content" style="max-width: 800px; max-height: 90vh; overflow-y: auto;">
+            <button class="close-btn" onclick="closeModal('catalogModal')">&times;</button>
+            <div class="modal-header">
+                <h2 class="modal-title">CATÁLOGO ALINE MENEZES BEAUTY</h2>
+                <p>CONHEÇA NOSSOS SERVIÇOS</p>
+                
+                <!-- Category Filter Buttons -->
+                <div style="display: flex; gap: 10px; justify-content: center; margin-top: 20px; flex-wrap: wrap; padding: 0 10px;">
+                    <button class="category-btn active" onclick="filterByCategory('cilios')" data-category="cilios" style="flex: 1; min-width: 120px; max-width: 150px;">
+                        💅 Cílios
+                    </button>
+                    <button class="category-btn" onclick="filterByCategory('sobrancelhas')" data-category="sobrancelhas" style="flex: 1; min-width: 120px; max-width: 150px;">
+                        ✨ Sobrancelhas
+                    </button>
+                </div>
+            </div>
+            
+            <div id="catalogContent" style="display: grid; gap: 20px;">
+                <!-- Services will be loaded here -->
+            </div>
+            
+            <div style="text-align: center; margin-top: 25px; padding: 15px; background: linear-gradient(135deg, #667eea, #764ba2); border-radius: 15px; color: white;">
+                <h3 style="margin: 0 0 10px 0; font-size: 18px;">✨ Pronta para se cuidar?</h3>
+                <p style="margin: 0 0 15px 0; font-size: 14px;">Faça seu agendamento e garante seu momento de autocuidado!</p>
+                <div style="display: flex; flex-direction: column; gap: 12px; align-items: center;">
+                    <button class="btn btn-client" onclick="closeModal('catalogModal'); openModal('clientModal');" style="background: white; color: #667eea; margin: 0; font-weight: 600; width: 100%; max-width: 280px; padding: 15px 20px; font-size: 15px;">
+                        📅 Agendar Agora
+                    </button>
+                    <button class="btn btn-whatsapp" onclick="shareCatalog()" style="background: #25D366; color: white; margin: 0; font-weight: 600; width: 100%; max-width: 280px; display: flex; align-items: center; justify-content: center; gap: 8px; padding: 15px 20px; font-size: 15px;">
+                        <svg class="icon" viewBox="0 0 24 24" style="width: 18px; height: 18px; fill: currentColor;">
+                            <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893A11.821 11.821 0 0020.885 3.085"/>
+                        </svg>
+                        Compartilhar Catálogo
                     </button>
                 </div>
             </div>
@@ -1711,13 +1854,66 @@
 
             <div id="addServiceForm" class="admin-section" style="display: none;">
                 <h4>Adicionar Novo Serviço</h4>
-                <form onsubmit="addService(event)" style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px;">
-                    <input type="text" id="newServiceName" placeholder="Nome do serviço" required>
-                    <input type="number" id="newServicePrice" placeholder="Preço (ex: 120.00)" step="0.01" min="0" required>
-                    <input type="number" id="newServiceDuration" placeholder="Duração em minutos" min="15" step="15" required>
-                    <textarea id="newServiceDescription" placeholder="Descrição (opcional)" style="grid-column: 1 / -1;"></textarea>
-                    <button type="submit" class="btn btn-admin">Adicionar Serviço</button>
-                    <button type="button" class="btn" onclick="hideAddServiceForm()" style="background: #6c757d;">Cancelar</button>
+                <form onsubmit="addService(event)" style="display: grid; gap: 20px;">
+                    <div class="form-group">
+                        <label for="newServiceName" class="form-label">Nome do Serviço</label>
+                        <input type="text" id="newServiceName" class="form-input" placeholder="Nome do serviço" required>
+                    </div>
+                    
+                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px;">
+                        <div class="form-group">
+                            <label for="newServicePrice" class="form-label">Preço (R$)</label>
+                            <input type="number" id="newServicePrice" class="form-input" placeholder="120.00" step="0.01" min="0" required>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="newServiceDuration" class="form-label">Duração (minutos)</label>
+                            <input type="number" id="newServiceDuration" class="form-input" placeholder="60" min="15" step="15" required>
+                        </div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="newServiceDescription" class="form-label">Descrição</label>
+                        <textarea id="newServiceDescription" class="form-input" rows="3" placeholder="Descrição do serviço (opcional)"></textarea>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="newServiceCategory" class="form-label">Categoria</label>
+                        <select id="newServiceCategory" class="form-input" required>
+                            <option value="">Selecione uma categoria</option>
+                            <option value="cilios">Cílios</option>
+                            <option value="sobrancelhas">Sobrancelhas</option>
+                        </select>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label class="form-label">Imagem do Serviço</label>
+                        <div style="display: flex; align-items: center; gap: 20px;">
+                            <div style="width: 120px; height: 120px; background: linear-gradient(135deg, #667eea, #764ba2); border-radius: 15px; display: flex; align-items: center; justify-content: center; box-shadow: 0 4px 15px rgba(102, 126, 234, 0.3); cursor: pointer; overflow: hidden;" onclick="document.getElementById('newServiceImageInput').click()">
+                                <div id="newServiceImagePreview" style="width: 100%; height: 100%; border-radius: 15px; background-size: cover; background-position: center; display: flex; align-items: center; justify-content: center; color: white; font-size: 14px; font-weight: 500; text-align: center; line-height: 1.3;">
+                                    📸<br>Clique para<br>Adicionar
+                                </div>
+                            </div>
+                            <div style="flex: 1;">
+                                <input type="file" id="newServiceImageInput" accept="image/*" style="display: none;" onchange="handleNewServiceImageUpload(event)">
+                                <button type="button" class="btn" onclick="document.getElementById('newServiceImageInput').click()" style="background: #667eea; color: white; margin-bottom: 10px; width: 100%;">
+                                    Escolher Imagem
+                                </button>
+                                <button type="button" class="btn" onclick="removeNewServiceImage()" style="background: #dc3545; color: white; width: 100%;">
+                                    Remover Imagem
+                                </button>
+                                <small style="color: #636e72; display: block; margin-top: 8px;">
+                                    Formatos aceitos: JPG, PNG, GIF<br>
+                                    Tamanho máximo: 5MB
+                                </small>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px;">
+                        <button type="submit" class="btn btn-admin">Adicionar Serviço</button>
+                        <button type="button" class="btn" onclick="hideAddServiceForm()" style="background: #6c757d;">Cancelar</button>
+                    </div>
                 </form>
             </div>
 
@@ -1801,31 +1997,59 @@
                 },
                 {
                     id: 9,
-                    name: "Manutenção Volume Brasileiro",
+                    name: "Manutenção Volume Brasileiro - Até 15 dias",
                     price: 60.00,
                     duration: 60,
-                    description: "Retoque do volume brasileiro"
+                    description: "Retoque do volume brasileiro até 15 dias"
                 },
                 {
                     id: 10,
-                    name: "Manutenção Volume Glamour",
-                    price: 75.00,
-                    duration: 75,
-                    description: "Retoque do volume glamour"
+                    name: "Manutenção Volume Brasileiro - Até 20 dias",
+                    price: 70.00,
+                    duration: 70,
+                    description: "Retoque do volume brasileiro até 20 dias"
                 },
                 {
                     id: 11,
-                    name: "Manutenção Volume Marrom",
-                    price: 70.00,
-                    duration: 70,
-                    description: "Retoque do volume marrom"
+                    name: "Manutenção Volume Glamour - Até 15 dias",
+                    price: 75.00,
+                    duration: 75,
+                    description: "Retoque do volume glamour até 15 dias"
                 },
                 {
                     id: 12,
-                    name: "Manutenção Volume Fox",
+                    name: "Manutenção Volume Glamour - Até 20 dias",
+                    price: 85.00,
+                    duration: 85,
+                    description: "Retoque do volume glamour até 20 dias"
+                },
+                {
+                    id: 13,
+                    name: "Manutenção Volume Marrom - Até 15 dias",
+                    price: 70.00,
+                    duration: 70,
+                    description: "Retoque do volume marrom até 15 dias"
+                },
+                {
+                    id: 14,
+                    name: "Manutenção Volume Marrom - Até 20 dias",
                     price: 80.00,
                     duration: 80,
-                    description: "Retoque do volume fox"
+                    description: "Retoque do volume marrom até 20 dias"
+                },
+                {
+                    id: 15,
+                    name: "Manutenção Volume Fox - Até 15 dias",
+                    price: 80.00,
+                    duration: 80,
+                    description: "Retoque do volume fox até 15 dias"
+                },
+                {
+                    id: 16,
+                    name: "Manutenção Volume Fox - Até 20 dias",
+                    price: 90.00,
+                    duration: 90,
+                    description: "Retoque do volume fox até 20 dias"
                 }
             ];
             localStorage.setItem('services', JSON.stringify(services));
@@ -1834,6 +2058,11 @@
         // Modal functions
         function openModal(modalId) {
             document.getElementById(modalId).style.display = 'block';
+            
+            // Load catalog content when opening catalog modal
+            if (modalId === 'catalogModal') {
+                loadCatalogContent();
+            }
         }
 
         function closeModal(modalId) {
@@ -2467,6 +2696,16 @@ Qualquer dúvida, estou à disposição! 💕
             document.getElementById('newServicePrice').value = '';
             document.getElementById('newServiceDuration').value = '';
             document.getElementById('newServiceDescription').value = '';
+            document.getElementById('newServiceCategory').value = '';
+            
+            // Clear image preview
+            const preview = document.getElementById('newServiceImagePreview');
+            if (preview) {
+                preview.style.backgroundImage = '';
+                preview.innerHTML = '📸<br>Clique para<br>Adicionar';
+                preview.dataset.imageData = '';
+            }
+            document.getElementById('newServiceImageInput').value = '';
         }
 
         function addService(event) {
@@ -2476,6 +2715,28 @@ Qualquer dúvida, estou à disposição! 💕
             const price = parseFloat(document.getElementById('newServicePrice').value);
             const duration = parseInt(document.getElementById('newServiceDuration').value);
             const description = document.getElementById('newServiceDescription').value.trim();
+            const category = document.getElementById('newServiceCategory').value;
+            
+            // Validate inputs
+            if (!name) {
+                alert('Nome do serviço é obrigatório!');
+                return;
+            }
+            
+            if (isNaN(price) || price <= 0) {
+                alert('Preço inválido!');
+                return;
+            }
+            
+            if (isNaN(duration) || duration <= 0) {
+                alert('Duração inválida!');
+                return;
+            }
+            
+            if (!category) {
+                alert('Categoria é obrigatória!');
+                return;
+            }
             
             // Check if service already exists
             const existingService = services.find(s => 
@@ -2487,22 +2748,71 @@ Qualquer dúvida, estou à disposição! 💕
                 return;
             }
             
+            const newServiceId = Date.now();
             const newService = {
-                id: Date.now(),
+                id: newServiceId,
                 name: name,
                 price: price,
                 duration: duration,
                 description: description,
+                category: category,
                 created: new Date().toISOString()
             };
             
             services.push(newService);
             localStorage.setItem('services', JSON.stringify(services));
             
+            // Handle image if uploaded
+            const preview = document.getElementById('newServiceImagePreview');
+            if (preview && preview.dataset.imageData) {
+                const serviceImages = JSON.parse(localStorage.getItem('serviceImages') || '{}');
+                const imageKey = `service-${newServiceId}`;
+                serviceImages[imageKey] = preview.dataset.imageData;
+                localStorage.setItem('serviceImages', JSON.stringify(serviceImages));
+            }
+            
             hideAddServiceForm();
             loadServices();
             loadServicesDropdown(); // Update client dropdown
             showMessage('adminSuccess', 'Serviço adicionado com sucesso!', 'success');
+        }
+
+        function handleNewServiceImageUpload(event) {
+            const file = event.target.files[0];
+            if (!file) return;
+            
+            // Check file size (max 5MB)
+            if (file.size > 5 * 1024 * 1024) {
+                alert('Imagem muito grande! Máximo 5MB.');
+                return;
+            }
+            
+            // Check file type
+            if (!file.type.startsWith('image/')) {
+                alert('Por favor, selecione apenas arquivos de imagem.');
+                return;
+            }
+            
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                const preview = document.getElementById('newServiceImagePreview');
+                if (preview) {
+                    preview.style.backgroundImage = `url(${e.target.result})`;
+                    preview.innerHTML = '';
+                    preview.dataset.imageData = e.target.result;
+                }
+            };
+            reader.readAsDataURL(file);
+        }
+
+        function removeNewServiceImage() {
+            const preview = document.getElementById('newServiceImagePreview');
+            if (preview) {
+                preview.style.backgroundImage = '';
+                preview.innerHTML = '📸<br>Clique para<br>Adicionar';
+                preview.dataset.imageData = '';
+            }
+            document.getElementById('newServiceImageInput').value = '';
         }
 
         function loadServices() {
@@ -2542,42 +2852,243 @@ Qualquer dúvida, estou à disposição! 💕
             const service = services.find(s => s.id === id);
             if (!service) return;
             
-            const newName = prompt('Nome do serviço:', service.name);
-            if (newName === null) return;
+            showEditServiceModal(service);
+        }
+
+        function showEditServiceModal(service) {
+            // Create modal HTML
+            const modalHTML = `
+                <div id="editServiceModal" class="modal" style="display: block;">
+                    <div class="modal-content" style="max-width: 600px; max-height: 90vh; overflow-y: auto;">
+                        <button class="close-btn" onclick="closeEditServiceModal()">&times;</button>
+                        <div class="modal-header">
+                            <h2 class="modal-title">Editar Serviço</h2>
+                            <p>Atualize as informações do serviço</p>
+                        </div>
+                        
+                        <form onsubmit="updateService(event, ${service.id})" style="display: grid; gap: 20px;">
+                            <div class="form-group">
+                                <label for="editServiceName" class="form-label">Nome do Serviço</label>
+                                <input type="text" id="editServiceName" class="form-input" value="${service.name}" required>
+                            </div>
+                            
+                            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px;">
+                                <div class="form-group">
+                                    <label for="editServicePrice" class="form-label">Preço (R$)</label>
+                                    <input type="number" id="editServicePrice" class="form-input" value="${service.price}" step="0.01" min="0" required>
+                                </div>
+                                
+                                <div class="form-group">
+                                    <label for="editServiceDuration" class="form-label">Duração (minutos)</label>
+                                    <input type="number" id="editServiceDuration" class="form-input" value="${service.duration}" min="15" step="15" required>
+                                </div>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label for="editServiceDescription" class="form-label">Descrição</label>
+                                <textarea id="editServiceDescription" class="form-input" rows="3" placeholder="Descrição do serviço (opcional)">${service.description || ''}</textarea>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label for="editServiceCategory" class="form-label">Categoria</label>
+                                <select id="editServiceCategory" class="form-input" required>
+                                    <option value="">Selecione uma categoria</option>
+                                    <option value="cilios" ${(service.category === 'cilios') ? 'selected' : ''}>Cílios</option>
+                                    <option value="sobrancelhas" ${(service.category === 'sobrancelhas') ? 'selected' : ''}>Sobrancelhas</option>
+                                </select>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label class="form-label">Imagem do Serviço</label>
+                                <div style="display: flex; align-items: center; gap: 20px;">
+                                    <div style="width: 120px; height: 120px; background: linear-gradient(135deg, #667eea, #764ba2); border-radius: 15px; display: flex; align-items: center; justify-content: center; box-shadow: 0 4px 15px rgba(102, 126, 234, 0.3); cursor: pointer; overflow: hidden;" onclick="document.getElementById('editServiceImageInput').click()">
+                                        <div id="editServiceImagePreview" style="width: 100%; height: 100%; border-radius: 15px; background-size: cover; background-position: center; display: flex; align-items: center; justify-content: center; color: white; font-size: 14px; font-weight: 500; text-align: center; line-height: 1.3;">
+                                            📸<br>Clique para<br>Adicionar
+                                        </div>
+                                    </div>
+                                    <div style="flex: 1;">
+                                        <input type="file" id="editServiceImageInput" accept="image/*" style="display: none;" onchange="handleEditServiceImageUpload(event)">
+                                        <button type="button" class="btn" onclick="document.getElementById('editServiceImageInput').click()" style="background: #667eea; color: white; margin-bottom: 10px; width: 100%;">
+                                            Escolher Imagem
+                                        </button>
+                                        <button type="button" class="btn" onclick="removeEditServiceImage()" style="background: #dc3545; color: white; width: 100%;">
+                                            Remover Imagem
+                                        </button>
+                                        <small style="color: #636e72; display: block; margin-top: 8px;">
+                                            Formatos aceitos: JPG, PNG, GIF<br>
+                                            Tamanho máximo: 5MB
+                                        </small>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-top: 20px;">
+                                <button type="submit" class="form-btn">Salvar Alterações</button>
+                                <button type="button" class="btn" onclick="closeEditServiceModal()" style="background: #6c757d; color: white;">Cancelar</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            `;
             
-            const newPrice = prompt('Preço (ex: 120.50):', service.price);
-            if (newPrice === null) return;
+            // Add modal to body
+            document.body.insertAdjacentHTML('beforeend', modalHTML);
             
-            const newDuration = prompt('Duração em minutos:', service.duration);
-            if (newDuration === null) return;
+            // Load existing image if available
+            loadEditServiceImage(service.id);
             
-            const newDescription = prompt('Descrição:', service.description || '');
-            if (newDescription === null) return;
+            // Auto-detect category if not set
+            if (!service.category) {
+                autoDetectServiceCategory(service.name);
+            }
+        }
+
+        function autoDetectServiceCategory(serviceName) {
+            const name = serviceName.toLowerCase();
+            const categorySelect = document.getElementById('editServiceCategory');
+            
+            if (name.includes('extensão') || name.includes('cílios') || name.includes('cilios') || 
+                name.includes('lash') || name.includes('volume') || 
+                (name.includes('manutenção') && (name.includes('volume') || name.includes('brasileiro') || 
+                name.includes('glamour') || name.includes('marrom') || name.includes('fox')))) {
+                categorySelect.value = 'cilios';
+            } else if (name.includes('sobrancelha') || name.includes('design') || 
+                       name.includes('brow') || name.includes('henna') || 
+                       name.includes('tintura') || name.includes('lamination')) {
+                categorySelect.value = 'sobrancelhas';
+            }
+        }
+
+        function loadEditServiceImage(serviceId) {
+            const serviceImages = JSON.parse(localStorage.getItem('serviceImages') || '{}');
+            const imageKey = `service-${serviceId}`;
+            
+            if (serviceImages[imageKey]) {
+                const preview = document.getElementById('editServiceImagePreview');
+                if (preview) {
+                    preview.style.backgroundImage = `url(${serviceImages[imageKey]})`;
+                    preview.innerHTML = '';
+                }
+            }
+        }
+
+        function handleEditServiceImageUpload(event) {
+            const file = event.target.files[0];
+            if (!file) return;
+            
+            // Check file size (max 5MB)
+            if (file.size > 5 * 1024 * 1024) {
+                alert('Imagem muito grande! Máximo 5MB.');
+                return;
+            }
+            
+            // Check file type
+            if (!file.type.startsWith('image/')) {
+                alert('Por favor, selecione apenas arquivos de imagem.');
+                return;
+            }
+            
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                const preview = document.getElementById('editServiceImagePreview');
+                if (preview) {
+                    preview.style.backgroundImage = `url(${e.target.result})`;
+                    preview.innerHTML = '';
+                    preview.dataset.imageData = e.target.result;
+                }
+            };
+            reader.readAsDataURL(file);
+        }
+
+        function removeEditServiceImage() {
+            const preview = document.getElementById('editServiceImagePreview');
+            if (preview) {
+                preview.style.backgroundImage = '';
+                preview.innerHTML = '📸<br>Clique para<br>Adicionar';
+                preview.dataset.imageData = '';
+            }
+            document.getElementById('editServiceImageInput').value = '';
+        }
+
+        function updateService(event, serviceId) {
+            event.preventDefault();
+            
+            const service = services.find(s => s.id === serviceId);
+            if (!service) return;
+            
+            const name = document.getElementById('editServiceName').value.trim();
+            const price = parseFloat(document.getElementById('editServicePrice').value);
+            const duration = parseInt(document.getElementById('editServiceDuration').value);
+            const description = document.getElementById('editServiceDescription').value.trim();
+            const category = document.getElementById('editServiceCategory').value;
             
             // Validate inputs
-            const price = parseFloat(newPrice);
-            const duration = parseInt(newDuration);
+            if (!name) {
+                alert('Nome do serviço é obrigatório!');
+                return;
+            }
             
             if (isNaN(price) || price <= 0) {
-                showMessage('adminSuccess', 'Preço inválido!', 'error');
+                alert('Preço inválido!');
                 return;
             }
             
             if (isNaN(duration) || duration <= 0) {
-                showMessage('adminSuccess', 'Duração inválida!', 'error');
+                alert('Duração inválida!');
                 return;
             }
             
-            service.name = newName.trim();
+            if (!category) {
+                alert('Categoria é obrigatória!');
+                return;
+            }
+            
+            // Check if another service has the same name (excluding current service)
+            const existingService = services.find(s => 
+                s.id !== serviceId && s.name.toLowerCase() === name.toLowerCase()
+            );
+            
+            if (existingService) {
+                alert('Já existe um serviço com este nome!');
+                return;
+            }
+            
+            // Update service
+            service.name = name;
             service.price = price;
             service.duration = duration;
-            service.description = newDescription.trim();
+            service.description = description;
+            service.category = category;
             service.updated = new Date().toISOString();
             
+            // Handle image
+            const preview = document.getElementById('editServiceImagePreview');
+            const serviceImages = JSON.parse(localStorage.getItem('serviceImages') || '{}');
+            const imageKey = `service-${serviceId}`;
+            
+            if (preview && preview.dataset.imageData) {
+                // New image uploaded
+                serviceImages[imageKey] = preview.dataset.imageData;
+            } else if (preview && preview.innerHTML.includes('📸')) {
+                // Image was removed
+                delete serviceImages[imageKey];
+            }
+            
+            // Save everything
             localStorage.setItem('services', JSON.stringify(services));
+            localStorage.setItem('serviceImages', JSON.stringify(serviceImages));
+            
+            closeEditServiceModal();
             loadServices();
             loadServicesDropdown(); // Update client dropdown
-            showMessage('adminSuccess', 'Serviço atualizado!', 'success');
+            showMessage('adminSuccess', 'Serviço atualizado com sucesso!', 'success');
+        }
+
+        function closeEditServiceModal() {
+            const modal = document.getElementById('editServiceModal');
+            if (modal) {
+                modal.remove();
+            }
         }
 
         function deleteService(id) {
@@ -2725,6 +3236,340 @@ Com carinho,
             });
         }
 
+        // Catalog Functions
+        let currentCategoryFilter = 'cilios';
+
+        function loadCatalogContent() {
+            filterByCategory(currentCategoryFilter);
+            // Load images after content is loaded
+            setTimeout(loadServiceImages, 100);
+        }
+
+        function filterByCategory(category) {
+            currentCategoryFilter = category;
+            
+            // Update active button
+            document.querySelectorAll('.category-btn').forEach(btn => {
+                btn.classList.remove('active');
+            });
+            document.querySelector(`[data-category="${category}"]`).classList.add('active');
+            
+            const catalogContent = document.getElementById('catalogContent');
+            catalogContent.innerHTML = '';
+            
+            // Group services by category
+            const categories = {
+                'Cílios': [],
+                'Sobrancelhas': []
+            };
+            
+            services.forEach(service => {
+                // Use the service's category if available, otherwise auto-detect
+                let serviceCategory = service.category;
+                
+                if (!serviceCategory) {
+                    const serviceName = service.name.toLowerCase();
+                    
+                    // Auto-categorize services for Cílios
+                    if (serviceName.includes('extensão') || 
+                        serviceName.includes('cílios') || 
+                        serviceName.includes('cilios') ||
+                        serviceName.includes('lash') ||
+                        serviceName.includes('volume') ||
+                        (serviceName.includes('manutenção') && (serviceName.includes('volume') || serviceName.includes('brasileiro') || serviceName.includes('glamour') || serviceName.includes('marrom') || serviceName.includes('fox')))) {
+                        serviceCategory = 'cilios';
+                    }
+                    // Auto-categorize services for Sobrancelhas
+                    else if (serviceName.includes('sobrancelha') || 
+                             serviceName.includes('design') || 
+                             serviceName.includes('brow') ||
+                             serviceName.includes('henna') ||
+                             serviceName.includes('tintura') ||
+                             serviceName.includes('lamination')) {
+                        serviceCategory = 'sobrancelhas';
+                    }
+                }
+                
+                // Add to appropriate category
+                if (serviceCategory === 'cilios') {
+                    categories['Cílios'].push(service);
+                } else if (serviceCategory === 'sobrancelhas') {
+                    categories['Sobrancelhas'].push(service);
+                }
+            });
+            
+            // Filter categories based on selection
+            let categoriesToShow = {};
+            if (category === 'all') {
+                categoriesToShow = categories;
+            } else if (category === 'cilios') {
+                categoriesToShow = { 'Cílios': categories['Cílios'] };
+            } else if (category === 'sobrancelhas') {
+                categoriesToShow = { 'Sobrancelhas': categories['Sobrancelhas'] };
+            }
+            
+            // Display each category
+            Object.keys(categoriesToShow).forEach(categoryName => {
+                if (categoriesToShow[categoryName].length > 0) {
+                    const categorySection = document.createElement('div');
+                    categorySection.innerHTML = `
+                        <div style="margin-bottom: 35px;">
+                            <h3 style="color: #2d3436; font-size: 22px; font-weight: 600; margin-bottom: 25px; padding: 15px 20px; background: linear-gradient(135deg, #667eea, #764ba2); color: white; border-radius: 15px; text-align: center; box-shadow: 0 4px 15px rgba(102, 126, 234, 0.3); text-transform: uppercase; letter-spacing: 1px;">
+                                ${categoryName}
+                            </h3>
+                            <div style="display: grid; gap: 15px;">
+                                ${categoriesToShow[categoryName].map(service => createServiceCard(service)).join('')}
+                            </div>
+                        </div>
+                    `;
+                    catalogContent.appendChild(categorySection);
+                }
+            });
+        }
+        
+        function getCategoryIcon(categoryName) {
+            return '';
+        }
+        
+        function createServiceCard(service) {
+            const serviceName = service.name.toLowerCase();
+            
+            // Check if this service has maintenance options (only specific volume services)
+            const hasMaintenanceOptions = (serviceName.includes('volume brasileiro') || 
+                                         serviceName.includes('volume marrom') || 
+                                         serviceName.includes('volume glamour') || 
+                                         serviceName.includes('volume fox')) && 
+                                        !serviceName.includes('manutenção');
+            
+            const isMaintenanceService = serviceName.includes('manutenção');
+            
+            // Skip maintenance services as they are now shown within main services
+            if (isMaintenanceService) {
+                return '';
+            }
+            
+            // Get maintenance prices for application services (only for services that have maintenance)
+            let maintenancePrices = { price15: null, price20: null };
+            if (hasMaintenanceOptions) {
+                // Find 15-day maintenance
+                const maintenance15 = services.find(s => {
+                    const maintenanceName = s.name.toLowerCase();
+                    return maintenanceName.includes('manutenção') && 
+                           maintenanceName.includes('15 dias') &&
+                           (serviceName.includes('brasileiro') && maintenanceName.includes('brasileiro') ||
+                            serviceName.includes('glamour') && maintenanceName.includes('glamour') ||
+                            serviceName.includes('marrom') && maintenanceName.includes('marrom') ||
+                            serviceName.includes('fox') && maintenanceName.includes('fox'));
+                });
+                
+                // Find 20-day maintenance
+                const maintenance20 = services.find(s => {
+                    const maintenanceName = s.name.toLowerCase();
+                    return maintenanceName.includes('manutenção') && 
+                           maintenanceName.includes('20 dias') &&
+                           (serviceName.includes('brasileiro') && maintenanceName.includes('brasileiro') ||
+                            serviceName.includes('glamour') && maintenanceName.includes('glamour') ||
+                            serviceName.includes('marrom') && maintenanceName.includes('marrom') ||
+                            serviceName.includes('fox') && maintenanceName.includes('fox'));
+                });
+                
+                if (maintenance15) maintenancePrices.price15 = maintenance15.price;
+                if (maintenance20) maintenancePrices.price20 = maintenance20.price;
+            }
+            
+            return `
+                <div class="service-card-mobile" style="background: white; padding: 15px; border-radius: 15px; box-shadow: 0 4px 15px rgba(0,0,0,0.1); border: 2px solid #f8f9fa; transition: all 0.3s ease; cursor: pointer;" onclick="toggleServiceDetails('service-${service.id}')">
+                    <div class="service-header-mobile" style="margin-bottom: 12px;">
+                        <h4 style="color: #2d3436; font-size: 15px; font-weight: 600; margin: 0 0 8px 0; line-height: 1.3;">
+                            ${service.name}
+                        </h4>
+                        ${service.description ? `<p style="color: #636e72; font-size: 13px; margin: 0 0 10px 0; line-height: 1.4;">${service.description}</p>` : ''}
+                        <div style="display: flex; justify-content: space-between; align-items: center; margin-top: 10px;">
+                            <div style="color: #00b894; font-size: 16px; font-weight: 700;">
+                                R$ ${service.price.toFixed(2).replace('.', ',')}
+                            </div>
+                            <div style="background: linear-gradient(45deg, #667eea, #764ba2); color: white; padding: 6px 12px; border-radius: 15px; font-weight: 500; font-size: 12px;">
+                                Ver Detalhes ▼
+                            </div>
+                        </div>
+                        <div style="color: #636e72; font-size: 11px; margin-top: 5px;">
+                            ⏱️ ${service.duration} min
+                        </div>
+                    </div>
+                    
+                    <div id="service-${service.id}" style="display: none; margin-top: 15px; padding-top: 15px; border-top: 2px solid #f8f9fa;">
+                        <div style="background: linear-gradient(135deg, #f8f9ff, #e8f2ff); padding: 15px; border-radius: 15px; border: 2px solid #667eea;">
+                            <div style="text-align: center; margin-bottom: 15px;">
+                                <div style="width: 100px; height: 100px; margin: 0 auto 12px auto; background: linear-gradient(135deg, #667eea, #764ba2); border-radius: 15px; display: flex; align-items: center; justify-content: center; box-shadow: 0 4px 15px rgba(102, 126, 234, 0.3); overflow: hidden;">
+                                    <div id="service-image-${service.id}" style="width: 100%; height: 100%; border-radius: 15px; background-size: cover; background-position: center; display: flex; align-items: center; justify-content: center; color: white; font-size: 12px; font-weight: 500; text-align: center; line-height: 1.2;">
+                                        ${getServiceImageOrPlaceholder(service.id)}
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <h5 style="color: #2d3436; margin: 0 0 12px 0; font-size: 14px; font-weight: 600; text-align: center;">${service.name}</h5>
+                            
+                            ${service.description ? `
+                                <div style="background: white; padding: 12px; border-radius: 10px; margin-bottom: 12px; text-align: center;">
+                                    <div style="color: #2d3436; font-size: 12px; font-weight: 500; margin-bottom: 5px;">📝 Descrição</div>
+                                    <div style="color: #636e72; font-size: 11px; line-height: 1.4;">${service.description}</div>
+                                </div>
+                            ` : ''}
+                            
+                            ${hasMaintenanceOptions ? `
+                                <div class="maintenance-grid-mobile" style="display: grid; grid-template-columns: 1fr; gap: 8px; margin-bottom: 12px;">
+                                    <div style="background: white; padding: 12px; border-radius: 10px; text-align: center; box-shadow: 0 2px 10px rgba(0,0,0,0.05);">
+                                        <div style="color: #667eea; font-weight: 600; font-size: 11px; margin-bottom: 6px;">✨ APLICAÇÃO COMPLETA</div>
+                                        <div style="color: #2d3436; font-size: 16px; font-weight: 700;">R$ ${service.price.toFixed(2).replace('.', ',')}</div>
+                                        <div style="color: #636e72; font-size: 10px; margin-top: 3px;">⏱️ ${service.duration} min</div>
+                                    </div>
+                                    
+                                    <div style="background: white; padding: 12px; border-radius: 10px; text-align: center; box-shadow: 0 2px 10px rgba(0,0,0,0.05);">
+                                        <div style="color: #00b894; font-weight: 600; font-size: 11px; margin-bottom: 6px;">🔄 MANUTENÇÃO ATÉ 15 DIAS</div>
+                                        <div style="color: #2d3436; font-size: 16px; font-weight: 700;">R$ ${maintenancePrices.price15 ? maintenancePrices.price15.toFixed(2).replace('.', ',') : '60,00'}</div>
+                                        <div style="color: #636e72; font-size: 10px; margin-top: 3px;">⏱️ 60-75 min</div>
+                                    </div>
+                                    
+                                    <div style="background: white; padding: 12px; border-radius: 10px; text-align: center; box-shadow: 0 2px 10px rgba(0,0,0,0.05);">
+                                        <div style="color: #e17055; font-weight: 600; font-size: 11px; margin-bottom: 6px;">🔄 MANUTENÇÃO ATÉ 20 DIAS</div>
+                                        <div style="color: #2d3436; font-size: 16px; font-weight: 700;">R$ ${maintenancePrices.price20 ? maintenancePrices.price20.toFixed(2).replace('.', ',') : '70,00'}</div>
+                                        <div style="color: #636e72; font-size: 10px; margin-top: 3px;">⏱️ 70-90 min</div>
+                                    </div>
+                                </div>
+                                
+                                <div style="background: rgba(102, 126, 234, 0.1); padding: 12px; border-radius: 10px; text-align: center;">
+                                    <div style="color: #2d3436; font-size: 12px; font-weight: 500; margin-bottom: 6px;">📅 Recomendação</div>
+                                    <div style="color: #636e72; font-size: 11px; line-height: 1.4;">
+                                        Manutenção a cada <strong>15-20 dias</strong><br>
+                                        <small style="color: #e17055; font-weight: 500;">⚠️ Após 20 dias: valor de nova aplicação</small>
+                                    </div>
+                                </div>
+                            ` : `
+                                <div style="display: grid; grid-template-columns: 1fr; gap: 10px; margin-bottom: 12px;">
+                                    <div style="background: white; padding: 15px; border-radius: 12px; text-align: center; box-shadow: 0 2px 10px rgba(0,0,0,0.05);">
+                                        <div style="color: #667eea; font-weight: 600; font-size: 14px; margin-bottom: 8px;">💰 VALOR</div>
+                                        <div style="color: #2d3436; font-size: 20px; font-weight: 700; margin-bottom: 6px;">R$ ${service.price.toFixed(2).replace('.', ',')}</div>
+                                        <div style="color: #636e72; font-size: 12px;">⏱️ Duração: ${service.duration} minutos</div>
+                                    </div>
+                                </div>
+                            `}
+                        </div>
+                    </div>
+                </div>
+            `;
+        }
+
+        // Toggle service details function
+        function toggleServiceDetails(serviceId) {
+            const detailsElement = document.getElementById(serviceId);
+            if (detailsElement) {
+                if (detailsElement.style.display === 'none' || detailsElement.style.display === '') {
+                    detailsElement.style.display = 'block';
+                    detailsElement.style.animation = 'slideDown 0.3s ease';
+                } else {
+                    detailsElement.style.display = 'none';
+                }
+            }
+        }
+
+        // Image handling functions
+        function selectServiceImage(serviceId) {
+            const inputId = 'image-input-' + serviceId.replace('service-', '');
+            document.getElementById(inputId).click();
+        }
+
+        function handleImageUpload(event, serviceId) {
+            const file = event.target.files[0];
+            if (!file) return;
+            
+            // Check file size (max 5MB)
+            if (file.size > 5 * 1024 * 1024) {
+                alert('Imagem muito grande! Máximo 5MB.');
+                return;
+            }
+            
+            // Check file type
+            if (!file.type.startsWith('image/')) {
+                alert('Por favor, selecione apenas arquivos de imagem.');
+                return;
+            }
+            
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                const imageElement = document.getElementById('service-image-' + serviceId.replace('service-', ''));
+                if (imageElement) {
+                    imageElement.style.backgroundImage = `url(${e.target.result})`;
+                    imageElement.innerHTML = '';
+                    
+                    // Save image to localStorage
+                    const serviceImages = JSON.parse(localStorage.getItem('serviceImages') || '{}');
+                    serviceImages[serviceId] = e.target.result;
+                    localStorage.setItem('serviceImages', JSON.stringify(serviceImages));
+                }
+            };
+            reader.readAsDataURL(file);
+        }
+
+        function loadServiceImages() {
+            const serviceImages = JSON.parse(localStorage.getItem('serviceImages') || '{}');
+            Object.keys(serviceImages).forEach(serviceId => {
+                const imageElement = document.getElementById('service-image-' + serviceId.replace('service-', ''));
+                if (imageElement) {
+                    imageElement.style.backgroundImage = `url(${serviceImages[serviceId]})`;
+                    imageElement.innerHTML = '';
+                }
+            });
+        }
+
+        // Function to get service image or placeholder
+        function getServiceImageOrPlaceholder(serviceId) {
+            const serviceImages = JSON.parse(localStorage.getItem('serviceImages') || '{}');
+            const imageKey = `service-${serviceId}`;
+            
+            if (serviceImages[imageKey]) {
+                return `<div style="width: 100%; height: 100%; background-image: url(${serviceImages[imageKey]}); background-size: cover; background-position: center; border-radius: 15px;"></div>`;
+            } else {
+                return '💅<br>Imagem<br>Indisponível';
+            }
+        }
+
+        // Share catalog function
+        function shareCatalog() {
+            const catalogUrl = window.location.href;
+            
+            const message = `✨ *ALINE MENEZES BEAUTY* ✨
+
+Olá! 😊 Gostaria de compartilhar com você nosso catálogo completo de serviços!
+
+💅 *NOSSOS SERVIÇOS:*
+• Extensão de Cílios (Volume Brasileiro, Glamour, Marrom, Fox)
+• Design de Sobrancelhas Personalizado
+• Brow Lamination
+• Lash Lifting
+• Manutenções com preços especiais
+
+🎯 *VANTAGENS:*
+✅ Profissional especializada
+✅ Produtos de alta qualidade
+✅ Ambiente aconchegante e higienizado
+✅ Atendimento personalizado
+✅ Preços justos e parcelamento
+
+📍 *LOCALIZAÇÃO:*
+Rua Manoel de Campos Salles, 461 - Sala 01
+São Cristóvão, Chapecó - SC
+
+🔗 *ACESSE NOSSO CATÁLOGO COMPLETO:*
+${catalogUrl}
+
+📱 Entre em contato para agendar seu horário!
+
+*Transforme seu olhar, eleve sua autoestima!* 💕`;
+
+            const whatsappUrl = `https://wa.me/?text=${encodeURIComponent(message)}`;
+            window.open(whatsappUrl, '_blank', 'noopener,noreferrer');
+        }
+
         // Initialize the application
         document.addEventListener('DOMContentLoaded', function() {
             // Load initial data if admin panel is shown
@@ -2732,7 +3577,10 @@ Com carinho,
                 updateStats();
                 loadBirthdayClients();
             }
+            
+            // Load service images after a short delay to ensure DOM is ready
+            setTimeout(loadServiceImages, 500);
         });
     </script>
-<script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'98ff5f0323dcc02a',t:'MTc2MDY5OTY1My4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
+<script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'98ffa28c80e3c02a',t:'MTc2MDcwMjQyMC4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
 </html>
