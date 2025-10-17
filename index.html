@@ -3586,3 +3586,91 @@ Com carinho,
     </script>
 <script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'98ffbde2207501ac',t:'MTc2MDcwMzUzOS4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
 </html>
+<!-- 🔥 SINCRONIZAÇÃO SUPABASE -->
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script>
+  // ⚙️ CONFIGURAÇÃO DO SUPABASE
+  const SUPABASE_URL = 'https://SEU_PROJETO.supabase.co';
+  const SUPABASE_KEY = 'SUA_CHAVE_ANON';
+  const supabase = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+
+  // 🧩 FUNÇÃO UNIVERSAL PARA SALVAR CONFIGURAÇÕES DO ADMIN
+  async function salvarConfiguracoesAdmin(config) {
+    try {
+      const { error } = await supabase
+        .from('admin_config')
+        .upsert({ id: 1, ...config, updated_at: new Date() }, { onConflict: 'id' });
+      if (error) throw error;
+      console.log('✅ Configurações do admin salvas com sucesso no Supabase!');
+    } catch (err) {
+      console.error('❌ Erro ao salvar configurações do admin:', err.message);
+    }
+  }
+
+  // 📦 FUNÇÃO UNIVERSAL PARA SALVAR CLIENTES
+  async function salvarCliente(cliente) {
+    try {
+      const { error } = await supabase
+        .from('clientes')
+        .insert([{ ...cliente, created_at: new Date() }]);
+      if (error) throw error;
+      console.log('✅ Cliente salvo com sucesso no Supabase!');
+    } catch (err) {
+      console.error('❌ Erro ao salvar cliente:', err.message);
+    }
+  }
+
+  // 📥 CARREGAR CONFIGURAÇÕES DO ADMIN AO ABRIR O SITE
+  async function carregarConfiguracoesAdmin() {
+    try {
+      const { data, error } = await supabase
+        .from('admin_config')
+        .select('*')
+        .eq('id', 1)
+        .single();
+
+      if (error) throw error;
+      if (data) aplicarConfiguracoesAdmin(data);
+    } catch (err) {
+      console.warn('⚠️ Nenhuma configuração de admin encontrada ainda.');
+    }
+  }
+
+  // 🎨 APLICAR CONFIGURAÇÕES NA INTERFACE
+  function aplicarConfiguracoesAdmin(data) {
+    // Ajuste os seletores abaixo conforme o seu HTML
+    if (data.studio_name && document.querySelector('#studioName'))
+      document.querySelector('#studioName').textContent = data.studio_name;
+
+    if (data.background_image)
+      document.body.style.backgroundImage = `url(${data.background_image})`;
+
+    if (data.studio_logo && document.querySelector('#studioLogo'))
+      document.querySelector('#studioLogo').src = data.studio_logo;
+
+    console.log('🎨 Configurações do admin aplicadas no site.');
+  }
+
+  // 🔁 Carregar automaticamente ao abrir
+  document.addEventListener('DOMContentLoaded', carregarConfiguracoesAdmin);
+
+  /* 
+  🪄 COMO USAR:
+  Quando o admin clicar em "Salvar", adicione esta linha no seu código JS existente:
+  
+  salvarConfiguracoesAdmin({
+    studio_name: document.querySelector('#studioNameInput').value,
+    studio_logo: document.querySelector('#logoInput').value,
+    background_image: document.querySelector('#bgInput').value
+  });
+
+  Quando uma cliente for cadastrada:
+  salvarCliente({
+    nome: nomeInput.value,
+    telefone: telefoneInput.value,
+    email: emailInput.value,
+    servico: servicoSelecionado.value
+  });
+  */
+</script>
+<!-- 🔥 FIM DA SINCRONIZAÇÃO SUPABASE -->
