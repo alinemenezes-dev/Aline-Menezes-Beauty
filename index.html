@@ -211,6 +211,7 @@
             animation: modalSlideIn 0.3s ease;
             max-height: 90vh;
             overflow-y: auto;
+            -webkit-overflow-scrolling: touch;
         }
 
         @keyframes modalSlideIn {
@@ -993,12 +994,16 @@
             .modal-content {
                 width: 95%;
                 max-width: none;
-                padding: 20px;
-                margin: 5px;
+                padding: 25px 20px;
+                margin: 0;
                 border-radius: 15px;
                 max-height: 95vh;
                 top: 2.5vh;
-                transform: translate(-50%, 0);
+                left: 2.5%;
+                transform: none;
+                position: fixed;
+                overflow-y: auto;
+                -webkit-overflow-scrolling: touch;
             }
 
             .modal-title {
@@ -1191,11 +1196,15 @@
             }
 
             .modal-content {
-                padding: 15px;
+                padding: 20px 15px;
                 width: 98%;
-                margin: 1%;
+                margin: 0;
                 top: 1vh;
+                left: 1%;
                 max-height: 98vh;
+                transform: none;
+                position: fixed;
+                border-radius: 12px;
             }
 
             .modal-title {
@@ -1268,8 +1277,12 @@
 
             .close-btn {
                 top: 10px;
-                right: 15px;
-                font-size: 20px;
+                right: 10px;
+                font-size: 22px;
+                width: 35px;
+                height: 35px;
+                background: #f1f2f6;
+                border-radius: 50%;
             }
         }
     </style>
@@ -2721,5 +2734,5 @@ Com carinho,
             }
         });
     </script>
-<script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'98ff5a632681190e',t:'MTc2MDY5OTQ2NC4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
+<script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'98ff5f0323dcc02a',t:'MTc2MDY5OTY1My4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
 </html>
