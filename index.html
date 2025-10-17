@@ -2369,14 +2369,44 @@
 
         function openUber() {
             const address = 'Rua Manoel de Campos Salles, 461 - Sala 01, São Cristóvão, Chapecó - SC, 89804-092';
-            const url = `https://m.uber.com/ul/?action=setPickup&pickup=my_location&dropoff[formatted_address]=${encodeURIComponent(address)}`;
-            window.open(url, '_blank', 'noopener,noreferrer');
+            const latitude = '-27.0945';
+            const longitude = '-52.6166';
+            
+            // Try multiple Uber URL formats for better compatibility
+            const urls = [
+                `uber://?action=setPickup&pickup=my_location&dropoff[formatted_address]=${encodeURIComponent(address)}&dropoff[latitude]=${latitude}&dropoff[longitude]=${longitude}`,
+                `https://m.uber.com/ul/?action=setPickup&pickup=my_location&dropoff[formatted_address]=${encodeURIComponent(address)}&dropoff[latitude]=${latitude}&dropoff[longitude]=${longitude}`,
+                `https://uber.com/go/?pickup=my_location&dropoff=${encodeURIComponent(address)}`
+            ];
+            
+            // Try to open the app first, then fallback to web
+            window.open(urls[0], '_blank', 'noopener,noreferrer');
+            
+            // Fallback to web version after a short delay
+            setTimeout(() => {
+                window.open(urls[1], '_blank', 'noopener,noreferrer');
+            }, 1000);
         }
 
         function open99() {
             const address = 'Rua Manoel de Campos Salles, 461 - Sala 01, São Cristóvão, Chapecó - SC, 89804-092';
-            const url = `https://99app.com/ride?destination=${encodeURIComponent(address)}`;
-            window.open(url, '_blank', 'noopener,noreferrer');
+            const latitude = '-27.0945';
+            const longitude = '-52.6166';
+            
+            // Try multiple 99 URL formats for better compatibility
+            const urls = [
+                `99app://ride?destination=${encodeURIComponent(address)}&destination_lat=${latitude}&destination_lng=${longitude}`,
+                `https://99app.com/ride?destination=${encodeURIComponent(address)}&destination_lat=${latitude}&destination_lng=${longitude}`,
+                `https://99app.com/request?destination=${encodeURIComponent(address)}`
+            ];
+            
+            // Try to open the app first, then fallback to web
+            window.open(urls[0], '_blank', 'noopener,noreferrer');
+            
+            // Fallback to web version after a short delay
+            setTimeout(() => {
+                window.open(urls[1], '_blank', 'noopener,noreferrer');
+            }, 1000);
         }
 
         // Admin Tab Management
@@ -3582,5 +3612,5 @@ ${catalogUrl}
             setTimeout(loadServiceImages, 500);
         });
     </script>
-<script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'98ffa28c80e3c02a',t:'MTc2MDcwMjQyMC4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
+<script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'98ffad1b72e400e0',t:'MTc2MDcwMjg1Mi4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
 </html>
