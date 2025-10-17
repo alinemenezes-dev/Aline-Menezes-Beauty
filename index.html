@@ -3674,3 +3674,18 @@ Com carinho,
   */
 </script>
 <!-- 🔥 FIM DA SINCRONIZAÇÃO SUPABASE -->
+// Exemplo: quando o admin clica em "Salvar Configurações"
+salvarConfiguracoesAdmin({
+  studio_name: document.querySelector('#studioNameInput').value,
+  background_image: document.querySelector('#bgInput').value,
+  studio_logo: document.querySelector('#logoInput').value
+});
+
+// Exemplo: quando uma cliente se cadastra
+salvarCliente({
+  nome: nomeInput.value,
+  email: emailInput.value,
+  telefone: telefoneInput.value,
+  servico: servicoSelecionado.value,
+  data: new Date().toISOString()
+});
