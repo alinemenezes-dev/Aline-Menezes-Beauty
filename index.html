@@ -193,6 +193,8 @@
             background: rgba(0,0,0,0.8);
             z-index: 1000;
             backdrop-filter: blur(5px);
+            overflow-y: auto;
+            -webkit-overflow-scrolling: touch;
         }
 
         .modal-content {
@@ -207,6 +209,8 @@
             max-width: 500px;
             box-shadow: 0 20px 60px rgba(0,0,0,0.3);
             animation: modalSlideIn 0.3s ease;
+            max-height: 90vh;
+            overflow-y: auto;
         }
 
         @keyframes modalSlideIn {
@@ -989,8 +993,12 @@
             .modal-content {
                 width: 95%;
                 max-width: none;
-                padding: 25px;
-                margin: 10px;
+                padding: 20px;
+                margin: 5px;
+                border-radius: 15px;
+                max-height: 95vh;
+                top: 2.5vh;
+                transform: translate(-50%, 0);
             }
 
             .modal-title {
@@ -1003,9 +1011,11 @@
             }
 
             .client-panel-content {
-                margin: 10px;
+                margin: 5px;
                 padding: 15px;
                 border-radius: 15px;
+                max-height: none;
+                overflow-y: visible;
             }
 
             .panel-header h1 {
@@ -1181,7 +1191,25 @@
             }
 
             .modal-content {
-                padding: 20px;
+                padding: 15px;
+                width: 98%;
+                margin: 1%;
+                top: 1vh;
+                max-height: 98vh;
+            }
+
+            .modal-title {
+                font-size: 18px;
+            }
+
+            .form-input {
+                padding: 12px 15px;
+                font-size: 16px;
+            }
+
+            .form-btn {
+                padding: 15px;
+                font-size: 16px;
             }
 
             .calendar {
@@ -1212,6 +1240,36 @@
             .client-actions button {
                 padding: 8px 12px;
                 font-size: 13px;
+            }
+
+            .panel {
+                padding: 0;
+                margin: 0;
+            }
+
+            .panel-header {
+                padding: 15px;
+                margin-bottom: 20px;
+            }
+
+            .panel-header h1 {
+                font-size: 20px;
+            }
+
+            .admin-section {
+                margin: 10px 5px;
+                padding: 12px;
+            }
+
+            .booking-section {
+                margin: 15px 0;
+                padding: 15px;
+            }
+
+            .close-btn {
+                top: 10px;
+                right: 15px;
+                font-size: 20px;
             }
         }
     </style>
@@ -2663,5 +2721,5 @@ Com carinho,
             }
         });
     </script>
-<script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'98ff5512672d190e',t:'MTc2MDY5OTI0Ni4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
+<script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'98ff5a632681190e',t:'MTc2MDY5OTQ2NC4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
 </html>
