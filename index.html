@@ -1,93 +1,617 @@
-<!DOCTYPE html>
-<html lang="pt-br">
-<head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>Catálogo de Beleza Interativo</title>
-  <link rel="stylesheet" href="style.css" />
-</head>
-<body>
-  <header>
-    <div class="header-inner">
-      <h1>✨ Catálogo de Beleza Interativo ✨</h1>
-      <div class="header-actions">
-        <button id="toggleThemeBtn" class="ghost">🌙</button>
-        <button id="accessClientBtn">Acesso Cliente</button>
-        <button id="accessAdminBtn">Acesso Admin</button>
-      </div>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+    <div class="background-overlay"></div>
+    
+    <!-- Landing Page -->
+    <div id="landingPage" class="container">
+        <div class="main-content-overlay">
+            <div class="logo-container">
+                <div class="studio-name">ALINE MENEZES BEAUTY</div>
+            </div>
+            
+            <div class="main-buttons">
+                <button class="btn btn-client" onclick="openModal('clientModal')">
+                    <svg class="icon" viewBox="0 0 24 24">
+                        <path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/>
+                    </svg>
+                    Login Cliente
+                </button>
+                
+                <button class="btn btn-admin" onclick="openModal('adminModal')">
+                    <svg class="icon" viewBox="0 0 24 24">
+                        <path d="M12 1L3 5v6c0 5.55 3.84 10.74 9 12 5.16-1.26 9-6.45 9-12V5l-9-4z"/>
+                    </svg>
+                    Login Admin
+                </button>
+                
+                <a href="https://instagram.com/alinemenezes.beauty" target="_blank" rel="noopener noreferrer" class="btn btn-instagram">
+                    <svg class="icon" viewBox="0 0 24 24">
+                        <path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/>
+                    </svg>
+                    Instagram
+                </a>
+                
+                <a href="https://wa.me/5549998200000" target="_blank" rel="noopener noreferrer" class="btn btn-whatsapp">
+                    <svg class="icon" viewBox="0 0 24 24">
+                        <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893A11.821 11.821 0 0020.885 3.085"/>
+                    </svg>
+                    WhatsApp
+                </a>
+                
+                <button class="btn btn-maps" onclick="openLocationModal()">
+                    <svg class="icon" viewBox="0 0 24 24">
+                        <path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"/>
+                    </svg>
+                    Como Chegar
+                </button>
+            </div>
+        </div>
     </div>
-  </header>
 
-  <main>
-    <div class="controls">
-      <button id="refreshBtn" class="ghost">🔄 Atualizar Galeria</button>
-      <input id="searchInput" placeholder="Pesquisar serviços..." />
+    <!-- Client Login Modal -->
+    <div id="clientModal" class="modal">
+        <div class="modal-content">
+            <button class="close-btn" onclick="closeModal('clientModal')">&times;</button>
+            <div class="modal-header">
+                <h2 class="modal-title">Área do Cliente</h2>
+                <p>Faça seu cadastro ou login para agendar</p>
+            </div>
+            
+            <div id="clientMsg" style="margin-bottom: 15px; padding: 10px; border-radius: 8px; text-align: center; display: none;"></div>
+            
+            <!-- Login Form -->
+            <div id="clientLoginForm">
+                <form onsubmit="loginClient(event)">
+                    <div class="form-group">
+                        <label for="loginName" class="form-label">Nome Completo</label>
+                        <input type="text" id="loginName" class="form-input" placeholder="Digite seu nome completo" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="loginWhatsapp" class="form-label">WhatsApp</label>
+                        <input type="tel" id="loginWhatsapp" class="form-input" placeholder="(49) 99999-9999" required>
+                    </div>
+                    <button type="submit" class="form-btn">Entrar</button>
+                </form>
+                
+                <div style="text-align: center; margin-top: 20px;">
+                    <p style="color: #636e72;">Primeira vez aqui?</p>
+                    <button type="button" class="btn" onclick="showRegisterForm()" style="background: #00b894; color: white; padding: 10px 20px; border: none; border-radius: 8px; cursor: pointer;">
+                        Fazer Cadastro
+                    </button>
+                </div>
+            </div>
+
+            <!-- Register Form -->
+            <div id="clientRegisterForm" style="display: none;">
+                <form onsubmit="registerClient(event)">
+                    <div class="form-group">
+                        <label for="registerName" class="form-label">Nome Completo</label>
+                        <input type="text" id="registerName" class="form-input" placeholder="Digite seu nome completo" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="registerBirthdate" class="form-label">Data de Nascimento</label>
+                        <input type="date" id="registerBirthdate" class="form-input" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="registerWhatsapp" class="form-label">WhatsApp</label>
+                        <input type="tel" id="registerWhatsapp" class="form-input" placeholder="(49) 99999-9999" required>
+                    </div>
+                    <button type="submit" class="form-btn">Cadastrar</button>
+                </form>
+                
+                <div style="text-align: center; margin-top: 20px;">
+                    <p style="color: #636e72;">Já tem cadastro?</p>
+                    <button type="button" class="btn" onclick="showLoginForm()" style="background: #6c5ce7; color: white; padding: 10px 20px; border: none; border-radius: 8px; cursor: pointer;">
+                        Fazer Login
+                    </button>
+                </div>
+            </div>
+        </div>
     </div>
 
-    <!-- GALERIA PÚBLICA -->
-    <section id="publicCatalog" class="visible">
-      <h2>Nossos Serviços</h2>
-      <div class="catalog-grid" id="catalogGrid"></div>
-      <div id="noResults" class="empty" style="display:none;">Nenhuma imagem encontrada.</div>
-    </section>
+    <!-- Location Modal -->
+    <div id="locationModal" class="modal">
+        <div class="modal-content">
+            <button class="close-btn" onclick="closeModal('locationModal')">&times;</button>
+            <div class="modal-header">
+                <h2 class="modal-title">Como Chegar</h2>
+                <p>Escolha sua forma de transporte</p>
+            </div>
+            
+            <div style="margin-bottom: 25px; padding: 20px; background: #f8f9fa; border-radius: 15px; text-align: center;">
+                <h3 style="margin: 0 0 10px 0; color: #2d3436; font-size: 18px;">📍 Nosso Endereço</h3>
+                <p style="margin: 0; color: #636e72; font-size: 16px; line-height: 1.5;">
+                    Rua Manoel de Campos Salles, 461 - Sala 01<br>
+                    Bairro São Cristóvão<br>
+                    Chapecó - SC, CEP 89804-092
+                </p>
+            </div>
+            
+            <div style="display: flex; flex-direction: column; gap: 15px;">
+                <button class="btn btn-maps" onclick="openMaps()" style="margin: 0;">
+                    <svg class="icon" viewBox="0 0 24 24">
+                        <path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"/>
+                    </svg>
+                    Abrir no Google Maps
+                </button>
+                
+                <button class="btn btn-uber" onclick="openUber()" style="margin: 0;">
+                    <svg class="icon" viewBox="0 0 24 24">
+                        <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-1 5h2v2h-2V7zm0 4h2v6h-2v-6z"/>
+                    </svg>
+                    Chamar Uber
+                </button>
+                
+                <button class="btn btn-99" onclick="open99()" style="margin: 0;">
+                    <svg class="icon" viewBox="0 0 24 24">
+                        <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-1 5h2v2h-2V7zm0 4h2v6h-2v-6z"/>
+                        <text x="12" y="16" text-anchor="middle" fill="currentColor" font-size="8" font-weight="bold">99</text>
+                    </svg>
+                    Chamar 99
+                </button>
+            </div>
+        </div>
+    </div>
 
-    <!-- PAINEL ADMIN -->
-    <section id="adminPanel" style="display:none;">
-      <h2>Painel do Administrador</h2>
+    <!-- Admin Login Modal -->
+    <div id="adminModal" class="modal">
+        <div class="modal-content">
+            <button class="close-btn" onclick="closeModal('adminModal')">&times;</button>
+            <div class="modal-header">
+                <h2 class="modal-title">Login Administrador</h2>
+                <p>Acesso restrito para administradores</p>
+            </div>
+            
+            <div id="adminMsg" style="margin-bottom: 15px; padding: 10px; border-radius: 8px; text-align: center; display: none;"></div>
+            
+            <form onsubmit="adminLogin(event)">
+                <div class="form-group">
+                    <label for="adminUser" class="form-label">Usuário</label>
+                    <input type="text" id="adminUser" class="form-input" required>
+                </div>
+                <div class="form-group">
+                    <label for="adminPassword" class="form-label">Senha</label>
+                    <input type="password" id="adminPassword" class="form-input" required>
+                </div>
+                <button type="submit" class="form-btn">Entrar</button>
 
-      <div class="admin-top">
-        <div class="upload-block">
-          <div class="upload-area" id="uploadArea">
-            <p>Arraste ou clique para selecionar imagens (preview local)</p>
-            <input type="file" id="fileInput" accept="image/*" multiple />
-          </div>
-          <div class="upload-actions">
-            <input id="githubToken" placeholder="Cole seu GitHub PAT (opcional para upload direto)" />
-            <button id="enableTokenBtn">Ativar token</button>
-            <button id="sendToRepoBtn" class="destructive">Enviar selecionadas ao GitHub</button>
-          </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Client Panel -->
+    <div id="clientPanel" class="panel">
+        <button class="back-btn" onclick="backToHome()">← Voltar</button>
+        
+        <div class="client-panel-content">
+            <div class="panel-header">
+                <h1>💅 Agendar Serviço</h1>
+                <p>Siga os passos abaixo para fazer seu agendamento</p>
+            </div>
+
+            <div id="bookingSuccess" class="success">
+                ✅ Agendamento realizado com sucesso!
+            </div>
+
+            <!-- Selection Summary -->
+            <div id="selectionSummary" class="selection-summary" style="display: none;">
+                <h4>📋 Resumo do Agendamento</h4>
+                <div class="selection-item">
+                    <span>📅 Data:</span>
+                    <span id="summaryDate">-</span>
+                </div>
+                <div class="selection-item">
+                    <span>🕐 Horário:</span>
+                    <span id="summaryTime">-</span>
+                </div>
+                <div class="selection-item">
+                    <span>💅 Serviço:</span>
+                    <span id="summaryService">-</span>
+                </div>
+                <div class="selection-item">
+                    <span>💰 Valor:</span>
+                    <span id="summaryPrice">-</span>
+                </div>
+            </div>
+
+            <!-- Step 1: Choose Service -->
+            <div class="booking-section">
+                <h3 class="section-title">
+                    <span style="background: #667eea; color: white; width: 30px; height: 30px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 14px; font-weight: bold;">1</span>
+                    Escolha o Serviço
+                </h3>
+                <div class="service-selector">
+                    <label for="serviceSelect" class="form-label">💅 Selecione o serviço desejado:</label>
+                    <select id="serviceSelect" class="service-dropdown" onchange="selectServiceFromDropdown(this)">
+                        <option value="">-- Clique aqui para escolher --</option>
+                        <option value="Extensão de Cílios Volume Brasileiro" data-price="120.00" data-duration="120">Extensão de Cílios Volume Brasileiro - R$ 120,00</option>
+                        <option value="Extensão de Cílios Volume Glamour" data-price="150.00" data-duration="150">Extensão de Cílios Volume Glamour - R$ 150,00</option>
+                        <option value="Extensão de Cílios Volume Marrom" data-price="140.00" data-duration="140">Extensão de Cílios Volume Marrom - R$ 140,00</option>
+                        <option value="Extensão de Cílios Volume Fox" data-price="160.00" data-duration="160">Extensão de Cílios Volume Fox - R$ 160,00</option>
+                        <option value="Design de Sobrancelhas Personalizado" data-price="45.00" data-duration="45">Design de Sobrancelhas Personalizado - R$ 45,00</option>
+                        <option value="Design de Sobrancelhas com Henna/Tintura" data-price="55.00" data-duration="60">Design de Sobrancelhas com Henna/Tintura - R$ 55,00</option>
+                        <option value="Brow Lamination" data-price="80.00" data-duration="90">Brow Lamination - R$ 80,00</option>
+                        <option value="Lash Lifting" data-price="70.00" data-duration="60">Lash Lifting - R$ 70,00</option>
+                        <option value="Manutenção Volume Brasileiro" data-price="60.00" data-duration="60">Manutenção Volume Brasileiro - R$ 60,00</option>
+                        <option value="Manutenção Volume Glamour" data-price="75.00" data-duration="75">Manutenção Volume Glamour - R$ 75,00</option>
+                        <option value="Manutenção Volume Marrom" data-price="70.00" data-duration="70">Manutenção Volume Marrom - R$ 70,00</option>
+                        <option value="Manutenção Volume Fox" data-price="80.00" data-duration="80">Manutenção Volume Fox - R$ 80,00</option>
+                    </select>
+                    
+                    <!-- Service Details Display -->
+                    <div id="serviceDetails" class="service-details" style="display: none;">
+                        <div class="service-card">
+                            <h4 id="selectedServiceName">Serviço Selecionado</h4>
+                            <div class="service-info">
+                                <span class="service-price" id="selectedServicePrice">R$ 0,00</span>
+                                <span class="service-duration" id="selectedServiceDuration">⏱️ 0 min</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Step 2: Choose Date -->
+            <div class="booking-section">
+                <h3 class="section-title">
+                    <span style="background: #667eea; color: white; width: 30px; height: 30px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 14px; font-weight: bold;">2</span>
+                    Escolha a Data
+                </h3>
+                <div class="calendar-header">
+                    <div class="calendar-day-header">Dom</div>
+                    <div class="calendar-day-header">Seg</div>
+                    <div class="calendar-day-header">Ter</div>
+                    <div class="calendar-day-header">Qua</div>
+                    <div class="calendar-day-header">Qui</div>
+                    <div class="calendar-day-header">Sex</div>
+                    <div class="calendar-day-header">Sáb</div>
+                </div>
+                <div class="calendar" id="calendar"></div>
+            </div>
+
+            <!-- Step 3: Choose Time -->
+            <div class="booking-section">
+                <h3 class="section-title">
+                    <span style="background: #667eea; color: white; width: 30px; height: 30px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 14px; font-weight: bold;">3</span>
+                    Escolha o Horário
+                </h3>
+                <div class="time-slots" id="timeSlots"></div>
+            </div>
+
+            <button class="confirm-booking-btn" onclick="confirmBooking()" id="confirmBtn" disabled>
+                🎯 Confirmar Agendamento
+            </button>
+        </div>
+    </div>
+
+    <!-- Admin Panel -->
+    <div id="adminPanel" class="panel">
+        <button class="back-btn" onclick="backToHome()">← Voltar</button>
+        
+        <div class="panel-header">
+            <h1>Painel Administrativo</h1>
+            <p>Bem-vinda, Aline!</p>
         </div>
 
-        <div class="admin-info">
-          <p><strong>Repositório alvo:</strong> <span id="repoPath"></span></p>
-          <p class="hint">Sem token: previews locais apenas. Com token: upload/delete direto no repo (use com cuidado).</p>
+        <div id="adminSuccess" class="success"></div>
+
+        <!-- Admin Navigation Tabs -->
+        <div class="admin-tabs">
+            <button class="tab-btn active" onclick="showTab('dashboard')">
+                <svg class="icon" viewBox="0 0 24 24"><path d="M3 13h8V3H3v10zm0 8h8v-6H3v6zm10 0h8V11h-8v10zm0-18v6h8V3h-8z"/></svg>
+                Dashboard
+            </button>
+            <button class="tab-btn" onclick="showTab('clients')">
+                <svg class="icon" viewBox="0 0 24 24"><path d="M16 4c0-1.11.89-2 2-2s2 .89 2 2-.89 2-2 2-2-.89-2-2zm4 18v-6h2.5l-2.54-7.63A2.996 2.996 0 0 0 17.06 7H16.94c-1.08 0-2.07.56-2.63 1.37L12 12l2.31 3.63c.56.81 1.55 1.37 2.63 1.37H18V22h2zM12.5 11.5c.83 0 1.5-.67 1.5-1.5s-.67-1.5-1.5-1.5S11 9.17 11 10s.67 1.5 1.5 1.5zM5.5 6c1.11 0 2-.89 2-2s-.89-2-2-2-2 .89-2 2 .89 2 2 2zm1.5 16v-5H9l-2.54-7.63A2.996 2.996 0 0 0 3.56 8H2.44c-1.08 0-2.07.56-2.63 1.37L-2.5 13l2.31 3.63c.56.81 1.55 1.37 2.63 1.37H4V22h3z"/></svg>
+                Clientes
+            </button>
+            <button class="tab-btn" onclick="showTab('appointments')">
+                <svg class="icon" viewBox="0 0 24 24"><path d="M19 3h-1V1h-2v2H8V1H6v2H5c-1.11 0-1.99.9-1.99 2L3 19c0 1.1.89 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm0 16H5V8h14v11zM7 10h5v5H7z"/></svg>
+                Agendamentos
+            </button>
+            <button class="tab-btn" onclick="showTab('reports')">
+                <svg class="icon" viewBox="0 0 24 24"><path d="M3.5 18.49l6-6.01 4 4L22 6.92l-1.41-1.41-7.09 7.97-4-4L2 16.99z"/></svg>
+                Relatórios
+            </button>
+            <button class="tab-btn" onclick="showTab('reminders')">
+                <svg class="icon" viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm3.5 6L11 13.5l-1.5-1.5L8 13.5 11 16.5l6-6-1.5-1.5z"/></svg>
+                Lembretes
+            </button>
+            <button class="tab-btn" onclick="showTab('settings')">
+                <svg class="icon" viewBox="0 0 24 24"><path d="M19.14,12.94c0.04-0.3,0.06-0.61,0.06-0.94c0-0.32-0.02-0.64-0.07-0.94l2.03-1.58c0.18-0.14,0.23-0.41,0.12-0.61 l-1.92-3.32c-0.12-0.22-0.37-0.29-0.59-0.22l-2.39,0.96c-0.5-0.38-1.03-0.7-1.62-0.94L14.4,2.81c-0.04-0.24-0.24-0.41-0.48-0.41 h-3.84c-0.24,0-0.43,0.17-0.47,0.41L9.25,5.35C8.66,5.59,8.12,5.92,7.63,6.29L5.24,5.33c-0.22-0.08-0.47,0-0.59,0.22L2.74,8.87 C2.62,9.08,2.66,9.34,2.86,9.48l2.03,1.58C4.84,11.36,4.8,11.69,4.8,12s0.02,0.64,0.07,0.94l-2.03,1.58 c-0.18,0.14-0.23,0.41-0.12,0.61l1.92,3.32c0.12,0.22,0.37,0.29,0.59,0.22l2.39-0.96c0.5,0.38,1.03,0.7,1.62,0.94l0.36,2.54 c0.05,0.24,0.24,0.41,0.48,0.41h3.84c0.24,0,0.44-0.17,0.47-0.41l0.36-2.54c0.59-0.24,1.13-0.56,1.62-0.94l2.39,0.96 c0.22,0.08,0.47,0,0.59-0.22l1.92-3.32c0.12-0.22,0.07-0.47-0.12-0.61L19.14,12.94z M12,15.6c-1.98,0-3.6-1.62-3.6-3.6 s1.62-3.6,3.6-3.6s3.6,1.62,3.6,3.6S13.98,15.6,12,15.6z"/></svg>
+                Configurações
+            </button>
         </div>
-      </div>
 
-      <div class="admin-files">
-        <h3>Imagens no repositório (<code>imagens/</code>)</h3>
-        <div id="repoFilesList" class="catalog-grid"></div>
-      </div>
-    </section>
-  </main>
+        <!-- Dashboard Tab -->
+        <div id="dashboardTab" class="tab-content active">
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <div class="stat-icon" style="background: #007bff;">
+                        <svg class="icon" viewBox="0 0 24 24"><path d="M16 4c0-1.11.89-2 2-2s2 .89 2 2-.89 2-2 2-2-.89-2-2z"/></svg>
+                    </div>
+                    <div class="stat-info">
+                        <h3 id="totalClients">0</h3>
+                        <p>Total Clientes</p>
+                    </div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-icon" style="background: #28a745;">
+                        <svg class="icon" viewBox="0 0 24 24"><path d="M19 3h-1V1h-2v2H8V1H6v2H5c-1.11 0-1.99.9-1.99 2L3 19c0 1.1.89 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2z"/></svg>
+                    </div>
+                    <div class="stat-info">
+                        <h3 id="todayAppointments">0</h3>
+                        <p>Hoje</p>
+                    </div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-icon" style="background: #ffc107;">
+                        <svg class="icon" viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2z"/></svg>
+                    </div>
+                    <div class="stat-info">
+                        <h3 id="monthAppointments">0</h3>
+                        <p>Este Mês</p>
+                    </div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-icon" style="background: #17a2b8;">
+                        <svg class="icon" viewBox="0 0 24 24"><path d="M11.8 10.9c-2.27-.59-3-1.2-3-2.15 0-1.09 1.01-1.85 2.7-1.85 1.78 0 2.44.85 2.5 2.1h2.21c-.07-1.72-1.12-3.3-3.21-3.81V3h-3v2.16c-1.94.42-3.5 1.68-3.5 3.61 0 2.31 1.91 3.46 4.7 4.13 2.5.6 3 1.48 3 2.41 0 .69-.49 1.79-2.7 1.79-2.06 0-2.87-.92-2.98-2.1h-2.2c.12 2.19 1.76 3.42 3.68 3.83V21h3v-2.15c1.95-.37 3.5-1.5 3.5-3.55 0-2.84-2.43-3.81-4.7-4.4z"/></svg>
+                    </div>
+                    <div class="stat-info">
+                        <h3 id="monthRevenue">R$ 0</h3>
+                        <p>Receita Mês</p>
+                    </div>
+                </div>
+            </div>
 
-  <!-- Modal de Login -->
-  <div class="modal" id="accessModal" aria-hidden="true">
-    <div class="modal-content">
-      <button class="close" id="closeModal">&times;</button>
-      <h2 id="modalTitle">Acesso</h2>
-      <input type="text" id="login" placeholder="Login" />
-      <input type="password" id="senha" placeholder="Senha" />
-      <div style="display:flex; gap:8px; justify-content:center; margin-top:10px;">
-        <button id="entrarBtn">Entrar</button>
-        <button id="cancelBtn" class="ghost">Cancelar</button>
-      </div>
+            <div class="admin-section">
+                <h3>📅 Próximos Agendamentos</h3>
+                <div id="upcomingAppointments"></div>
+            </div>
+        </div>
+
+        <!-- Clients Tab -->
+        <div id="clientsTab" class="tab-content">
+            <div class="section-header">
+                <h3>👥 Gerenciar Clientes</h3>
+                <button class="btn btn-admin" onclick="showAddClientForm()">+ Novo Cliente</button>
+            </div>
+
+            <div class="search-bar">
+                <input type="text" id="clientSearch" placeholder="🔍 Buscar cliente..." onkeyup="searchClients()">
+            </div>
+
+            <div id="addClientForm" class="admin-section" style="display: none;">
+                <h4>Adicionar Novo Cliente</h4>
+                <form onsubmit="addClient(event)" style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px;">
+                    <input type="text" id="newClientName" placeholder="Nome completo" required>
+                    <input type="date" id="newClientBirthdate" placeholder="Data de nascimento" required>
+                    <input type="tel" id="newClientWhatsapp" placeholder="WhatsApp (49) 99999-9999" required>
+                    <input type="email" id="newClientEmail" placeholder="E-mail (opcional)">
+                    <button type="submit" class="btn btn-admin">Adicionar Cliente</button>
+                    <button type="button" class="btn" onclick="hideAddClientForm()" style="background: #6c757d;">Cancelar</button>
+                </form>
+            </div>
+
+            <div class="admin-section">
+                <div class="clients-header">
+                    <h4>Clientes Cadastrados (<span id="clientCount">0</span>)</h4>
+                </div>
+                <div id="clientsList"></div>
+            </div>
+        </div>
+
+        <!-- Appointments Tab -->
+        <div id="appointmentsTab" class="tab-content">
+            <div class="section-header">
+                <h3>📅 Gerenciar Agendamentos</h3>
+                <div class="filter-controls">
+                    <select id="dateFilter" onchange="filterAppointments()">
+                        <option value="all">Todas as datas</option>
+                        <option value="today">Hoje</option>
+                        <option value="week">Esta semana</option>
+                        <option value="month">Este mês</option>
+                    </select>
+                    <select id="statusFilter" onchange="filterAppointments()">
+                        <option value="all">Todos os status</option>
+                        <option value="confirmed">Confirmados</option>
+                        <option value="pending">Pendentes</option>
+                        <option value="cancelled">Cancelados</option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="admin-section">
+                <div class="appointments-header">
+                    <h4>Lista de Agendamentos (<span id="appointmentCount">0</span>)</h4>
+                </div>
+                <div id="appointmentsList"></div>
+            </div>
+        </div>
+
+        <!-- Reports Tab -->
+        <div id="reportsTab" class="tab-content">
+            <div class="section-header">
+                <h3>📊 Relatórios e Estatísticas</h3>
+                <button class="btn btn-admin" onclick="exportData()">📄 Exportar CSV</button>
+            </div>
+
+            <div class="reports-grid">
+                <div class="report-card">
+                    <h4>📈 Agendamentos por Mês</h4>
+                    <canvas id="monthlyChart" width="300" height="200"></canvas>
+                </div>
+                <div class="report-card">
+                    <h4>💅 Serviços Mais Populares</h4>
+                    <div id="popularServices"></div>
+                </div>
+                <div class="report-card">
+                    <h4>💰 Receita por Período</h4>
+                    <div id="revenueReport"></div>
+                </div>
+                <div class="report-card">
+                    <h4>👥 Clientes Ativos</h4>
+                    <div id="activeClients"></div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Reminders Tab -->
+        <div id="remindersTab" class="tab-content">
+            <div class="section-header">
+                <h3>🔔 Gerenciar Lembretes</h3>
+                <button class="btn btn-admin" onclick="checkTodayReminders()">📱 Verificar Lembretes de Hoje</button>
+            </div>
+
+            <div class="admin-section">
+                <div class="stats-grid" style="margin-bottom: 30px;">
+                    <div class="stat-card">
+                        <div class="stat-icon" style="background: #28a745;">
+                            <svg class="icon" viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm3.5 6L11 13.5l-1.5-1.5L8 13.5 11 16.5l6-6-1.5-1.5z"/></svg>
+                        </div>
+                        <div class="stat-info">
+                            <h3 id="pendingReminders">0</h3>
+                            <p>Lembretes Pendentes</p>
+                        </div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-icon" style="background: #17a2b8;">
+                            <svg class="icon" viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2z"/></svg>
+                        </div>
+                        <div class="stat-info">
+                            <h3 id="todayReminders">0</h3>
+                            <p>Para Hoje</p>
+                        </div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-icon" style="background: #6f42c1;">
+                            <svg class="icon" viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2z"/></svg>
+                        </div>
+                        <div class="stat-info">
+                            <h3 id="sentReminders">0</h3>
+                            <p>Enviados</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="section-header">
+                    <h4>📋 Lista de Lembretes</h4>
+                    <div class="filter-controls">
+                        <select id="reminderStatusFilter" onchange="filterReminders()">
+                            <option value="all">Todos os status</option>
+                            <option value="pending">Pendentes</option>
+                            <option value="today">Para hoje</option>
+                            <option value="sent">Enviados</option>
+                        </select>
+                    </div>
+                </div>
+                
+                <div id="remindersList"></div>
+            </div>
+        </div>
+
+        <!-- Settings Tab -->
+        <div id="settingsTab" class="tab-content">
+            <div class="section-header">
+                <h3>⚙️ Configurações do Sistema</h3>
+            </div>
+
+            <div class="settings-grid">
+                <div class="setting-card">
+                    <h4>🎨 Personalização Visual</h4>
+                    <div class="form-group">
+                        <label for="logoUpload" class="form-label">Logo do Studio</label>
+                        <input type="file" id="logoUpload" accept="image/*" onchange="uploadLogo(event)">
+                        <small style="color: #636e72;">Formatos aceitos: JPG, PNG, GIF (máx. 2MB)</small>
+                    </div>
+                    <div class="form-group">
+                        <label for="backgroundUpload" class="form-label">Imagem de Fundo Principal</label>
+                        <input type="file" id="backgroundUpload" accept="image/*" onchange="uploadBackground(event)">
+                        <small style="color: #636e72;">Recomendado: 1920x1080px ou superior</small>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Galeria de Fundos Disponíveis</label>
+                        <div id="backgroundGallery" class="background-gallery">
+                            <!-- Backgrounds serão carregados aqui -->
+                        </div>
+                        <button class="btn btn-admin" onclick="loadGitHubBackgrounds()" style="margin-top: 10px;">
+                            🔄 Carregar Fundos do GitHub
+                        </button>
+                    </div>
+                    <div class="form-group">
+                        <label for="studioName" class="form-label">Nome do Studio</label>
+                        <input type="text" id="studioName" class="form-input" value="ALINE MENEZES BEAUTY">
+                        <button class="btn btn-admin" onclick="updateStudioName()">Atualizar</button>
+                    </div>
+                </div>
+
+                <div class="setting-card">
+                    <h4>🖼️ Imagens dos Serviços</h4>
+                    <div class="form-group">
+                        <label class="form-label">Upload de Imagens para Serviços</label>
+                        <input type="file" id="serviceImageUpload" accept="image/*" multiple onchange="uploadServiceImages(event)">
+                        <small style="color: #636e72;">Selecione múltiplas imagens para os serviços</small>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Galeria de Imagens dos Serviços</label>
+                        <div id="serviceImageGallery" class="service-image-gallery">
+                            <!-- Imagens dos serviços serão carregadas aqui -->
+                        </div>
+                        <button class="btn btn-admin" onclick="loadGitHubServiceImages()" style="margin-top: 10px;">
+                            🔄 Carregar Imagens do GitHub
+                        </button>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Configuração do Repositório GitHub</label>
+                        <input type="text" id="githubRepo" class="form-input" placeholder="usuario/repositorio" value="">
+                        <input type="text" id="githubToken" class="form-input" placeholder="Token de acesso (opcional)" value="" style="margin-top: 10px;">
+                        <small style="color: #636e72;">Ex: alinemenezes/studio-images</small>
+                        <button class="btn btn-admin" onclick="saveGitHubConfig()" style="margin-top: 10px;">Salvar Configuração</button>
+                    </div>
+                </div>
+
+                <div class="setting-card">
+                    <h4>💾 Backup e Restauração</h4>
+                    <button class="btn btn-admin" onclick="backupData()">📥 Fazer Backup</button>
+                    <div class="form-group">
+                        <label for="restoreFile" class="form-label">Restaurar Backup</label>
+                        <input type="file" id="restoreFile" accept=".json" onchange="restoreData(event)">
+                    </div>
+                    <button class="btn" onclick="clearAllData()" style="background: #dc3545;">🗑️ Limpar Todos os Dados</button>
+                </div>
+
+                <div class="setting-card">
+                    <h4>🔧 Configurações Gerais</h4>
+                    <div class="form-group">
+                        <label class="form-label">Horários de Funcionamento</label>
+                        <input type="time" id="openTime" value="09:00" class="form-input">
+                        <input type="time" id="closeTime" value="18:00" class="form-input">
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Intervalo entre Agendamentos (minutos)</label>
+                        <input type="number" id="appointmentInterval" value="60" class="form-input">
+                    </div>
+                    <button class="btn btn-admin" onclick="saveSettings()">Salvar Configurações</button>
+                </div>
+
+                <div class="setting-card">
+                    <h4>📱 Informações de Contato</h4>
+                    <div class="form-group">
+                        <label for="whatsappNumber" class="form-label">WhatsApp</label>
+                        <input type="tel" id="whatsappNumber" class="form-input" value="5549998200000">
+                    </div>
+                    <div class="form-group">
+                        <label for="instagramHandle" class="form-label">Instagram</label>
+                        <input type="text" id="instagramHandle" class="form-input" value="alinemenezes.beauty">
+                    </div>
+                    <div class="form-group">
+                        <label for="studioAddress" class="form-label">Endereço</label>
+                        <textarea id="studioAddress" class="form-input" rows="3">Rua Manoel de Campos Salles, 461 - Sala 01
+Bairro São Cristóvão
+Chapecó - SC, CEP 89804-092</textarea>
+                    </div>
+                    <button class="btn btn-admin" onclick="saveContactInfo()">Salvar Contatos</button>
+                </div>
+            </div>
+        </div>
     </div>
-  </div>
-
-  <!-- Lightbox -->
-  <div id="lightbox" class="lightbox" style="display:none;">
-    <div class="lightbox-inner">
-      <button id="lbClose" class="lb-close">&times;</button>
-      <img id="lbImage" src="" alt="Visualização" />
-      <div id="lbCaption" class="lb-caption"></div>
-      <div class="lb-actions">
-        <a id="lbOpenTab" href="#" target="_blank"><button>Abrir em nova aba</button></a>
-        <button id="lbCopyUrl">Copiar URL</button>
-      </div>
-    </div>
-  </div>
-
-  <script src="script.js"></script>
-</body>
-</html>
