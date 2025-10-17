@@ -3661,7 +3661,13 @@ Com carinho,
     } catch (err) {
       console.error('❌ Erro ao salvar configurações do admin:', err.message);
     }
-  }
+  
+  salvarConfiguracoesAdmin({
+  studio_name: document.querySelector('#studioNameInput').value,
+  studio_logo: document.querySelector('#logoInput').value,
+  background_image: document.querySelector('#bgInput').value
+});
+
 
   // 📦 FUNÇÃO UNIVERSAL PARA SALVAR CLIENTES
   async function salvarCliente(cliente) {
@@ -3675,6 +3681,14 @@ Com carinho,
       console.error('❌ Erro ao salvar cliente:', err.message);
     }
   }
+      salvarCliente({
+  nome: document.querySelector('#nome').value,
+  telefone: document.querySelector('#telefone').value,
+  email: document.querySelector('#email').value,
+  servico: document.querySelector('#servico').value,
+  data: new Date().toISOString()
+});
+
 
   // 📥 CARREGAR CONFIGURAÇÕES DO ADMIN AO ABRIR O SITE
   async function carregarConfiguracoesAdmin() {
@@ -3731,3 +3745,5 @@ Com carinho,
   */
 </script>
 <!-- 🔥 FIM DA SINCRONIZAÇÃO SUPABASE -->
+
+
