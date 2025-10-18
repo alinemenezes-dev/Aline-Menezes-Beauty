@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Studio Aline Menezes</title>
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <style>
         body {
@@ -1376,6 +1377,35 @@
                 background: #f1f2f6;
                 border-radius: 50%;
             }
+
+            .galeria {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 15px;
+}
+
+.servico-item {
+  text-align: center;
+}
+
+.imagem-servico {
+  width: 220px;
+  height: 220px;
+  object-fit: cover;
+  border-radius: 15px;
+  box-shadow: 0 3px 8px rgba(0,0,0,0.2);
+  transition: transform 0.3s;
+}
+
+.imagem-servico:hover {
+  transform: scale(1.05);
+}
+
+.upload-admin {
+  margin: 20px auto;
+  text-align: center;
+}
         }
     </style>
 </head>
@@ -2611,6 +2641,10 @@ Chapecó - SC, CEP 89804-092</textarea>
                 showMessage('adminMsg', 'Credenciais incorretas!', 'error');
             }
         }
+<div class="upload-admin">
+  <label for="uploadServico">📸 Enviar nova imagem de serviço:</label>
+  <input type="file" id="uploadServico" accept="image/*" onchange="uploadImagemServico(event)">
+</div>
 
         // Show panels
         function showClientPanel() {
@@ -3065,6 +3099,7 @@ Chapecó - SC, CEP 89804-092</textarea>
             const appointmentTime = appointment.time;
             
             const message = `Olá ${client.name}! 😊
+            
 
 ✅ *AGENDAMENTO CONFIRMADO*
 
@@ -4123,7 +4158,11 @@ Com carinho,
                 alert('Por favor, selecione apenas arquivos de imagem.');
                 return;
             }
-            
+            <section id="servicos">
+  <h2>Nossos Serviços</h2>
+  <div id="galeriaServicos" class="galeria"></div>
+</section>
+
             const reader = new FileReader();
             reader.onload = function(e) {
                 const imageElement = document.getElementById('service-image-' + serviceId.replace('service-', ''));
@@ -4549,3 +4588,53 @@ Com carinho,
     </script>
 <script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'9900865bd500f25e',t:'MTc2MDcxMTc1MS4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
 </html>
+<script>
+  // 🔗 CONFIGURAÇÃO DO SUPABASE
+  const SUPABASE_URL = "https://hpenhkikpbykhfdwryob.supabase.co";
+  const SUPABASE_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImhwZW5oa2lrcGJ5a2hmZHdyeW9iIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjA2NTQwOTIsImV4cCI6MjA3NjIzMDA5Mn0.xGWlQj38ixf7ScwGI-7LA4K7KuhKoYd3DcwrP8u18yE";
+  const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+
+  // 🖼️ FUNÇÃO PARA LISTAR IMAGENS DO BUCKET "servicos"
+  async function listarImagensServicos() {
+    const { data, error } = await supabase.storage.from("servicos").list("", { limit: 100 });
+    if (error) {
+      console.error("Erro ao listar imagens:", error.message);
+      return;
+    }
+
+    const galeria = document.getElementById("galeriaServicos");
+    if (!galeria) return;
+
+    galeria.innerHTML = "";
+    data.forEach((img) => {
+      const url = `${SUPABASE_URL}/storage/v1/object/public/servicos/${img.name}`;
+      const elemento = document.createElement("div");
+      elemento.classList.add("servico-item");
+      elemento.innerHTML = `
+        <img src="${url}" alt="${img.name}" class="imagem-servico">
+        <p>${img.name}</p>
+      `;
+      galeria.appendChild(elemento);
+    });
+  }
+
+  // 📤 FUNÇÃO PARA UPLOAD DE NOVAS IMAGENS (Painel Admin)
+  async function uploadImagemServico(event) {
+    const arquivo = event.target.files[0];
+    if (!arquivo) return;
+
+    const { data, error } = await supabase.storage
+      .from("servicos")
+      .upload(arquivo.name, arquivo, { upsert: true });
+
+    if (error) {
+      alert("❌ Erro ao enviar imagem: " + error.message);
+    } else {
+      alert("✅ Imagem enviada com sucesso!");
+      listarImagensServicos();
+    }
+  }
+
+  // 🔁 CHAMAR AO CARREGAR A PÁGINA
+  document.addEventListener("DOMContentLoaded", listarImagensServicos);
+</script>
